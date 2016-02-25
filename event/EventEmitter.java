@@ -110,7 +110,7 @@ public class EventEmitter {
                     return true;
                 }
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    Gdx.app.error(getClass().getSimpleName(), "An " + e.getClass().getSimpleName() + " has occurred. Reason: " + e.getMessage());
+                    Gdx.app.error(getClass().getSimpleName(), "An " + e.getClass().getSimpleName() + " has occurred. Reason: " + e.getMessage(), e);
                 }
             }
         }
