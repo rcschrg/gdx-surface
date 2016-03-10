@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 
 import de.verygame.square.core.components.CollisionData;
 import de.verygame.square.core.components.Movement;
@@ -16,7 +17,7 @@ import de.verygame.square.core.components.RectTransform;
  *         <p>
  *         Proccesses all movements of entitys.
  */
-public class MovementSystem extends EntityProcessingSystem {
+public class MovementSystem extends IteratingSystem {
 
 
     ComponentMapper<RectTransform> transformMapper;
@@ -43,7 +44,7 @@ public class MovementSystem extends EntityProcessingSystem {
     }
 
     @Override
-    protected void process(Entity e) {
+    protected void process(int e) {
         //Get mapped components
         RectTransform t = transformMapper.get(e);
         Movement m = movementMapper.get(e);

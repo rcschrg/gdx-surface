@@ -5,7 +5,7 @@ import com.artemis.AspectSubscriptionManager;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySubscription;
-import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.systems.IteratingSystem;
 import com.artemis.utils.IntBag;
 
 import org.jbox2d.callbacks.TreeCallback;
@@ -13,7 +13,6 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.broadphase.DynamicTree;
 import org.jbox2d.common.Vec2;
 
-import java.awt.Component;
 import java.util.HashMap;
 
 import de.verygame.square.core.components.BoxCollider;
@@ -31,7 +30,7 @@ import de.verygame.square.util.collision.CollisionUtils;
  *         <p>
  *         Handles the broadphase and collision events
  */
-public class CollisionSystem extends EntityProcessingSystem {
+public class CollisionSystem extends IteratingSystem {
 
 
     ComponentMapper<PlayerData> playerDataMapper;
@@ -44,17 +43,16 @@ public class CollisionSystem extends EntityProcessingSystem {
     HashMap<Integer, Integer> proxyMap = new HashMap<>();
 
     AspectSubscriptionManager asm;
-    EntitySubscription subscription;
 
     DynamicTree broadTree = new DynamicTree();
 
-    private Entity current = null;
+    private int current = -1;
 
     protected TreeCallback callback = new TreeCallback() {
         @Override
         public boolean treeCallback(int proxyId) {
 
-            Entity other = world.getEntity(proxyMap.get(proxyId));
+            int other = proxyMap.get(proxyId);
 
             if (checkCollision(current, other)) {
                 collisionDataMapper.get(other).callback.collideWith(current);
@@ -79,7 +77,6 @@ public class CollisionSystem extends EntityProcessingSystem {
     @Override
     public void initialize() {
         asm = world.getAspectSubscriptionManager();
-        subscription = asm.get(Aspect.all(CollisionData.class).one(BoxCollider.class, CircleCollider.class, PolygonCollider.class));
 
         playerDataMapper = world.getMapper(PlayerData.class);
         collisionDataMapper = world.getMapper(CollisionData.class);
@@ -88,35 +85,29 @@ public class CollisionSystem extends EntityProcessingSystem {
         polygonColliderMapper = world.getMapper(PolygonCollider.class);
         rectTransformMapper = world.getMapper(RectTransform.class);
 
-        subscription.addSubscriptionListener(new EntitySubscription.SubscriptionListener() {
-
-            @Override
-            public void inserted(IntBag entities) {
-                for (int i = 0; i < entities.size(); i++) {
-                    int proxy = broadTree.createProxy(getGlobalAABB(entities.get(i)), entities.get(i));
-
-                    proxyMap.put(entities.get(i), proxy);
-                }
-            }
-
-            @Override
-            public void removed(IntBag entities) {
-                for (int i = 0; i < entities.size(); i++) {
-                    broadTree.destroyProxy(proxyMap.get(entities.get(i)));
-
-                    proxyMap.remove(entities.get(i));
-                }
-            }
-        });
     }
 
     @Override
-    protected void process(Entity e) {
+    protected void process(int e) {
         current = e;
 
         if (collisionDataMapper.get(e) != null && collisionDataMapper.get(e).isActive()) {
             broadTree.query(callback, getGlobalAABB(e));
         }
+    }
+
+    @Override
+    protected void inserted(int e){
+        int proxy = broadTree.createProxy(getGlobalAABB(e), e);
+
+        proxyMap.put(e, proxy);
+    }
+
+    @Override
+    protected void removed(int e){
+        broadTree.destroyProxy(proxyMap.get(e));
+
+        proxyMap.remove(e);
     }
 
     /**
@@ -126,11 +117,11 @@ public class CollisionSystem extends EntityProcessingSystem {
      * @param dx x offset
      * @param dy y offset
      */
-    public void move(Entity e, float dx, float dy) {
+    public void move(int e, float dx, float dy) {
         Vec2 displacement = new Vec2(dx, dy);
         AABB aabb = getGlobalAABB(e);
 
-        broadTree.moveProxy(proxyMap.get(e.getId()), aabb, displacement);
+        broadTree.moveProxy(proxyMap.get(e), aabb, displacement);
     }
 
     /**
@@ -139,7 +130,7 @@ public class CollisionSystem extends EntityProcessingSystem {
      * @param e Entity
      * @return global AABB
      */
-    protected AABB getGlobalAABB(Entity e) {
+    protected AABB getGlobalAABB(int e) {
 
         RectTransform transform = rectTransformMapper.get(e);
         CollisionData collisionData = collisionDataMapper.get(e);
@@ -155,7 +146,7 @@ public class CollisionSystem extends EntityProcessingSystem {
         return aabb;
     }
 
-    private boolean checkCollision(Entity e1, Entity e2) {
+    private boolean checkCollision(int e1, int e2) {
 
         CollisionData cd2 = collisionDataMapper.get(e2);
 
@@ -200,9 +191,5 @@ public class CollisionSystem extends EntityProcessingSystem {
                 return CollisionUtils.checkPolygonPolygonCollision(rt1, p1, rt2, p2);
             }
         }
-    }
-
-    private AABB getGlobalAABB(int id) {
-        return getGlobalAABB(world.getEntity(id));
     }
 }

@@ -1,6 +1,9 @@
 package de.verygame.square.core.components;
 
 import com.artemis.Component;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+import java.awt.Color;
 
 /**
  * @author Marco Deneke
@@ -11,6 +14,6 @@ import com.artemis.Component;
  */
 public class Texture extends Component {
 
-    //waiting for resource manager
+    TextureRegion[] textureRegions = null;
 
 }

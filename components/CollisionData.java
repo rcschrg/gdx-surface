@@ -25,7 +25,7 @@ public class CollisionData extends Component {
 
     public CollisionCallback callback = new CollisionCallback() {
         @Override
-        public void collideWith(Entity e) {
+        public void collideWith(int eid) {
 
         }
     };
