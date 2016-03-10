@@ -3,10 +3,7 @@ package de.verygame.square.core.entitysystem;
 import com.artemis.Aspect;
 import com.artemis.AspectSubscriptionManager;
 import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.systems.IteratingSystem;
-import com.artemis.utils.IntBag;
 
 import org.jbox2d.callbacks.TreeCallback;
 import org.jbox2d.collision.AABB;
@@ -42,8 +39,6 @@ public class CollisionSystem extends IteratingSystem {
 
     HashMap<Integer, Integer> proxyMap = new HashMap<>();
 
-    AspectSubscriptionManager asm;
-
     DynamicTree broadTree = new DynamicTree();
 
     private int current = -1;
@@ -54,10 +49,11 @@ public class CollisionSystem extends IteratingSystem {
 
             int other = proxyMap.get(proxyId);
 
-            if (checkCollision(current, other)) {
+            if (current != other && checkCollision(current, other)) {
                 collisionDataMapper.get(other).callback.collideWith(current);
                 collisionDataMapper.get(current).callback.collideWith(other);
-            } else {
+            }
+            else {
                 return true;
             }
 
@@ -76,8 +72,6 @@ public class CollisionSystem extends IteratingSystem {
     @SuppressWarnings("unchecked")
     @Override
     public void initialize() {
-        asm = world.getAspectSubscriptionManager();
-
         playerDataMapper = world.getMapper(PlayerData.class);
         collisionDataMapper = world.getMapper(CollisionData.class);
         boxColliderMapper = world.getMapper(BoxCollider.class);
@@ -169,25 +163,31 @@ public class CollisionSystem extends IteratingSystem {
         if(b1 != null){
             if(b2 != null){
                 return CollisionUtils.checkRectangleRectangleCollision(rt1, b1, rt2, b2);
-            }else if(c2 != null){
+            }
+            else if(c2 != null){
                 return CollisionUtils.checkRectangleCircleCollision(rt1, b1, rt2, c2);
-            }else{
+            }
+            else {
                 return CollisionUtils.checkRectanglePolygonCollision(rt1, b1, rt2, p2);
             }
         }else if(c1 != null){
             if(b2 != null){
                 return CollisionUtils.checkRectangleCircleCollision(rt2, b2, rt1, c1);
-            }else if(c2 != null){
+            }
+            else if(c2 != null){
                 return CollisionUtils.checkCircleCircleCollision(rt1, c1, rt2, c2);
-            }else{
+            }
+            else {
                 return CollisionUtils.checkCirclePolygonCollision(rt1, c1, rt2, p2);
             }
         }else {
             if(b2 != null){
                 return CollisionUtils.checkRectanglePolygonCollision(rt2, b2, rt1, p1);
-            }else if(c2 != null){
+            }
+            else if(c2 != null){
                 return CollisionUtils.checkCirclePolygonCollision(rt2, c2, rt1, p1);
-            }else{
+            }
+            else {
                 return CollisionUtils.checkPolygonPolygonCollision(rt1, p1, rt2, p2);
             }
         }

@@ -1,11 +1,9 @@
 package de.verygame.square.core.components;
 
 import com.artemis.Component;
-import com.artemis.Entity;
 import com.artemis.annotations.PooledWeaver;
 
 import org.jbox2d.collision.AABB;
-import org.jbox2d.common.Vec2;
 
 import de.verygame.square.util.collision.CollisionCallback;
 
@@ -21,12 +19,12 @@ public class CollisionData extends Component {
 
     private AABB aabb = new AABB();
 
-    private boolean isActive = true;
+    private boolean active = true;
 
     public CollisionCallback callback = new CollisionCallback() {
         @Override
         public void collideWith(int eid) {
-
+            //add collision reaction here
         }
     };
 
@@ -39,10 +37,10 @@ public class CollisionData extends Component {
     }
 
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(boolean isActive) {
-        this.isActive = isActive;
+        this.active = isActive;
     }
 }

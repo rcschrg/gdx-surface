@@ -12,13 +12,13 @@ import com.artemis.Component;
 public class PlayerData extends Component {
 
 
-    private boolean hasShield;
+    private boolean shieldActive;
 
     public boolean hasShield() {
-        return hasShield;
+        return shieldActive;
     }
 
-    public void setHasShield(boolean hasShield) {
-        this.hasShield = hasShield;
+    public void setShieldActive(boolean shieldActive) {
+        this.shieldActive = shieldActive;
     }
 }
