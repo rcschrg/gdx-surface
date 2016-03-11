@@ -35,15 +35,6 @@ public class MovementSystem extends IteratingSystem {
     }
 
     @Override
-    public void initialize() {
-        transformMapper = world.getMapper(RectTransform.class);
-        movementMapper = world.getMapper(Movement.class);
-
-        collisionDataMapper = world.getMapper(CollisionData.class);
-        collisionSystem = world.getSystem(CollisionSystem.class);
-    }
-
-    @Override
     protected void process(int e) {
         //Get mapped components
         RectTransform t = transformMapper.get(e);

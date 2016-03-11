@@ -4,12 +4,14 @@ import com.artemis.Aspect;
 import com.artemis.AspectSubscriptionManager;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
+import com.artemis.utils.IntBag;
 
 import org.jbox2d.callbacks.TreeCallback;
 import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.broadphase.DynamicTree;
 import org.jbox2d.common.Vec2;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 
 import de.verygame.square.core.components.BoxCollider;
@@ -67,18 +69,6 @@ public class CollisionSystem extends IteratingSystem {
     @SuppressWarnings("unchecked")
     public CollisionSystem() {
         super(Aspect.all(PlayerData.class, CollisionData.class));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void initialize() {
-        playerDataMapper = world.getMapper(PlayerData.class);
-        collisionDataMapper = world.getMapper(CollisionData.class);
-        boxColliderMapper = world.getMapper(BoxCollider.class);
-        circleColliderMapper = world.getMapper(CircleCollider.class);
-        polygonColliderMapper = world.getMapper(PolygonCollider.class);
-        rectTransformMapper = world.getMapper(RectTransform.class);
-
     }
 
     @Override
