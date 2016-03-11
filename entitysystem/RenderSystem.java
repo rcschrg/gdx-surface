@@ -3,6 +3,7 @@ package de.verygame.square.core.entitysystem;
 import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.IntArray;
 
 import java.util.Arrays;
@@ -25,6 +26,9 @@ public class RenderSystem extends BaseEntitySystem {
     int entityCount = 0;
     int dirtyCount = 0;
 
+    SpriteBatch batch = new SpriteBatch();
+
+
     /**
      * Creates a new EntityProcessingSystem.
      */
@@ -33,20 +37,30 @@ public class RenderSystem extends BaseEntitySystem {
         layeredEntities = new IntArray(size);
         //fill with dummies which can't be entities
         Arrays.fill(layeredEntities.items, Integer.MIN_VALUE);
-        dirtyEntities = new IntArray(size/2);
+        dirtyEntities = new IntArray(size / 2);
     }
 
     @Override
     public void processSystem() {
 
+        batch.begin();
+
+        RenderData data;
+
         //layeredEntities start at index 1 for performance reasons
         for (int i = 1; i < entityCount; i++) {
-            if (renderDataMapper.get(layeredEntities.get(i)).dirty) {
+
+            data = renderDataMapper.get(layeredEntities.get(i));
+
+            if (data.dirty) {
                 queueReinsert(layeredEntities.get(i));
             }
 
+            data.drawable.draw(batch);
             //draw on batch
         }
+
+        batch.end();
 
         reinsert();
     }
@@ -71,7 +85,7 @@ public class RenderSystem extends BaseEntitySystem {
 
     }
 
-    private void remove(int e){
+    private void remove(int e) {
 
         layeredEntities.removeValue(e);
         layeredEntities.set(entityCount, Integer.MIN_VALUE);
@@ -79,20 +93,20 @@ public class RenderSystem extends BaseEntitySystem {
     }
 
     private void insert(int e) {
-        if (entityCount == layeredEntities.size - 1){
+        if (entityCount == layeredEntities.size - 1) {
             layeredEntities.ensureCapacity(layeredEntities.size + ARRAY_GROWTH);
         }
 
         RenderData data = renderDataMapper.get(e);
         RenderData temp;
 
-        for (int i = 0; i < entityCount; i++){
+        for (int i = 0; i < entityCount; i++) {
             temp = renderDataMapper.get(e);
 
-            if(temp == null){
+            if (temp == null) {
                 layeredEntities.set(i, e);
             }
-            else if(temp.layerIndex > data.layerIndex){
+            else if (temp.layerIndex > data.layerIndex) {
                 layeredEntities.insert(i, e);
                 break;
             }
@@ -102,8 +116,8 @@ public class RenderSystem extends BaseEntitySystem {
         entityCount++;
     }
 
-    private void reinsert(){
-        for (int i = 0; i < dirtyCount; i++){
+    private void reinsert() {
+        for (int i = 0; i < dirtyCount; i++) {
             insert(dirtyEntities.get(i));
         }
         dirtyCount = 0;
