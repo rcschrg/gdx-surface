@@ -3,6 +3,7 @@ package de.verygame.square.core.entitysystem;
 import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
+import com.badlogic.gdx.utils.IntArray;
 
 import java.util.Arrays;
 
@@ -18,8 +19,8 @@ public class RenderSystem extends BaseEntitySystem {
 
     private final int ARRAY_GROWTH = 20;
 
-    int[] layeredEntities;
-    int[] dirtyEntities;
+    IntArray layeredEntities;
+    IntArray dirtyEntities;
 
     int entityCount = 0;
     int dirtyCount = 0;
@@ -29,10 +30,10 @@ public class RenderSystem extends BaseEntitySystem {
      */
     public RenderSystem(int size) {
         super(Aspect.all(RenderData.class));
-        layeredEntities = new int[size];
+        layeredEntities = new IntArray(size);
         //fill with dummies which can't be entities
-        Arrays.fill(layeredEntities, Integer.MIN_VALUE);
-        dirtyEntities = new int[size / 2];
+        Arrays.fill(layeredEntities.items, Integer.MIN_VALUE);
+        dirtyEntities = new IntArray(size/2);
     }
 
     @Override
@@ -40,8 +41,8 @@ public class RenderSystem extends BaseEntitySystem {
 
         //layeredEntities start at index 1 for performance reasons
         for (int i = 1; i < entityCount; i++) {
-            if (renderDataMapper.get(layeredEntities[i]).dirty) {
-                queueReinsert(layeredEntities[i]);
+            if (renderDataMapper.get(layeredEntities.get(i)).dirty) {
+                queueReinsert(layeredEntities.get(i));
             }
 
             //draw on batch
@@ -71,23 +72,15 @@ public class RenderSystem extends BaseEntitySystem {
     }
 
     private void remove(int e){
-        for (int i = 0; i < entityCount; i++){
 
-            if(layeredEntities[i] == e){
-                //shift array back together
-                for(int j = i; j < entityCount; i++){
-                    layeredEntities[j-1] = layeredEntities[j];
-                }
-                layeredEntities[entityCount] = Integer.MIN_VALUE;
-                entityCount--;
-            }
-
-        }
+        layeredEntities.removeValue(e);
+        layeredEntities.set(entityCount, Integer.MIN_VALUE);
+        entityCount--;
     }
 
     private void insert(int e) {
-        if (entityCount == layeredEntities.length - 1){
-            resize(layeredEntities);
+        if (entityCount == layeredEntities.size - 1){
+            layeredEntities.ensureCapacity(layeredEntities.size + ARRAY_GROWTH);
         }
 
         RenderData data = renderDataMapper.get(e);
@@ -97,14 +90,10 @@ public class RenderSystem extends BaseEntitySystem {
             temp = renderDataMapper.get(e);
 
             if(temp == null){
-                layeredEntities[i] = e;
+                layeredEntities.set(i, e);
             }
             else if(temp.layerIndex > data.layerIndex){
-                //shift everything after current index
-                for(int j = entityCount-1; j >= i; i--){
-                    layeredEntities[j+1] = layeredEntities[j];
-                }
-                layeredEntities[i] = e;
+                layeredEntities.insert(i, e);
                 break;
             }
 
@@ -115,24 +104,17 @@ public class RenderSystem extends BaseEntitySystem {
 
     private void reinsert(){
         for (int i = 0; i < dirtyCount; i++){
-            insert(dirtyEntities[i]);
+            insert(dirtyEntities.get(i));
         }
         dirtyCount = 0;
     }
 
     private void queueReinsert(int e) {
-        if (dirtyCount == dirtyEntities.length - 1) {
-            resize(dirtyEntities);
+        if (dirtyCount == dirtyEntities.size - 1) {
+            dirtyEntities.ensureCapacity(layeredEntities.size + ARRAY_GROWTH);
         }
-        dirtyEntities[dirtyCount] = e;
+        dirtyEntities.set(dirtyCount, e);
         dirtyCount++;
     }
 
-    /**
-     * Increases the array size by the defined ARRAY_GROWTH
-     * @param array array to enlarge
-     */
-    private void resize(int[] array) {
-        array = Arrays.copyOf(array, array.length + ARRAY_GROWTH);
-    }
 }
