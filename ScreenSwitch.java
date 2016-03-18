@@ -79,17 +79,20 @@ public class ScreenSwitch {
     }
 
     public void updateScreen() {
-        activeScreen.onUpdate();
+        if (activeScreen != null) {
+            activeScreen.onUpdate();
+        }
     }
 
     public void renderScreen() {
-        activeScreen.onRender();
+        if (activeScreen != null) {
+            activeScreen.onRender();
+        }
     }
 
     public void resize(int width, int height) {
-        final Set<Map.Entry<ScreenId, Screen>> entries = screenMap.entrySet();
-        for (Map.Entry<ScreenId, Screen> entry : entries) {
-            entry.getValue().onResize(width, height);
+        if (activeScreen != null) {
+            activeScreen.onResize(width, height);
         }
     }
 

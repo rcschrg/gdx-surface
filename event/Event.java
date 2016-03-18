@@ -16,11 +16,11 @@ public enum Event {
      * <br>
      * Attached Object: None
      */
-    LANGUAGE_CHANGED(EventType.RESOURCE);
+    OPTION_CHANGED(EventType.RESOURCE);
 
     private final EventType type;
 
-    private Event(EventType type) {
+    Event(EventType type) {
         this.type = type;
     }
 
