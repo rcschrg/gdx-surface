@@ -24,11 +24,11 @@ public class SubScreenContext extends ScreenSwitch implements ScreenContext {
     }
 
     public void applyViewport() {
-        viewport.apply();
+        viewport.apply(true);
     }
 
     public void updateViewport(int width, int height) {
-        viewport.update(width, height);
+        viewport.update(width, height, true);
     }
 
     @Override
