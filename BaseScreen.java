@@ -32,7 +32,19 @@ public abstract class BaseScreen implements Screen {
         this.content = content;
     }
 
+    /**
+     * Will be called when the screen gets set inactive.
+     *
+     * @param predecessor predecessor of the screen
+     * @return delay time to perform an animation
+     */
     protected abstract float onSetInactive(ScreenId predecessor);
+
+    /**
+     * Will be called when screen gets set active.
+     *
+     * @param successor succesor of the screen
+     */
     protected abstract void onSetActive(ScreenId successor);
 
     @Override

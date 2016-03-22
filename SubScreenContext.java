@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * @author Rico Schrage
+ *
+ * Context which can contain several subscreens.
  */
 public class SubScreenContext extends ScreenSwitch implements ScreenContext {
 
@@ -21,6 +23,11 @@ public class SubScreenContext extends ScreenSwitch implements ScreenContext {
     protected boolean showSubScreen = false;
 
 
+    /**
+     * Constructs a context with the given viewport.
+     *
+     * @param viewport viewport viewport of the screen
+     */
     public SubScreenContext(Viewport viewport) {
         super();
 
@@ -28,14 +35,28 @@ public class SubScreenContext extends ScreenSwitch implements ScreenContext {
         this.screenSwitch = new ScreenSwitch();
     }
 
+    /**
+     * Sets the batch of the context.
+     *
+     * @param polygonSpriteBatch batch
+     */
     public void setBatch(PolygonSpriteBatch polygonSpriteBatch) {
         this.batch = polygonSpriteBatch;
     }
 
+    /**
+     * Applies the viewport of the context. Calls {@link Viewport#apply(boolean)}.
+     */
     public void applyViewport() {
         viewport.apply(true);
     }
 
+    /**
+     * Updates the viewport of the context. Calls {@link Viewport#update(int, int, boolean)}.
+     *
+     * @param width width of the frame
+     * @param height height of the frame
+     */
     public void updateViewport(int width, int height) {
         viewport.update(width, height, true);
     }

@@ -16,7 +16,7 @@ import de.verygame.square.resource.ResourceHandler;
  *
  * @see ScreenSwitch
  */
-public abstract class BaseApplication extends ScreenSwitch implements ApplicationListener {
+public abstract class BaseApplication implements ApplicationListener {
 
     /** Main resource handler of the application */
     protected ResourceHandler resourceHandler;
@@ -26,9 +26,11 @@ public abstract class BaseApplication extends ScreenSwitch implements Applicatio
     protected Viewport viewport;
     /** True if the resources has been loaded */
     private boolean init = false;
+    /** Responsible for screen switching */
+    private ScreenSwitch screenSwitch = new ScreenSwitch();
 
     /**
-     * Convenience method for {@link #addScreen(ScreenId, Screen, PolygonSpriteBatch)}.
+     * Convenience method for {@link ScreenSwitch#addScreen(ScreenId, Screen, PolygonSpriteBatch)}.
      *
      * @param id id of the screen
      * @param screen screen
@@ -37,7 +39,7 @@ public abstract class BaseApplication extends ScreenSwitch implements Applicatio
         if (batch == null) {
             throw new IllegalStateException("You must not call this method before create() has been called!");
         }
-        this.addScreen(id, screen, batch);
+        screenSwitch.addScreen(id, screen, batch);
     }
 
     /**
@@ -78,10 +80,15 @@ public abstract class BaseApplication extends ScreenSwitch implements Applicatio
     }
 
     @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
     public void render() {
 
-        this.updateSwitch();
-        this.updateScreen();
+        screenSwitch.updateSwitch();
+        screenSwitch.updateScreen();
 
         Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -92,14 +99,31 @@ public abstract class BaseApplication extends ScreenSwitch implements Applicatio
             this.renderLoadingScreen();
         }
         else if (init) {
-            this.renderScreen();
+            screenSwitch.renderScreen();
         }
         else {
             this.init = true;
-            this.setActive(createScreens());
+            screenSwitch.setActive(createScreens());
         }
 
         batch.end();
+    }
+
+    @Override
+    public void pause() {
+        screenSwitch.pause();
+    }
+
+    @Override
+    public void resume() {
+        screenSwitch.resume();
+    }
+
+    @Override
+    public void dispose() {
+        screenSwitch.dispose();
+        batch.dispose();
+        resourceHandler.dispose();
     }
 
 
