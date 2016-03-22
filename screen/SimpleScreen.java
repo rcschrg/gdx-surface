@@ -30,4 +30,5 @@ public class SimpleScreen extends BaseScreen {
     protected void onSetActive(ScreenId successor) {
 
     }
+
 }

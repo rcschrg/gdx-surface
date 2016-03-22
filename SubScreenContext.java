@@ -1,5 +1,6 @@
 package de.verygame.square.core;
 
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -13,14 +14,22 @@ public class SubScreenContext extends ScreenSwitch implements ScreenContext {
     /** viewport of the screen (manages the glViewport) */
     protected final Viewport viewport;
 
+    /** Batch of the screen switch */
+    protected PolygonSpriteBatch batch;
+
     /** True if a subScreen is visible  */
     protected boolean showSubScreen = false;
+
 
     public SubScreenContext(Viewport viewport) {
         super();
 
         this.viewport = viewport;
         this.screenSwitch = new ScreenSwitch();
+    }
+
+    public void setBatch(PolygonSpriteBatch polygonSpriteBatch) {
+        this.batch = polygonSpriteBatch;
     }
 
     public void applyViewport() {
@@ -37,8 +46,16 @@ public class SubScreenContext extends ScreenSwitch implements ScreenContext {
     }
 
     @Override
+    public PolygonSpriteBatch getBatch() {
+        return batch;
+    }
+
+    @Override
     public void addSubScreen(SubScreenId id, SubScreen subScreen) {
-        this.screenSwitch.addScreen(id, subScreen);
+        if (batch == null) {
+            throw new IllegalStateException("The parent screen have to be added to screen switch before.");
+        }
+        this.screenSwitch.addScreen(id, subScreen, batch);
     }
 
     @Override

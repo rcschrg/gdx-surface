@@ -1,6 +1,7 @@
 package de.verygame.square.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +23,9 @@ public class ScreenSwitch {
         screenMap = new HashMap<>();
     }
 
-    public void addScreen(ScreenId id, Screen screen) {
+    public void addScreen(ScreenId id, Screen screen, PolygonSpriteBatch polygonSpriteBatch) {
         screenMap.put(id, screen);
+        screen.onAdd(polygonSpriteBatch);
     }
 
     public void setActive(ScreenId id) {

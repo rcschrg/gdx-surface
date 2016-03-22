@@ -1,5 +1,7 @@
 package de.verygame.square.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -28,24 +30,32 @@ public abstract class BaseScreen implements Screen {
     public BaseScreen(Viewport viewport, Content content) {
         this.context = new SubScreenContext(viewport);
         this.content = content;
-        this.content.onBind(context);
     }
+
+    protected abstract float onSetInactive(ScreenId predecessor);
+    protected abstract void onSetActive(ScreenId successor);
 
     @Override
     public void onActivate(ScreenId predecessor) {
         context.applyViewport();
+        context.updateViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         content.onActivate(predecessor);
+
         onSetActive(predecessor);
     }
 
     @Override
     public float onDeactivate(ScreenId successor) {
         content.onDeactivate(successor);
+
         return onSetInactive(successor);
     }
 
-    protected abstract float onSetInactive(ScreenId predecessor);
-    protected abstract void onSetActive(ScreenId successor);
+    @Override
+    public void onAdd(PolygonSpriteBatch batch) {
+        context.setBatch(batch);
+        content.onBind(context);
+    }
 
     @Override
     public void onResize(int width, int height) {
@@ -81,11 +91,6 @@ public abstract class BaseScreen implements Screen {
         context.resume();
 
         content.onResume();
-    }
-
-    @Override
-    public Viewport getViewport() {
-        return context.getViewport();
     }
 
     @Override
