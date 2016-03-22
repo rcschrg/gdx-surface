@@ -78,8 +78,7 @@ public abstract class BaseScreen implements Screen {
 
     @Override
     public void onUpdate() {
-        context.updateSwitch();
-        context.updateScreen();
+        context.update();
 
         content.onUpdate();
     }

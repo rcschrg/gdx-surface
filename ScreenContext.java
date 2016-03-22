@@ -41,10 +41,14 @@ public interface ScreenContext {
     void showScreen(SubScreenId id);
 
     /**
-     * Hides the screen mapped to the given id.
-     *
-     * @param id id of an added subscreen
+     * Hides the currently active screen.
      */
-    void hideScreen(SubScreenId id);
+    void hideScreen();
 
+    void update();
+    void renderScreen();
+    void resize(int width, int height);
+    void pause();
+    void resume();
+    void dispose();
 }

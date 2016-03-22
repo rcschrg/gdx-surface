@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  *
  * Context which can contain several subscreens.
  */
-public class SubScreenContext extends ScreenSwitch implements ScreenContext {
+public class SubScreenContext implements ScreenContext {
 
     /** List of subScreen's plus visibility flag */
     protected final ScreenSwitch screenSwitch;
@@ -74,7 +74,7 @@ public class SubScreenContext extends ScreenSwitch implements ScreenContext {
     @Override
     public void addSubScreen(SubScreenId id, SubScreen subScreen) {
         if (batch == null) {
-            throw new IllegalStateException("The parent screen have to be added to screen switch before.");
+            throw new IllegalStateException("Parent screen have to be attached to a screen switch!");
         }
         this.screenSwitch.addScreen(id, subScreen, batch);
     }
@@ -91,8 +91,41 @@ public class SubScreenContext extends ScreenSwitch implements ScreenContext {
     }
 
     @Override
-    public void hideScreen(SubScreenId id) {
+    public void hideScreen() {
         showSubScreen = false;
+    }
+
+    @Override
+    public void update() {
+        screenSwitch.updateSwitch();
+        screenSwitch.updateScreen();
+    }
+
+    @Override
+    public void renderScreen() {
+        if (showSubScreen) {
+            screenSwitch.renderScreen();
+        }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        screenSwitch.resize(width, height);
+    }
+
+    @Override
+    public void pause() {
+        screenSwitch.pause();
+    }
+
+    @Override
+    public void resume() {
+        screenSwitch.resume();
+    }
+
+    @Override
+    public void dispose() {
+        screenSwitch.dispose();
     }
 
 }
