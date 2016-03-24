@@ -39,25 +39,30 @@ public interface Screen extends Disposable {
      * @param width width of the frame
      * @param height height of the frame
      */
-    void onResize (int width, int height);
+    void onResize(int width, int height);
 
     /**
      * Will be called on update when the screen is active.
      */
-    void onUpdate ();
+    void onUpdate();
 
     /**
      * Will be called on render when the screen is active.
      */
-    void onRender ();
+    void onRender();
 
     /**
      * Will always be called on pause when the screen has been added to the screen switch.
      */
-    void onPause ();
+    void onPause();
 
     /**
      * Will always be called on resume when the screen has been added to the screen switch.
      */
-    void onResume ();
+    void onResume();
+
+    /**
+     * @return content of the screen
+     */
+    Content getContent();
 }

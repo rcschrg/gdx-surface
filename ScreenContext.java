@@ -45,10 +45,4 @@ public interface ScreenContext {
      */
     void hideScreen();
 
-    void update();
-    void renderScreen();
-    void resize(int width, int height);
-    void pause();
-    void resume();
-    void dispose();
 }

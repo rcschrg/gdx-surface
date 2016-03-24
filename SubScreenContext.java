@@ -16,12 +16,8 @@ public class SubScreenContext implements ScreenContext {
     /** viewport of the screen (manages the glViewport) */
     protected final Viewport viewport;
 
-    /** Batch of the screen switch */
-    protected PolygonSpriteBatch batch;
-
     /** True if a subScreen is visible  */
     protected boolean showSubScreen = false;
-
 
     /**
      * Constructs a context with the given viewport.
@@ -41,7 +37,7 @@ public class SubScreenContext implements ScreenContext {
      * @param polygonSpriteBatch batch
      */
     public void setBatch(PolygonSpriteBatch polygonSpriteBatch) {
-        this.batch = polygonSpriteBatch;
+        screenSwitch.setBatch(polygonSpriteBatch);
     }
 
     /**
@@ -61,6 +57,33 @@ public class SubScreenContext implements ScreenContext {
         viewport.update(width, height, true);
     }
 
+    public void update() {
+        screenSwitch.updateSwitch();
+        screenSwitch.updateScreen();
+    }
+
+    public void renderScreen() {
+        if (showSubScreen) {
+            screenSwitch.renderScreen();
+        }
+    }
+
+    public void resizeSubScreen(int width, int height) {
+        screenSwitch.resize(width, height);
+    }
+
+    public void pauseSubScreen() {
+        screenSwitch.pause();
+    }
+
+    public void resumeSubScreen() {
+        screenSwitch.resume();
+    }
+
+    public void dispose() {
+        screenSwitch.dispose();
+    }
+
     @Override
     public Viewport getViewport() {
         return viewport;
@@ -68,15 +91,15 @@ public class SubScreenContext implements ScreenContext {
 
     @Override
     public PolygonSpriteBatch getBatch() {
-        return batch;
+        return screenSwitch.getBatch();
     }
 
     @Override
     public void addSubScreen(SubScreenId id, SubScreen subScreen) {
-        if (batch == null) {
+        if (screenSwitch.getBatch() == null) {
             throw new IllegalStateException("Parent screen have to be attached to a screen switch!");
         }
-        this.screenSwitch.addScreen(id, subScreen, batch);
+        this.screenSwitch.addScreen(id, subScreen);
     }
 
     @Override
@@ -95,37 +118,5 @@ public class SubScreenContext implements ScreenContext {
         showSubScreen = false;
     }
 
-    @Override
-    public void update() {
-        screenSwitch.updateSwitch();
-        screenSwitch.updateScreen();
-    }
-
-    @Override
-    public void renderScreen() {
-        if (showSubScreen) {
-            screenSwitch.renderScreen();
-        }
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        screenSwitch.resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-        screenSwitch.pause();
-    }
-
-    @Override
-    public void resume() {
-        screenSwitch.resume();
-    }
-
-    @Override
-    public void dispose() {
-        screenSwitch.dispose();
-    }
 
 }

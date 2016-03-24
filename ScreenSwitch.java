@@ -3,10 +3,13 @@ package de.verygame.square.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import de.verygame.square.core.annotation.Dependency;
+import de.verygame.square.core.exception.DependencyMissingException;
 import de.verygame.square.util.task.DelayedTask;
 import de.verygame.square.util.task.Task;
 
@@ -20,17 +23,36 @@ public class ScreenSwitch {
 
     /** Maps screen id's to screens */
     private final Map<ScreenId, Screen> screenMap;
+    /** Map of all dependencies, which can be injected in content objects */
+    private final Map<String, Object> dependencyMap;
     /** The currently active screen. Can be null */
     private Screen activeScreen;
     /** Switch task, which delays the switch if the screen wishes {@link Screen#onDeactivate(ScreenId)} */
     private DelayedTask currentTask;
+    /** Sprite batch of the application, a screen switch nevers owns a batch */
+    private PolygonSpriteBatch batch;
 
     /**
      * Constructs a new screen switch. It's recommended to use only one switch.
      */
     public ScreenSwitch() {
         screenMap = new HashMap<>();
+        dependencyMap = new HashMap<>();
     }
+
+    /**
+     * Sets the given batch as current switch batch.
+     *
+     * @param batch batch
+     */
+    public void setBatch(PolygonSpriteBatch batch) {
+        this.batch = batch;
+    }
+
+    /**
+     * @return batch of the switch
+     */
+    public PolygonSpriteBatch getBatch() { return batch; }
 
     /**
      * Adds a screen to the switch and maps it to the given id.
@@ -38,11 +60,45 @@ public class ScreenSwitch {
      *
      * @param id id of the screen
      * @param screen the screen itself
-     * @param polygonSpriteBatch batch of the screen
      */
-    public void addScreen(ScreenId id, Screen screen, PolygonSpriteBatch polygonSpriteBatch) {
-        screenMap.put(id, screen);
-        screen.onAdd(polygonSpriteBatch);
+    public void addScreen(ScreenId id, Screen screen) {
+        try {
+            injectDependencies(screen.getContent());
+            screenMap.put(id, screen);
+            screen.onAdd(batch);
+        }
+        catch (DependencyMissingException e) {
+            Gdx.app.debug("ScreenSwitch", e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Inject the dependencies for the in the give content object.
+     *
+     * @param content content object
+     * @throws DependencyMissingException will be thrown when a dependency is missing in the screen switch
+     */
+    private void injectDependencies(Content content) throws DependencyMissingException {
+        Field[] fields = content.getClass().getDeclaredFields();
+        for (final Field field : fields) {
+            if (!field.isAnnotationPresent(Dependency.class)) {
+                continue;
+            }
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            if (dependencyMap.containsKey(fieldName)) {
+                Object value = dependencyMap.get(fieldName);
+                try {
+                    field.set(content, value);
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                throw new DependencyMissingException(fieldName, field.getType());
+            }
+        }
     }
 
     /**
@@ -181,5 +237,15 @@ public class ScreenSwitch {
         for (Map.Entry<ScreenId, Screen> entry : entries) {
             entry.getValue().dispose();
         }
+    }
+
+    /**
+     * Add a dependency to this screen switch.
+     *
+     * @param id id of the dependency
+     * @param dependency the dependency
+     */
+    public void addDependency(String id, Object dependency) {
+        this.dependencyMap.put(id, dependency);
     }
 }

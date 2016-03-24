@@ -72,6 +72,7 @@ public abstract class BaseScreen implements Screen {
     @Override
     public void onResize(int width, int height) {
         context.updateViewport(width, height);
+        context.resizeSubScreen(width, height);
 
         content.onResize(width, height);
     }
@@ -92,14 +93,14 @@ public abstract class BaseScreen implements Screen {
 
     @Override
     public void onPause() {
-        context.pause();
+        context.pauseSubScreen();
 
         content.onPause();
     }
 
     @Override
     public void onResume() {
-        context.resume();
+        context.resumeSubScreen();
 
         content.onResume();
     }
@@ -109,5 +110,10 @@ public abstract class BaseScreen implements Screen {
         context.dispose();
 
         content.dispose();
+    }
+
+    @Override
+    public Content getContent() {
+        return content;
     }
 }

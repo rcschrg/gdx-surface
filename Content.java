@@ -7,10 +7,10 @@ import com.badlogic.gdx.utils.Disposable;
  *
  * Describes the api to the actual content.
  */
-public interface Content  extends Disposable {
+public interface Content extends Disposable {
 
     /**
-     * Will be called after the screen which holds a reference to this object gets added to a screen switch.
+     * Will be called after the screen, which holds a reference to this object, gets added to a screen switch.
      *
      * @param screenContext context of the screen. Hold information about the screen switch and the screen itself.
      */

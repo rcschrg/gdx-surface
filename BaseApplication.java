@@ -30,7 +30,7 @@ public abstract class BaseApplication implements ApplicationListener {
     private ScreenSwitch screenSwitch = new ScreenSwitch();
 
     /**
-     * Convenience method for {@link ScreenSwitch#addScreen(ScreenId, Screen, PolygonSpriteBatch)}.
+     * Convenience method for {@link ScreenSwitch#addScreen(ScreenId, Screen)}.
      *
      * @param id id of the screen
      * @param screen screen
@@ -39,7 +39,7 @@ public abstract class BaseApplication implements ApplicationListener {
         if (batch == null) {
             throw new IllegalStateException("You must not call this method before create() has been called!");
         }
-        screenSwitch.addScreen(id, screen, batch);
+        screenSwitch.addScreen(id, screen);
     }
 
     /**
@@ -76,12 +76,12 @@ public abstract class BaseApplication implements ApplicationListener {
         this.resourceHandler = new ResourceHandler();
         this.viewport = createViewport();
 
+        this.screenSwitch.setBatch(batch);
+        this.screenSwitch.addDependency("batch", batch);
+        this.screenSwitch.addDependency("resourceHandler", resourceHandler);
+        this.screenSwitch.addDependency("viewport", viewport);
+
         this.loadResources(resourceHandler);
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
     }
 
     @Override
@@ -107,6 +107,11 @@ public abstract class BaseApplication implements ApplicationListener {
         }
 
         batch.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        screenSwitch.resize(width, height);
     }
 
     @Override
