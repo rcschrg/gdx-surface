@@ -92,7 +92,7 @@ public class ScreenSwitch {
                     field.set(content, value);
                 }
                 catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    Gdx.app.debug("Field", e.getMessage(), e);
                 }
             }
             else {

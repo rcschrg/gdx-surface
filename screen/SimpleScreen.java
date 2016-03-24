@@ -28,7 +28,7 @@ public class SimpleScreen extends BaseScreen {
 
     @Override
     protected void onSetActive(ScreenId successor) {
-
+        //keep it simple
     }
 
 }
