@@ -156,6 +156,18 @@ public class ScreenSwitch {
     }
 
     /**
+     * @return the id of the active screen
+     */
+    public ScreenId getActiveScreenId() {
+        for (Map.Entry<ScreenId, Screen> entry : screenMap.entrySet()) {
+            if (entry.getValue() == activeScreen) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Checks if the screen has been added to the switch.
      *
      * @param id id to check

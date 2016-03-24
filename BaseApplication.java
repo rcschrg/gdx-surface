@@ -43,6 +43,22 @@ public abstract class BaseApplication implements ApplicationListener {
     }
 
     /**
+     * Sets the screen active which is mapped to the given id.
+     *
+     * @param id id of the screen you want to activate
+     */
+    protected void setActive(ScreenId id) {
+        screenSwitch.setActive(id);
+    }
+
+    /**
+     * @return the currently active screen
+     */
+    protected ScreenId getActiveScreenId() {
+        return screenSwitch.getActiveScreenId();
+    }
+
+    /**
      * In this method you should create and add all your screens (use {@link #add(ScreenId, Screen)}) for adding
      * screens.
      *
