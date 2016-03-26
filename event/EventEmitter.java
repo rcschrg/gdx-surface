@@ -88,7 +88,7 @@ public class EventEmitter {
         for (Map.Entry<EventListener, List<EventType>> entry : eventHandler.entrySet()) {
             final EventListener eventListener = entry.getKey();
             final boolean sendEvent = entry.getValue().contains(event.getType());
-            if (!emitReflectionEvent(eventListener, event, attachedObjects) && sendEvent) {
+            if (sendEvent && !emitReflectionEvent(eventListener, event, attachedObjects)) {
                 eventListener.handleEvent(event, attachedObjects);
             }
         }
