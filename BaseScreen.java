@@ -71,45 +71,45 @@ public abstract class BaseScreen implements Screen {
 
     @Override
     public void onResize(int width, int height) {
+        content.onResize(width, height);
+
         context.updateViewport(width, height);
         context.resizeSubScreen(width, height);
-
-        content.onResize(width, height);
     }
 
     @Override
     public void onUpdate() {
-        context.update();
-
         content.onUpdate();
+
+        context.update();
     }
 
     @Override
     public void onRender() {
-        context.renderScreen();
-
         content.onRender();
+
+        context.renderScreen();
     }
 
     @Override
     public void onPause() {
-        context.pauseSubScreen();
-
         content.onPause();
+
+        context.pauseSubScreen();
     }
 
     @Override
     public void onResume() {
-        context.resumeSubScreen();
-
         content.onResume();
+
+        context.resumeSubScreen();
     }
 
     @Override
     public void dispose() {
-        context.dispose();
-
         content.dispose();
+
+        context.dispose();
     }
 
     @Override
