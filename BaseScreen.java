@@ -82,6 +82,7 @@ public abstract class BaseScreen implements Screen {
         content.onUpdate();
 
         context.update();
+        context.getBatch().setProjectionMatrix(context.getViewport().getCamera().combined);
     }
 
     @Override
