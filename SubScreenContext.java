@@ -60,6 +60,8 @@ public class SubScreenContext implements ScreenContext {
     public void update() {
         screenSwitch.updateSwitch();
         screenSwitch.updateScreen();
+
+        screenSwitch.getBatch().setProjectionMatrix(viewport.getCamera().combined);
     }
 
     public void renderScreen() {
