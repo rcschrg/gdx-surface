@@ -23,11 +23,14 @@ public class EventEmitter {
     /** List of all registered {@link EventListener}'s */
     private final Map<EventListener, List<EventType>> eventHandler;
 
+    private final Map<EventListener, Map<Event, Method>> cache;
+
     /**
      * Construct an event-emitter.
      */
     public EventEmitter() {
         this.eventHandler = new HashMap<>();
+        this.cache = new HashMap<>();
     }
 
     /**
@@ -103,18 +106,39 @@ public class EventEmitter {
      * @return true if an appropriate method has been found, false otherwise
      */
     private boolean emitReflectionEvent(final EventListener target, final Event event, final Object... attached) {
+        if (cache.containsKey(target)) {
+            Method method = cache.get(target).get(event);
+            try {
+                   method.invoke(target, attached);
+                   return true;
+            }
+            catch (IllegalAccessException | InvocationTargetException e) {
+                printReflectionError(e);
+            }
+            return false;
+        }
         for (final Method method : target.getClass().getMethods()) {
             if (method.isAnnotationPresent(EventRoute.class) && method.getAnnotation(EventRoute.class).value() == event) {
                 try {
+                    method.setAccessible(true);
                     method.invoke(target, attached);
                     return true;
                 }
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    Gdx.app.error(getClass().getSimpleName(), "An " + e.getClass().getSimpleName() + " has occurred. Reason: " + e.getMessage(), e);
+                    printReflectionError(e);
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * Printe an error message to the gdx logger when an reflection exception occurs.
+     *
+     * @param e Exception to be reported
+     */
+    private void printReflectionError(Exception e) {
+        Gdx.app.error(getClass().getSimpleName(), "An " + e.getClass().getSimpleName() + " has occurred. Reason: " + e.getMessage(), e);
     }
 
 }
