@@ -41,12 +41,12 @@ public class ShiftScreen extends BaseSubScreen {
     }
 
     private SingleValueModifier createRightModifier(boolean active) {
-        return (active) ? new SingleValueModifier(duration, context.getViewport().getWorldWidth(), 0, new ShiftCallback()) :
+        return active ? new SingleValueModifier(duration, context.getViewport().getWorldWidth(), 0, new ShiftCallback()) :
                 new SingleValueModifier(duration, 0, context.getViewport().getWorldWidth(), new ShiftCallback());
     }
 
     private SingleValueModifier createLeftModifier(boolean active) {
-        return (active) ? new SingleValueModifier(duration, -context.getViewport().getWorldWidth(), 0, new ShiftCallback()) :
+        return active ? new SingleValueModifier(duration, -context.getViewport().getWorldWidth(), 0, new ShiftCallback()) :
                 new SingleValueModifier(duration, 0, -context.getViewport().getWorldWidth(), new ShiftCallback());
     }
 

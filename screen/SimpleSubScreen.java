@@ -28,6 +28,6 @@ public class SimpleSubScreen extends BaseSubScreen {
 
     @Override
     protected void onSetActive(ScreenId successor) {
-
+        //keep it simple
     }
 }
