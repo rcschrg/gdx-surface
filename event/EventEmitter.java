@@ -107,21 +107,28 @@ public class EventEmitter {
      */
     private boolean emitReflectionEvent(final EventListener target, final Event event, final Object... attached) {
         if (cache.containsKey(target)) {
-            Method method = cache.get(target).get(event);
-            try {
-                   method.invoke(target, attached);
-                   return true;
+            Map<Event, Method> methodMap = cache.get(target);
+            if (methodMap.containsKey(event)) {
+                Method method = methodMap.get(event);
+                try {
+                    method.invoke(target, attached);
+                    return true;
+                }
+                catch (IllegalAccessException | InvocationTargetException e) {
+                    printReflectionError(e);
+                }
+                return false;
             }
-            catch (IllegalAccessException | InvocationTargetException e) {
-                printReflectionError(e);
-            }
-            return false;
+        }
+        else {
+            cache.put(target, new HashMap<Event, Method>());
         }
         for (final Method method : target.getClass().getMethods()) {
             if (method.isAnnotationPresent(EventRoute.class) && method.getAnnotation(EventRoute.class).value() == event) {
                 try {
                     method.setAccessible(true);
                     method.invoke(target, attached);
+                    cache.get(target).put(event, method);
                     return true;
                 }
                 catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
