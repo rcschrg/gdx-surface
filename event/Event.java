@@ -16,7 +16,13 @@ public enum Event {
      * <br>
      * Attached Object: None
      */
-    OPTION_CHANGED(EventType.RESOURCE);
+    OPTION_CHANGED(EventType.RESOURCE),
+    /**
+     * Requests to hide the screen which emits this event.
+     * <br>
+     * Attached Object: None
+     */
+    HIDE_SCREEN(EventType.UI);
 
     private final EventType type;
 
