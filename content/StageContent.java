@@ -13,7 +13,7 @@ import de.verygame.square.scene2d.glmenu.impl.GLMenuStage;
 /**
  * @author Rico Schrage
  */
-public abstract class UiContent extends EventEmitter implements Content {
+public abstract class StageContent extends EventEmitter implements Content {
 
     /** Resource handler which contains all ui resources */
     protected final ResourceHandler res;
@@ -29,22 +29,29 @@ public abstract class UiContent extends EventEmitter implements Content {
      *
      *  @param res handler, which contains an applicable skin, the markup file and the language pack.
      */
-    public UiContent(ResourceHandler res) {
+    public StageContent(ResourceHandler res) {
         this.res = res;
     }
 
     /**
      * Should return the xml resource, which describes the xml of the glmenuStage.
      *
-     * @return UiResource of the type XML
+     * @return Resource of the type XML
      */
     protected abstract Resource defineXML();
+
+    /**
+     * Should return the skin which will be used by all stage elements.
+     *
+     * @return Resource of the type skin
+     */
+    protected abstract Resource defineSkin();
 
     @Override
     public void onBind(ScreenContext context) {
         this.context = context;
 
-        this.stage = new GLMenuStage(context.getBatch(), res.getXMLAsStream(defineXML()), res);
+        this.stage = new GLMenuStage(context.getBatch(), res.getXMLAsStream(defineXML()), res, defineSkin());
         this.stage.setViewport(context.getViewport());
         this.stage.bind(this);
         this.stage.loadMenu();
