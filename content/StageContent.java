@@ -6,9 +6,9 @@ import de.verygame.square.core.Content;
 import de.verygame.square.core.ScreenContext;
 import de.verygame.square.core.ScreenId;
 import de.verygame.square.core.event.EventEmitter;
-import de.verygame.square.resource.Resource;
-import de.verygame.square.resource.ResourceHandler;
-import de.verygame.square.scene2d.glmenu.impl.GLMenuStage;
+import de.verygame.square.core.resource.Resource;
+import de.verygame.square.core.resource.ResourceHandler;
+import de.verygame.square.core.scene2d.glmenu.impl.GLMenuStage;
 
 /**
  * @author Rico Schrage

@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.verygame.square.core.event.Event;
 import de.verygame.square.core.event.EventListener;
-import de.verygame.square.resource.ResourceHandler;
+import de.verygame.square.core.resource.ResourceHandler;
 
 /**
  * @author Rico Schrage
