@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +122,7 @@ public class EventEmitter {
             }
         }
         else {
-            cache.put(target, new HashMap<Event, Method>());
+            cache.put(target, new EnumMap<Event, Method>(Event.class));
         }
         for (final Method method : target.getClass().getMethods()) {
             if (method.isAnnotationPresent(EventRoute.class) && method.getAnnotation(EventRoute.class).value() == event) {
