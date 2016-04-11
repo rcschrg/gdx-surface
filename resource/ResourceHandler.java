@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ import java.util.Map;
 
 import de.verygame.square.core.event.Event;
 import de.verygame.square.core.event.EventEmitter;
+import de.verygame.square.core.resource.loader.StringLoader;
 import de.verygame.square.util.FileUtils;
 
 /**
@@ -46,7 +46,7 @@ public class ResourceHandler extends EventEmitter implements Disposable {
     /**
      * Contains all path to specific resource types.
      */
-    private final Map<de.verygame.square.core.resource.ResourceType, List<String>> pathMap;
+    private final Map<ResourceType, List<String>> pathMap;
 
     /**
      * Maps resource units to available regions.
@@ -62,7 +62,7 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      * Creates a resource handler.
      */
     public ResourceHandler() {
-        this.pathMap = new EnumMap<>(de.verygame.square.core.resource.ResourceType.class);
+        this.pathMap = new EnumMap<>(ResourceType.class);
         this.regionMap = new HashMap<>();
         this.fontMap = new HashMap<>();
 
@@ -76,7 +76,7 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      * Initializes the path map.
      */
     private void initMap() {
-        de.verygame.square.core.resource.ResourceType[] types = de.verygame.square.core.resource.ResourceType.values();
+        de.verygame.square.core.resource.ResourceType[] types = ResourceType.values();
         for (final de.verygame.square.core.resource.ResourceType type : types) {
             pathMap.put(type, new ArrayList<String>());
         }
@@ -88,7 +88,7 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      * @param resolver Resolver of the asset manager
      */
     private void initAssetManager(FileHandleResolver resolver) {
-        assetManager.setLoader(String.class, new de.verygame.square.core.resource.loader.StringLoader(resolver));
+        assetManager.setLoader(String.class, new StringLoader(resolver));
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
     }
 
@@ -134,7 +134,7 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      * @param resourceType type of the resources in the folder
      * @param pathToFile path to the folder
      */
-    public void addResource(de.verygame.square.core.resource.ResourceType resourceType, String pathToFile) {
+    public void addResource(ResourceType resourceType, String pathToFile) {
         pathMap.get(resourceType).add(pathToFile);
         assetManager.load(pathToFile, resourceType.getTarget());
     }
@@ -146,7 +146,9 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      */
     public void loadLanguage(Locale lang) {
         if (pathMap.get(de.verygame.square.core.resource.ResourceType.LANG).size() == 1) {
-            assetManager.load(pathMap.get(de.verygame.square.core.resource.ResourceType.LANG).get(0), I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(lang));
+            String langPath = pathMap.get(ResourceType.LANG).get(0);
+            assetManager.unload(langPath);
+            assetManager.load(langPath, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(lang));
             emitEvent(Event.OPTION_CHANGED);
         }
         else {
@@ -162,8 +164,8 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      * @return mapped string
      */
     public String getString(String stringId) {
-        if (pathMap.get(de.verygame.square.core.resource.ResourceType.LANG).size() == 1) {
-            return assetManager.get(pathMap.get(de.verygame.square.core.resource.ResourceType.LANG).get(0), I18NBundle.class).get(stringId);
+        if (pathMap.get(ResourceType.LANG).size() == 1) {
+            return assetManager.get(pathMap.get(ResourceType.LANG).get(0), I18NBundle.class).get(stringId);
         }
         else {
             throw new IllegalStateException("You have to load exactly one language bundle first!");
@@ -177,9 +179,9 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      * @return content of the file
      */
     public String getXML(String xmlName) {
-        final List<String> paths = pathMap.get(de.verygame.square.core.resource.ResourceType.XML);
+        final List<String> paths = pathMap.get(ResourceType.XML);
         for (final String path : paths) {
-            String[] splitted = path.split(File.separator);
+            String[] splitted = path.split("/");
             if (splitted[splitted.length-1].equals(xmlName)) {
                 return assetManager.get(path, String.class);
             }
@@ -208,6 +210,7 @@ public class ResourceHandler extends EventEmitter implements Disposable {
                 TextureAtlas atlas = assetManager.get(path, TextureAtlas.class);
                 TextureRegion tex = atlas.findRegion(region.getIdentifier());
                 if (tex != null) {
+                    regionMap.put(region, tex);
                     return tex;
                 }
             }
@@ -222,7 +225,7 @@ public class ResourceHandler extends EventEmitter implements Disposable {
      * @return content of the file as string
      */
     public String getXML(Resource xmlResource) {
-        if (xmlResource.getType() != de.verygame.square.core.resource.ResourceType.XML) {
+        if (xmlResource.getType() != ResourceType.XML) {
             throw new IllegalArgumentException("Wrong type!");
         }
         return get(xmlResource, String.class);
