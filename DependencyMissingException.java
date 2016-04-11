@@ -1,4 +1,4 @@
-package de.verygame.square.core.exception;
+package de.verygame.square.core;
 
 /**
  * @author Rico Schrage

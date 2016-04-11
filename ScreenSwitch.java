@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import de.verygame.square.core.annotation.Dependency;
-import de.verygame.square.core.exception.DependencyMissingException;
 import de.verygame.square.util.task.DelayedTask;
 import de.verygame.square.util.task.Task;
 
