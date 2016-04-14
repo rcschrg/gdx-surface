@@ -47,6 +47,9 @@ public abstract class StageContent extends EventEmitter implements Content {
      */
     protected abstract Resource defineSkin();
 
+    protected void preLoad() {}
+    protected void postLoad() {}
+
     @Override
     public void onBind(ScreenContext context) {
         this.context = context;
@@ -54,7 +57,12 @@ public abstract class StageContent extends EventEmitter implements Content {
         this.stage = new GLMenuStage(context.getBatch(), res.getXMLAsStream(defineXML()), res, defineSkin());
         this.stage.setViewport(context.getViewport());
         this.stage.bind(this);
+
+        this.preLoad();
+
         this.stage.loadMenu();
+
+        this.postLoad();
     }
 
     @Override

@@ -19,6 +19,7 @@ import java.util.Set;
 
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
+import de.verygame.square.util.glmenu.BuilderMapping;
 import de.verygame.square.util.glmenu.GLMenu;
 import de.verygame.square.util.glmenu.GLMenuCore;
 import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
@@ -186,6 +187,11 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
     @Override
     public void bind(Object bindTarget) {
         this.bindTarget = bindTarget;
+    }
+
+    @Override
+    public void addMappingExtension(BuilderMapping<Actor> extension) {
+        this.mapping.addMappingExtension(extension);
     }
 
     @Override

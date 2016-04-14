@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.glmenu.impl.element.ButtonBuilder;
@@ -27,6 +30,7 @@ import de.verygame.square.core.scene2d.glmenu.impl.element.PanelBuilder;
 import de.verygame.square.core.scene2d.widget.HudPowerUpDisplay;
 import de.verygame.square.core.scene2d.widget.HudScore;
 import de.verygame.square.core.scene2d.widget.Panel;
+import de.verygame.square.util.glmenu.BuilderMapping;
 import de.verygame.square.util.glmenu.Mappings;
 import de.verygame.square.util.glmenu.element.ContainerBuilder;
 import de.verygame.square.util.glmenu.element.ElementBuilder;
@@ -43,6 +47,7 @@ public class Scene2DMapping implements Mappings<Actor> {
 
     private final ResourceHandler resourceHandler;
     private final Resource skinResource;
+    private final List<BuilderMapping<Actor>> extensionList;
 
     /**
      * Constructs a mapping for scene2d.
@@ -50,6 +55,7 @@ public class Scene2DMapping implements Mappings<Actor> {
     public Scene2DMapping(ResourceHandler resourceHandler, Resource skinResource) {
         this.resourceHandler = resourceHandler;
         this.skinResource = skinResource;
+        this.extensionList = new ArrayList<>();
     }
 
     @Override
@@ -79,12 +85,23 @@ public class Scene2DMapping implements Mappings<Actor> {
     }
 
     @Override
-    public ObjectBuilder getObjectBuilderByTag(String tagIdentifier) throws ConstTagUnknownException {
-        throw new ConstTagUnknownException(tagIdentifier);
+    public void addMappingExtension(BuilderMapping<Actor> extension) {
+        this.extensionList.add(extension);
     }
 
     @Override
-    public ElementBuilder<Actor> createElementBuilderByTag(String tagIdentifier) throws ElementTagUnknownException {
+    public ObjectBuilder getObjectBuilderByTag(String tagIdentifier)  {
+        for (BuilderMapping<Actor> extension : extensionList) {
+            ObjectBuilder builder = extension.getObjectBuilderByTag(tagIdentifier);
+            if (builder != null) {
+                return builder;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ElementBuilder<Actor> createElementBuilderByTag(String tagIdentifier) {
         Skin skin = resourceHandler.get(skinResource, Skin.class);
         switch (tagIdentifier) {
             case "label":
@@ -102,12 +119,18 @@ public class Scene2DMapping implements Mappings<Actor> {
             case "textField":
                 return new GenericElementBuilder<>(new TextField("", skin));
             default:
-                return null;
+                for (BuilderMapping<Actor> extension : extensionList) {
+                    ElementBuilder<Actor> builder = extension.createElementBuilderByTag(tagIdentifier);
+                    if (builder != null) {
+                        return builder;
+                    }
+                }
         }
+        return null;
     }
 
     @Override
-    public ContainerBuilder<Actor> createContainerBuilderByTag(String tagIdentifier) throws ElementTagUnknownException {
+    public ContainerBuilder<Actor> createContainerBuilderByTag(String tagIdentifier) {
         Skin skin = resourceHandler.get(skinResource, Skin.class);
         switch (tagIdentifier) {
             case "group":
@@ -130,12 +153,14 @@ public class Scene2DMapping implements Mappings<Actor> {
                 return new ContainerActorBuilder();
             case "panel":
                 return new PanelBuilder(new Panel(), resourceHandler);
-            case "hudScore":
-                return new PanelBuilder(new HudScore(skin), resourceHandler);
-            case "hudPowerUpDisplay":
-                return new GenericContainerBuilder<>(new HudPowerUpDisplay());
             default:
-                return null;
+                for (BuilderMapping<Actor> extension : extensionList) {
+                    ContainerBuilder<Actor> builder = extension.createContainerBuilderByTag(tagIdentifier);
+                    if (builder != null) {
+                        return builder;
+                    }
+                }
         }
+        return null;
     }
 }
