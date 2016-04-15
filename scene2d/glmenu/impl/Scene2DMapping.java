@@ -27,16 +27,12 @@ import de.verygame.square.core.scene2d.glmenu.impl.element.GenericContainerBuild
 import de.verygame.square.core.scene2d.glmenu.impl.element.GenericElementBuilder;
 import de.verygame.square.core.scene2d.glmenu.impl.element.GroupBuilder;
 import de.verygame.square.core.scene2d.glmenu.impl.element.PanelBuilder;
-import de.verygame.square.core.scene2d.widget.HudPowerUpDisplay;
-import de.verygame.square.core.scene2d.widget.HudScore;
 import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.square.util.glmenu.BuilderMapping;
 import de.verygame.square.util.glmenu.Mappings;
 import de.verygame.square.util.glmenu.element.ContainerBuilder;
 import de.verygame.square.util.glmenu.element.ElementBuilder;
 import de.verygame.square.util.glmenu.element.ObjectBuilder;
-import de.verygame.square.util.glmenu.exception.ConstTagUnknownException;
-import de.verygame.square.util.glmenu.exception.ElementTagUnknownException;
 
 /**
  * Implementation of {@link Mappings} for scene 2d.
