@@ -35,6 +35,11 @@ public class Switch extends Panel {
     private static final float BUTTON_HEIGHT_MUL = 1.25f;
 
     /**
+     * Relative width of the unused content.
+     */
+    private static final float UNUSED_CONTENT_WIDTH = 4f;
+
+    /**
      * Moveable part of the switch.
      */
     protected Image switchSprite;
@@ -47,7 +52,7 @@ public class Switch extends Panel {
     /**
      * State of the switch {@link Switch.SwitchState}.
      */
-    protected SwitchState switchState = SwitchState.OFF;
+    protected SwitchState state = SwitchState.OFF;
 
     /**
      * State of the touch gesture.
@@ -108,68 +113,12 @@ public class Switch extends Panel {
         this.switchSprite.setZIndex(2);
         this.switchSprite.setBounds(borderValueLeft, getHeight()/2f, getHeight()*2f, getHeight()*2f);
 
+        this.addListener(new InputHandler());
+
         this.addActor(stateRect);
         this.addActor(switchSprite);
 
         this.layout();
-        this.init();
-    }
-
-    private void init() {
-        addListener(new InputListener() {
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                switchTimer = STD_TIMER;
-                if (lock) {
-                    return;
-                }
-
-                if (LogicalState.MOVING == inputState) {
-
-                    inputState = LogicalState.NO_ACTION;
-
-                    if (switchSprite.getX() + switchSprite.getWidth()/2 >= getWidth() / 2) {
-                        switchToState(SwitchState.ON);
-                    }
-                    else if (switchSprite.getX() + switchSprite.getWidth()/2 < getWidth() / 2) {
-                        switchToState(SwitchState.OFF);
-                    }
-                }
-                else if (LogicalState.PRESSED == inputState) {
-                    switchState();
-                }
-            }
-
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                switchTimer = STD_TIMER;
-
-                if (lock) {
-                    return;
-                }
-
-                if (x >= borderValueLeft && x <= getWidth() - borderValueRight) {
-                    switchSprite.setX(x - switchSprite.getWidth()/2 );
-                    updateRect();
-                }
-                inputState = LogicalState.MOVING;
-
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                switchTimer = STD_TIMER;
-
-                if (lock) {
-                    return false;
-                }
-
-                inputState = LogicalState.PRESSED;
-                return true;
-            }
-
-        });
     }
 
     /**
@@ -208,7 +157,7 @@ public class Switch extends Panel {
      * @return false if the current state is <code>SwitchState.OFF</code>
      */
     public boolean isOn() {
-        return this.switchState == SwitchState.ON;
+        return this.state == SwitchState.ON;
     }
 
     /**
@@ -219,7 +168,7 @@ public class Switch extends Panel {
     protected void setBorderValueRight(float borderValueRight) {
         this.borderValueRight = borderValueRight;
 
-        this.switchToState(this.switchState);
+        this.switchToState(this.state);
     }
 
     /**
@@ -230,7 +179,7 @@ public class Switch extends Panel {
     protected void setBorderValueLeft(float borderValueLeft) {
         this.borderValueLeft = borderValueLeft;
 
-        this.switchToState(this.switchState);
+        this.switchToState(this.state);
     }
 
     /**
@@ -241,7 +190,8 @@ public class Switch extends Panel {
     public void switchToState(final boolean state) {
         if (state) {
             switchToState(SwitchState.ON);
-        } else {
+        }
+        else {
             switchToState(SwitchState.OFF);
         }
     }
@@ -252,13 +202,14 @@ public class Switch extends Panel {
      * @param switchState {@link Switch.SwitchState}
      */
     public void switchToState(final SwitchState switchState) {
-        if (switchState == this.switchState) {
+        if (switchState == this.state) {
             if (switchState == SwitchState.ON) {
-                this.switchState = SwitchState.ON;
+                this.state = SwitchState.ON;
                 this.switchSprite.setX(getWidth() - borderValueRight - switchSprite.getWidth()/2);
                 this.updateRect();
-            } else {
-                this.switchState = SwitchState.OFF;
+            }
+            else {
+                this.state = SwitchState.OFF;
                 this.switchSprite.setX(borderValueLeft - switchSprite.getWidth()/2);
                 this.updateRect();
             }
@@ -271,16 +222,19 @@ public class Switch extends Panel {
      * Switches the state, depending on the current state.
      */
     protected void switchState() {
-        switch (switchState) {
+        switch (state) {
             case ON:
-                this.switchState = SwitchState.OFF;
+                this.state = SwitchState.OFF;
                 this.startAnimation(switchSprite.getX(), borderValueLeft - switchSprite.getWidth()/2);
                 this.updateRect();
                 break;
             case OFF:
-                this.switchState = SwitchState.ON;
+                this.state = SwitchState.ON;
                 this.startAnimation(switchSprite.getX(), getWidth() - switchSprite.getWidth()/2 - borderValueRight);
                 this.updateRect();
+            default:
+                //all states are covered
+                break;
         }
 
         this.fire(new Event());
@@ -298,14 +252,12 @@ public class Switch extends Panel {
             @Override
             public void finish(float value) {
                 super.finish(value);
-
                 lock = false;
             }
 
             @Override
             public void init(float value) {
                 super.init(value);
-
                 lock = true;
             }
 
@@ -325,8 +277,8 @@ public class Switch extends Panel {
     }
 
     private void updateBounds() {
-        this.borderValueLeft = getWidth()/4f;
-        this.borderValueRight = getWidth()/4f;
+        this.borderValueLeft = getWidth()/UNUSED_CONTENT_WIDTH ;
+        this.borderValueRight = getWidth()/UNUSED_CONTENT_WIDTH ;
         this.updatePixel(stateRect.getDrawable());
         this.updateButton(switchSprite.getDrawable());
     }
@@ -370,12 +322,66 @@ public class Switch extends Panel {
         updateBounds();
     }
 
-    public enum SwitchState {
-        ON, OFF
+    protected class InputHandler extends InputListener {
+
+        @Override
+        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            switchTimer = STD_TIMER;
+            if (lock) {
+                return;
+            }
+
+            if (LogicalState.MOVING == inputState) {
+
+                inputState = LogicalState.NO_ACTION;
+
+                if (switchSprite.getX() + switchSprite.getWidth()/2 >= getWidth() / 2) {
+                    switchToState(SwitchState.ON);
+                }
+                else if (switchSprite.getX() + switchSprite.getWidth()/2 < getWidth() / 2) {
+                    switchToState(SwitchState.OFF);
+                }
+            }
+            else if (LogicalState.PRESSED == inputState) {
+                switchState();
+            }
+        }
+
+        @Override
+        public void touchDragged(InputEvent event, float x, float y, int pointer) {
+            switchTimer = STD_TIMER;
+
+            if (lock) {
+                return;
+            }
+
+            if (x >= borderValueLeft && x <= getWidth() - borderValueRight) {
+                switchSprite.setX(x - switchSprite.getWidth()/2 );
+                updateRect();
+            }
+            inputState = LogicalState.MOVING;
+
+        }
+
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            switchTimer = STD_TIMER;
+
+            if (lock) {
+                return false;
+            }
+
+            inputState = LogicalState.PRESSED;
+            return true;
+        }
     }
 
     protected enum LogicalState {
         NO_ACTION, PRESSED, MOVING
+    }
+
+    public enum SwitchState {
+        ON, OFF
     }
 
     public static class SwitchStyle {
