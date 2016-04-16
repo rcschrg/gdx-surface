@@ -22,12 +22,17 @@ public class Switch extends Panel {
     /**
      * Defines the time which have to pass, before the switch will align itself (based on the current position of the switchSprite).
      */
-    private final static float STD_TIMER = 0.3f;
+    private static final float STD_TIMER = 0.3f;
 
     /**
      * Duration of the animation.
      */
-    private final static float ANIMATION_DURATION = 0.1f;
+    private static final float ANIMATION_DURATION = 0.1f;
+
+    /**
+     * Will be multiplied with the height of the switch to determine the button height.
+     */
+    private static final float BUTTON_HEIGHT_MUL = 1.25f;
 
     /**
      * Moveable part of the switch.
@@ -57,12 +62,12 @@ public class Switch extends Panel {
     /**
      * Left border for the <code>switchSprite</code>.
      */
-    protected float borderValueLeft = 37f;
+    protected float borderValueLeft = 0;
 
     /**
      * Right border for the <code>switchSprite</code>.
      */
-    protected float borderValueRight = 40f;
+    protected float borderValueRight = 0f;
 
     /**
      * Height of the top/bottom border
@@ -184,7 +189,7 @@ public class Switch extends Panel {
     public void updateButton(Drawable button) {
         this.switchSprite.setDrawable(button);
         this.switchSprite.setZIndex(2);
-        this.switchSprite.setBounds(borderValueLeft - getHeight()*1.5f/2f, getHeight()/2f - getHeight()*1.5f/2f, getHeight()*1.5f, getHeight()*1.5f);
+        this.switchSprite.setBounds(borderValueLeft - getHeight()*BUTTON_HEIGHT_MUL/2f, getHeight()/2f - getHeight()*BUTTON_HEIGHT_MUL/2f, getHeight()*BUTTON_HEIGHT_MUL, getHeight()*BUTTON_HEIGHT_MUL);
     }
 
     /**
@@ -319,14 +324,11 @@ public class Switch extends Panel {
         this.stateRect.setWidth(switchSprite.getX() + switchSprite.getWidth()/2 - stateRect.getX());
     }
 
-    /**
-     * Multiplies getScaleX() and <code>toScale</code>
-     *
-     * @param toScale value to be multiplied
-     * @return scaled value
-     */
-    private float scaledX(final float toScale) {
-        return toScale * getScaleX();
+    private void updateBounds() {
+        this.borderValueLeft = getWidth()/4f;
+        this.borderValueRight = getWidth()/4f;
+        this.updatePixel(stateRect.getDrawable());
+        this.updateButton(switchSprite.getDrawable());
     }
 
     @Override
@@ -358,16 +360,14 @@ public class Switch extends Panel {
     public void setHeight(float height) {
         super.setHeight(height);
 
-        this.updatePixel(stateRect.getDrawable());
-        this.updateButton(switchSprite.getDrawable());
+        updateBounds();
     }
 
     @Override
     public void setWidth(float width) {
         super.setWidth(width);
 
-        this.updatePixel(stateRect.getDrawable());
-        this.updateButton(switchSprite.getDrawable());
+        updateBounds();
     }
 
     public enum SwitchState {
