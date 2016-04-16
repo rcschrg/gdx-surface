@@ -1,4 +1,4 @@
-package de.verygame.square.core.scene2d.glmenu.impl;
+package de.verygame.square.core.scene2d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,6 +28,7 @@ import de.verygame.square.core.scene2d.glmenu.impl.element.GenericElementBuilder
 import de.verygame.square.core.scene2d.glmenu.impl.element.GroupBuilder;
 import de.verygame.square.core.scene2d.glmenu.impl.element.PanelBuilder;
 import de.verygame.square.core.scene2d.widget.Panel;
+import de.verygame.square.core.scene2d.widget.Switch;
 import de.verygame.square.util.glmenu.BuilderMapping;
 import de.verygame.square.util.glmenu.Mappings;
 import de.verygame.square.util.glmenu.element.ContainerBuilder;
@@ -149,6 +150,8 @@ public class Scene2DMapping implements Mappings<Actor> {
                 return new ContainerActorBuilder();
             case "panel":
                 return new PanelBuilder(new Panel(), resourceHandler);
+            case "switch":
+                return new GenericContainerBuilder<>(new Switch(skin));
             default:
                 for (BuilderMapping<Actor> extension : extensionList) {
                     ContainerBuilder<Actor> builder = extension.createContainerBuilderByTag(tagIdentifier);

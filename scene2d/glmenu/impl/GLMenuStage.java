@@ -19,6 +19,7 @@ import java.util.Set;
 
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
+import de.verygame.square.core.scene2d.Scene2DMapping;
 import de.verygame.square.util.glmenu.BuilderMapping;
 import de.verygame.square.util.glmenu.GLMenu;
 import de.verygame.square.util.glmenu.GLMenuCore;

@@ -1,10 +1,11 @@
 package de.verygame.square.core.scene2d.widget;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import de.verygame.square.util.modifier.SingleValueModifier;
@@ -16,7 +17,7 @@ import de.verygame.square.util.modifier.base.SimpleModifierCallback;
  *
  * @author Rico Schrage
  */
-public class Switch extends WidgetGroup {
+public class Switch extends Panel {
 
     /**
      * Defines the time which have to pass, before the switch will align itself (based on the current position of the switchSprite).
@@ -31,12 +32,12 @@ public class Switch extends WidgetGroup {
     /**
      * Moveable part of the switch.
      */
-    protected final Image switchSprite;
+    protected Image switchSprite;
 
     /**
      * For displaying a bar.
      */
-    protected final Image stateRect;
+    protected Image stateRect;
 
     /**
      * State of the switch {@link Switch.SwitchState}.
@@ -56,17 +57,17 @@ public class Switch extends WidgetGroup {
     /**
      * Left border for the <code>switchSprite</code>.
      */
-    protected float borderValueLeft = 10f;
+    protected float borderValueLeft = 37f;
 
     /**
      * Right border for the <code>switchSprite</code>.
      */
-    protected float borderValueRight = 10f;
+    protected float borderValueRight = 40f;
 
     /**
-     * Left border for the <code>stateRect</code>.
+     * Height of the top/bottom border
      */
-    protected float borderRectValueLeft = 10f;
+    protected float borderValue = 2f;
 
     /**
      * Current value of the <code>switchTimer</code>.
@@ -78,17 +79,29 @@ public class Switch extends WidgetGroup {
      */
     private boolean lock = false;
 
+    public Switch(Skin skin) {
+        this(skin.get(SwitchStyle.class));
+    }
+
+    public Switch(SwitchStyle style) {
+        this(style.getBg(), style.getButton(), style.getWhitePixel(), style.getStateColor());
+    }
+
     /**
      * Crreates a switch.
      *
      * @param background background of the switch
      * @param button     the moveable button of the switch
      */
-    public Switch(Drawable background, Drawable button, Drawable whitePixel) {
+    public Switch(Drawable background, Drawable button, Drawable whitePixel, Color state) {
+        super(background);
+
         this.stateRect = new Image(whitePixel);
-        this.stateRect.setBounds(0, getHeight() / 2, 0, getWidth() / 2);
-        this.switchSprite = new Image(background);
+        this.stateRect.setBounds(borderValue, getHeight() / 2f, 0f, getWidth() / 2f - borderValue * 2);
+        this.stateRect.setColor(state);
+        this.switchSprite = new Image(button);
         this.switchSprite.setZIndex(2);
+        this.switchSprite.setBounds(borderValueLeft, getHeight()/2f, getHeight()*2f, getHeight()*2f);
 
         this.addActor(stateRect);
         this.addActor(switchSprite);
@@ -111,12 +124,14 @@ public class Switch extends WidgetGroup {
 
                     inputState = LogicalState.NO_ACTION;
 
-                    if (switchSprite.getX() >= getWidth() / 2) {
+                    if (switchSprite.getX() + switchSprite.getWidth()/2 >= getWidth() / 2) {
                         switchToState(SwitchState.ON);
-                    } else if (switchSprite.getX() < getWidth() / 2) {
+                    }
+                    else if (switchSprite.getX() + switchSprite.getWidth()/2 < getWidth() / 2) {
                         switchToState(SwitchState.OFF);
                     }
-                } else if (LogicalState.PRESSED == inputState) {
+                }
+                else if (LogicalState.PRESSED == inputState) {
                     switchState();
                 }
             }
@@ -129,8 +144,8 @@ public class Switch extends WidgetGroup {
                     return;
                 }
 
-                if (x - (getX() - scaledX(getWidth()) / 2) >= scaledX(borderValueLeft) && x - (getX() - scaledX(getWidth()) / 2) <= scaledX(getWidth() - borderValueRight)) {
-                    switchSprite.setX((x - (getX() - scaledX(getWidth()) / 2)) / getScaleX());
+                if (x >= borderValueLeft && x <= getWidth() - borderValueRight) {
+                    switchSprite.setX(x - switchSprite.getWidth()/2 );
                     updateRect();
                 }
                 inputState = LogicalState.MOVING;
@@ -150,6 +165,36 @@ public class Switch extends WidgetGroup {
             }
 
         });
+    }
+
+    /**
+     * Convenience method to apply a new background.
+     *
+     * @param background background image
+     */
+    public void updateBackground(Drawable background) {
+        this.setBackground(background);
+    }
+
+    /**
+     * Convenience method to apply a new button image.
+     *
+     * @param button new button image
+     */
+    public void updateButton(Drawable button) {
+        this.switchSprite.setDrawable(button);
+        this.switchSprite.setZIndex(2);
+        this.switchSprite.setBounds(borderValueLeft - getHeight()*1.5f/2f, getHeight()/2f - getHeight()*1.5f/2f, getHeight()*1.5f, getHeight()*1.5f);
+    }
+
+    /**
+     * Convenience method to apply a new image.
+     *
+     * @param whitePixel new drawable
+     */
+    public void updatePixel(Drawable whitePixel) {
+        this.stateRect.setDrawable(whitePixel);
+        this.stateRect.setBounds(borderValueLeft, borderValue, 0, getHeight() - borderValue * 2);
     }
 
     /**
@@ -184,17 +229,6 @@ public class Switch extends WidgetGroup {
     }
 
     /**
-     * Setter for  <code>borderRectValueLeft</code>.
-     *
-     * @param borderRectValueLeft left border for the <code>rectState</code>
-     */
-    public void setBorderRectValueLeft(float borderRectValueLeft) {
-        this.borderRectValueLeft = borderRectValueLeft;
-
-        this.switchToState(this.switchState);
-    }
-
-    /**
      * Switches to the given state.
      *
      * @param state as boolean
@@ -216,11 +250,11 @@ public class Switch extends WidgetGroup {
         if (switchState == this.switchState) {
             if (switchState == SwitchState.ON) {
                 this.switchState = SwitchState.ON;
-                this.switchSprite.setX(getWidth() - borderValueRight);
+                this.switchSprite.setX(getWidth() - borderValueRight - switchSprite.getWidth()/2);
                 this.updateRect();
             } else {
                 this.switchState = SwitchState.OFF;
-                this.switchSprite.setX(borderValueRight);
+                this.switchSprite.setX(borderValueLeft - switchSprite.getWidth()/2);
                 this.updateRect();
             }
             return;
@@ -235,13 +269,12 @@ public class Switch extends WidgetGroup {
         switch (switchState) {
             case ON:
                 this.switchState = SwitchState.OFF;
-                //this.switchSprite.setX(borderValueLeft);
-                this.startAnimation(switchSprite.getX(), borderValueLeft);
+                this.startAnimation(switchSprite.getX(), borderValueLeft - switchSprite.getWidth()/2);
+                this.updateRect();
                 break;
             case OFF:
                 this.switchState = SwitchState.ON;
-                //this.switchSprite.setX(getWidth() - borderValueRight);
-                this.startAnimation(switchSprite.getX(), getWidth() - borderValueRight);
+                this.startAnimation(switchSprite.getX(), getWidth() - switchSprite.getWidth()/2 - borderValueRight);
                 this.updateRect();
         }
 
@@ -283,8 +316,7 @@ public class Switch extends WidgetGroup {
      * Updates the position and size of <code>rectState</code>.
      */
     private void updateRect() {
-        this.stateRect.setX((switchSprite.getX() - borderValueLeft) / 2 + borderRectValueLeft);
-        this.stateRect.setWidth(switchSprite.getX() - borderValueLeft);
+        this.stateRect.setWidth(switchSprite.getX() + switchSprite.getWidth()/2 - stateRect.getX());
     }
 
     /**
@@ -301,21 +333,41 @@ public class Switch extends WidgetGroup {
     public void act(float secondsElapsed) {
         super.act(secondsElapsed);
 
-        animationModifier.update();
+        if (animationModifier != null) {
+            animationModifier.update();
+        }
 
         if (lock) {
             return;
         }
 
         if (this.switchTimer - secondsElapsed <= 0) {
-            if (switchSprite.getX() >= getWidth() / 2) {
+            if (switchSprite.getX() + switchSprite.getWidth()/2 >= getWidth() / 2) {
                 switchToState(SwitchState.ON);
-            } else if (switchSprite.getX() < getWidth() / 2) {
+            }
+            else if (switchSprite.getX() + switchSprite.getWidth()/2 < getWidth()/2) {
                 switchToState(SwitchState.OFF);
             }
-        } else {
+        }
+        else {
             switchTimer -= secondsElapsed;
         }
+    }
+
+    @Override
+    public void setHeight(float height) {
+        super.setHeight(height);
+
+        this.updatePixel(stateRect.getDrawable());
+        this.updateButton(switchSprite.getDrawable());
+    }
+
+    @Override
+    public void setWidth(float width) {
+        super.setWidth(width);
+
+        this.updatePixel(stateRect.getDrawable());
+        this.updateButton(switchSprite.getDrawable());
     }
 
     public enum SwitchState {
@@ -324,6 +376,56 @@ public class Switch extends WidgetGroup {
 
     protected enum LogicalState {
         NO_ACTION, PRESSED, MOVING
+    }
+
+    public static class SwitchStyle {
+        private Drawable bg;
+        private Drawable button;
+        private Drawable whitePixel;
+        private Color stateColor;
+
+        public SwitchStyle() {
+            //default method for Skin.class
+        }
+
+        public SwitchStyle(Drawable bg, Drawable button, Drawable whitePixel, Color stateColor) {
+            this.bg = bg;
+            this.button = button;
+            this.whitePixel = whitePixel;
+            this.stateColor = stateColor;
+        }
+
+        public Drawable getWhitePixel() {
+            return whitePixel;
+        }
+
+        public void setWhitePixel(Drawable whitePixel) {
+            this.whitePixel = whitePixel;
+        }
+
+        public Drawable getBg() {
+            return bg;
+        }
+
+        public void setBg(Drawable bg) {
+            this.bg = bg;
+        }
+
+        public Drawable getButton() {
+            return button;
+        }
+
+        public void setButton(Drawable button) {
+            this.button = button;
+        }
+
+        public Color getStateColor() {
+            return stateColor;
+        }
+
+        public void setStateColor(Color stateColor) {
+            this.stateColor = stateColor;
+        }
     }
 
 }
