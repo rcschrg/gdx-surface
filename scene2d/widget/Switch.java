@@ -232,6 +232,7 @@ public class Switch extends Panel {
                 this.state = SwitchState.ON;
                 this.startAnimation(switchSprite.getX(), getWidth() - switchSprite.getWidth()/2 - borderValueRight);
                 this.updateRect();
+                break;
             default:
                 //all states are covered
                 break;
