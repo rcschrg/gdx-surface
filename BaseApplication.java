@@ -2,6 +2,7 @@ package de.verygame.square.core;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -26,10 +27,10 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
     protected PolygonSpriteBatch batch;
     /** Main viewport of the application, can be overwritten per screen */
     protected Viewport viewport;
+    /** Responsible for screen switching */
+    protected ScreenSwitch screenSwitch;
     /** True if the resources has been loaded */
     private boolean init = false;
-    /** Responsible for screen switching */
-    private ScreenSwitch screenSwitch = new ScreenSwitch();
 
     /**
      * Convenience method for {@link ScreenSwitch#addScreen(ScreenId, Screen)}.
@@ -93,11 +94,16 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         this.batch = new PolygonSpriteBatch();
         this.resourceHandler = new ResourceHandler();
         this.viewport = createViewport();
+        this.screenSwitch = new ScreenSwitch();
 
         this.screenSwitch.setBatch(batch);
         this.screenSwitch.addDependency("batch", batch);
         this.screenSwitch.addDependency("resourceHandler", resourceHandler);
         this.screenSwitch.addDependency("viewport", viewport);
+
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        this.screenSwitch.setInputHandler(inputMultiplexer);
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         this.loadResources(resourceHandler);
     }

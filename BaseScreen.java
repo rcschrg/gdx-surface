@@ -1,6 +1,7 @@
 package de.verygame.square.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -51,21 +52,22 @@ public abstract class BaseScreen implements Screen {
     public void onActivate(ScreenId predecessor) {
         context.applyViewport();
         context.updateViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        content.onActivate(predecessor);
+        content.onActivate(predecessor, context.getInputHandler());
 
         onSetActive(predecessor);
     }
 
     @Override
     public float onDeactivate(ScreenId successor) {
-        content.onDeactivate(successor);
+        content.onDeactivate(successor, context.getInputHandler());
 
         return onSetInactive(successor);
     }
 
     @Override
-    public void onAdd(PolygonSpriteBatch batch) {
+    public void onAdd(PolygonSpriteBatch batch, InputMultiplexer inputMultiplexer) {
         context.setBatch(batch);
+        context.setInputHandler(inputMultiplexer);
         content.onBind(context);
     }
 

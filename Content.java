@@ -1,5 +1,6 @@
 package de.verygame.square.core;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
@@ -18,17 +19,22 @@ public interface Content extends Disposable {
 
     /**
      * Will be called when the underlying screen gets activated.
+     * If you want to handle gdx input please do not call Gdx.input.setInputProcessor(...). Instead
+     * you can use the given inputHandler here do add your processor to a chain.
      *
      * @param predecessor predecessor of the screen
+     * @param inputHandler Will chain input processors
      */
-    void onActivate(ScreenId predecessor);
+    void onActivate(ScreenId predecessor, InputMultiplexer inputHandler);
 
     /**
-     * Will be called when underlying screen gets deactivated.
+     * Will be called when underlying screen gets deactivated. It's common to remove any added input processors
+     * from the input handler.
      *
      * @param successor successor of the screen
+     * @param inputHandler Will chain input processors
      */
-    void onDeactivate(ScreenId successor);
+    void onDeactivate(ScreenId successor, InputMultiplexer inputHandler);
 
     /**
      * Will be called on update. It will only be called when the underlying screen is active.

@@ -1,5 +1,6 @@
 package de.verygame.square.core;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -15,7 +16,7 @@ public interface Screen extends Disposable {
      *
      * @param batch batch of the screen switch
      */
-    void onAdd(PolygonSpriteBatch batch);
+    void onAdd(PolygonSpriteBatch batch, InputMultiplexer inputMultiplexer);
 
     /**
      * Will be called when the screen gets set active.

@@ -1,7 +1,9 @@
 package de.verygame.square.core.resource;
 
 import java.lang.reflect.Method;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import de.verygame.square.util.ReflectionUtils;
 
@@ -17,8 +19,21 @@ public class ResourceUtils {
      */
     private static final String ENUM_METHOD_NAME = "values";
 
+    private static final List<Class<? extends Resource>> resourceClasses = new ArrayList<>();
+    private static final List<Class<? extends ResourceUnit>> resourceUnitClasses = new ArrayList<>();
+
     private ResourceUtils() {
         //utility class
+    }
+
+    @SafeVarargs
+    public static void addResourceImplementation(Class<? extends Resource>... resourceImplementations) {
+        Collections.addAll(resourceClasses, resourceImplementations);
+    }
+
+    @SafeVarargs
+    public static void addResourceUnitImplementation(Class<? extends ResourceUnit>... resourceUnitImplementations) {
+        Collections.addAll(resourceUnitClasses, resourceUnitImplementations);
     }
 
     /**
@@ -37,7 +52,7 @@ public class ResourceUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T extends ResourceDescriptor> T lookUp(String resourceName, Class<T> yourClass) {
-        Set<Class<? extends T>> resourceSet = ReflectionUtils.obtainReflectionToolkit().getSubTypesOf(yourClass);
+        List<Class<T>> resourceSet = (List<Class<T>>) (yourClass == Resource.class ? resourceClasses : resourceUnitClasses);
         for (Class<? extends T> resourceClass : resourceSet) {
             if (resourceClass.isEnum()) {
                 Class<? extends Enum> enumResource = (Class<? extends Enum>) resourceClass;

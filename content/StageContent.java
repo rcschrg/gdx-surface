@@ -1,6 +1,6 @@
 package de.verygame.square.core.content;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 
 import de.verygame.square.core.Content;
 import de.verygame.square.core.ScreenContext;
@@ -66,13 +66,13 @@ public abstract class StageContent extends EventEmitter implements Content {
     }
 
     @Override
-    public void onActivate(ScreenId predecessor) {
-        Gdx.input.setInputProcessor(stage);
+    public void onActivate(ScreenId predecessor, InputMultiplexer inputMultiplexer) {
+        inputMultiplexer.addProcessor(stage);
     }
 
     @Override
-    public void onDeactivate(ScreenId successor) {
-        Gdx.input.setInputProcessor(null);
+    public void onDeactivate(ScreenId successor, InputMultiplexer inputMultiplexer) {
+        inputMultiplexer.removeProcessor(stage);
     }
 
     @Override

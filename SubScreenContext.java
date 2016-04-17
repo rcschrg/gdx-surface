@@ -1,5 +1,6 @@
 package de.verygame.square.core;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -38,6 +39,19 @@ public class SubScreenContext implements ScreenContext {
      */
     public void setBatch(PolygonSpriteBatch polygonSpriteBatch) {
         screenSwitch.setBatch(polygonSpriteBatch);
+    }
+
+    /**
+     * Sets the inputHandler of the context.
+     *
+     * @param inputHandler inputHandler
+     */
+    public void setInputHandler(InputMultiplexer inputHandler) {
+        screenSwitch.setInputHandler(inputHandler);
+    }
+
+    public InputMultiplexer getInputHandler() {
+        return screenSwitch.getInputHandler();
     }
 
     /**
