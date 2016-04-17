@@ -1,6 +1,7 @@
 package de.verygame.square.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 
 import java.lang.reflect.Field;
@@ -30,6 +31,8 @@ public class ScreenSwitch {
     private DelayedTask currentTask;
     /** Sprite batch of the application, a screen switch nevers owns a batch */
     private PolygonSpriteBatch batch;
+    /** Will handle input chaining */
+    private InputMultiplexer inputMultiplexer;
 
     /**
      * Constructs a new screen switch. It's recommended to use only one switch.
@@ -48,6 +51,14 @@ public class ScreenSwitch {
         this.batch = batch;
     }
 
+    public void setInputHandler(InputMultiplexer inputMultiplexer) {
+        this.inputMultiplexer = inputMultiplexer;
+    }
+
+    public InputMultiplexer getInputHandler() {
+        return inputMultiplexer;
+    }
+
     /**
      * @return batch of the switch
      */
@@ -64,7 +75,7 @@ public class ScreenSwitch {
         try {
             injectDependencies(screen.getContent());
             screenMap.put(id, screen);
-            screen.onAdd(batch);
+            screen.onAdd(batch, inputMultiplexer);
         }
         catch (DependencyMissingException e) {
             Gdx.app.debug("ScreenSwitch", e.getMessage(), e);
