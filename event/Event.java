@@ -22,7 +22,13 @@ public enum Event {
      * <br>
      * Attached Object: None
      */
-    HIDE_SCREEN(EventType.UI);
+    HIDE_SCREEN(EventType.UI),
+    /**
+     * Requests a restart of the game.
+     * <br>
+     * attached Object: None
+     */
+    GAME_RESTART(EventType.GAME);
 
     private final EventType type;
 

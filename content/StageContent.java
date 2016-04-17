@@ -71,6 +71,11 @@ public abstract class StageContent extends EventEmitter implements Content {
     }
 
     @Override
+    public void onDeactivate(ScreenId successor) {
+        Gdx.input.setInputProcessor(null);
+    }
+
+    @Override
     public void onUpdate() {
         stage.act();
     }
@@ -83,11 +88,6 @@ public abstract class StageContent extends EventEmitter implements Content {
     @Override
     public void dispose() {
         stage.dispose();
-    }
-
-    @Override
-    public void onDeactivate(ScreenId successor) {
-        //default: do nothing
     }
 
     @Override

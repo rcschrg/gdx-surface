@@ -39,7 +39,7 @@ public class EventEmitter {
      *
      * @param eventListener {@link EventListener}, which should get registered
      */
-    public void register(EventListener eventListener, EventType type) {
+    public void register(EventType type, EventListener eventListener) {
         if (eventHandler.containsKey(eventListener)) {
             eventHandler.get(eventListener).add(type);
         }
@@ -55,7 +55,7 @@ public class EventEmitter {
      *
      * @param eventListener {@link EventListener}, which should get unregistered
      */
-    public void unregister(EventListener eventListener, EventType type) {
+    public void unregister(EventType type, EventListener eventListener) {
         if (eventHandler.containsKey(eventListener)) {
             final List<EventType> list = eventHandler.get(eventListener);
             if (list.size() == 1) {
