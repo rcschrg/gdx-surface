@@ -54,8 +54,7 @@ public abstract class StageContent extends EventEmitter implements Content {
     public void onBind(ScreenContext context) {
         this.context = context;
 
-        this.stage = new GLMenuStage(context.getBatch(), res.getXMLAsStream(defineXML()), res, defineSkin());
-        this.stage.setViewport(context.getViewport());
+        this.stage = new GLMenuStage(context.getBatch(), context.getViewport(), res.getXMLAsStream(defineXML()), res, defineSkin());
         this.stage.bind(this);
 
         this.preLoad();

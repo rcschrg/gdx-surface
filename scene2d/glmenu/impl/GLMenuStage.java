@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParser;
@@ -14,6 +15,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,7 +63,11 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
      * @param resourceHandler contains language bundles and skins.
      */
     public GLMenuStage(Batch batch, InputStream resourceFile, ResourceHandler resourceHandler, Resource skinResource) {
-        super(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+        this(batch, new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), resourceFile, resourceHandler, skinResource);
+    }
+
+    public GLMenuStage(Batch batch, Viewport viewport, InputStream resourceFile, ResourceHandler resourceHandler, Resource skinResource) {
+        super(viewport, batch);
 
         this.resource = resourceFile;
         this.mapping = new Scene2DMapping(resourceHandler, skinResource);
@@ -112,6 +118,13 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
 
             addActor(currentElement);
         }
+        getActors().sort(new Comparator<Actor>() {
+            @Override
+            public int compare(Actor o1, Actor o2) {
+                return o2.getZIndex() - o1.getZIndex();
+            }
+        });
+
 
         if (bindTarget == null) {
             return;
