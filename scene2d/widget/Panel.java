@@ -2,6 +2,7 @@ package de.verygame.square.core.scene2d.widget;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
@@ -14,6 +15,8 @@ public class Panel extends WidgetGroup {
 
     private float xPadding = 0f;
     private float yPadding = 0f;
+
+    Matrix4 oldM = new Matrix4();
 
     public Panel() {
         this(null);
@@ -50,9 +53,10 @@ public class Panel extends WidgetGroup {
         float absoluteXPadding = xPadding * getWidth();
         float absoluteYPadding = yPadding * getHeight();
 
+        oldM.set(batch.getProjectionMatrix());
         batch.getProjectionMatrix().translate(absoluteXPadding, absoluteYPadding, 0);
         super.draw(batch, parentAlpha);
-        batch.getProjectionMatrix().translate(-absoluteXPadding, -absoluteYPadding, 0);
+        batch.setProjectionMatrix(oldM);
     }
 
 }
