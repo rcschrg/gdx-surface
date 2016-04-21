@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import de.verygame.square.core.annotation.Dependency;
+import de.verygame.square.util.ReflectionUtils;
 import de.verygame.square.util.task.DelayedTask;
 import de.verygame.square.util.task.Task;
 
@@ -24,7 +26,7 @@ public class ScreenSwitch {
     /** Maps screen id's to screens */
     private final Map<ScreenId, Screen> screenMap;
     /** Map of all dependencies, which can be injected in content objects */
-    private final Map<String, Object> dependencyMap;
+    private Map<String, Object> dependencyMap;
     /** The currently active screen. Can be null */
     private Screen activeScreen;
     /** Switch task, which delays the switch if the screen wishes {@link Screen#onDeactivate(ScreenId)} */
@@ -75,7 +77,7 @@ public class ScreenSwitch {
         try {
             injectDependencies(screen.getContent());
             screenMap.put(id, screen);
-            screen.onAdd(batch, inputMultiplexer);
+            screen.onAdd(batch, inputMultiplexer, dependencyMap);
         }
         catch (DependencyMissingException e) {
             Gdx.app.debug("ScreenSwitch", e.getMessage(), e);
@@ -89,11 +91,12 @@ public class ScreenSwitch {
      * @throws DependencyMissingException will be thrown when a dependency is missing in the screen switch
      */
     private void injectDependencies(Content content) throws DependencyMissingException {
-        Field[] fields = content.getClass().getDeclaredFields();
+        List<Field> fields = ReflectionUtils.getAllFields(content.getClass());
         for (final Field field : fields) {
             if (!field.isAnnotationPresent(Dependency.class)) {
                 continue;
             }
+
             field.setAccessible(true);
             String fieldName = field.getName();
             if (dependencyMap.containsKey(fieldName)) {
@@ -269,5 +272,14 @@ public class ScreenSwitch {
      */
     public void addDependency(String id, Object dependency) {
         this.dependencyMap.put(id, dependency);
+    }
+
+    /**
+     * Set the dependency map.
+     *
+     * @param dependencyMap map of dependencies
+     */
+    public void setDependencyMap(Map<String, Object> dependencyMap) {
+        this.dependencyMap = dependencyMap;
     }
 }

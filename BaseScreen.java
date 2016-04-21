@@ -5,6 +5,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Map;
+
 /**
  * @author Rico Schrage
  *
@@ -65,9 +67,11 @@ public abstract class BaseScreen implements Screen {
     }
 
     @Override
-    public void onAdd(PolygonSpriteBatch batch, InputMultiplexer inputMultiplexer) {
+    public void onAdd(PolygonSpriteBatch batch, InputMultiplexer inputMultiplexer, Map<String, Object> dependencyMap) {
         context.setBatch(batch);
         context.setInputHandler(inputMultiplexer);
+        context.setDependencies(dependencyMap);
+
         content.onBind(context);
     }
 

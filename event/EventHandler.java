@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -19,33 +20,45 @@ import de.verygame.square.core.event.Event.EventType;
  * <br>
  * Event can be received via annotation or {@link EventListener#handleEvent(Event, Object...)}.
  */
-public class EventEmitter {
+public class EventHandler {
 
     /** List of all registered {@link EventListener}'s */
     private final Map<EventListener, List<EventType>> eventHandler;
 
+    /** Map of all cached methods */
     private final Map<EventListener, Map<Event, Method>> cache;
 
     /**
      * Construct an event-emitter.
      */
-    public EventEmitter() {
+    public EventHandler() {
         this.eventHandler = new HashMap<>();
         this.cache = new HashMap<>();
+    }
+
+    /**
+     * Convenience method to register an anonymous listener more comfortable.
+     *
+     * @param eventType event type the listener will listen to
+     * @param eventListener listener
+     */
+    public void register(EventType eventType, EventListener eventListener) {
+        this.register(eventListener, eventType);
     }
 
     /**
      * Register an {@link EventListener} for a specific event type.
      *
      * @param eventListener {@link EventListener}, which should get registered
+     * @param type event types the listener will listen to
      */
-    public void register(EventType type, EventListener eventListener) {
+    public void register(EventListener eventListener, EventType... type) {
         if (eventHandler.containsKey(eventListener)) {
-            eventHandler.get(eventListener).add(type);
+            Collections.addAll(eventHandler.get(eventListener), type);
         }
         else {
             final List<Event.EventType> list = new ArrayList<>(EventType.values().length);
-            list.add(type);
+            Collections.addAll(list, type);
             this.eventHandler.put(eventListener, list);
         }
     }
@@ -55,14 +68,16 @@ public class EventEmitter {
      *
      * @param eventListener {@link EventListener}, which should get unregistered
      */
-    public void unregister(EventType type, EventListener eventListener) {
+    public void unregister(EventListener eventListener, EventType... type) {
         if (eventHandler.containsKey(eventListener)) {
             final List<EventType> list = eventHandler.get(eventListener);
             if (list.size() == 1) {
                 eventHandler.remove(eventListener);
             }
             else {
-                list.remove(type);
+                for (EventType aType : type) {
+                    list.remove(aType);
+                }
             }
         }
     }

@@ -4,6 +4,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.Map;
+
 /**
  * @author Rico Schrage
  *
@@ -30,6 +32,15 @@ public class SubScreenContext implements ScreenContext {
 
         this.viewport = viewport;
         this.screenSwitch = new ScreenSwitch();
+    }
+
+    /**
+     * Sets the dependency map of the screen switch.
+     *
+     * @param dependencies map of dependencies
+     */
+    public void setDependencies(Map<String, Object> dependencies) {
+        screenSwitch.setDependencyMap(dependencies);
     }
 
     /**
