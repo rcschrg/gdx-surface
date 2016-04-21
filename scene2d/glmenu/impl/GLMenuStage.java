@@ -121,7 +121,7 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
         getActors().sort(new Comparator<Actor>() {
             @Override
             public int compare(Actor o1, Actor o2) {
-                return o2.getZIndex() - o1.getZIndex();
+                return o1.getZIndex() - o2.getZIndex();
             }
         });
 
