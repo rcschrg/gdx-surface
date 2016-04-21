@@ -5,7 +5,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import de.verygame.square.core.Content;
 import de.verygame.square.core.ScreenContext;
 import de.verygame.square.core.ScreenId;
-import de.verygame.square.core.event.EventEmitter;
+import de.verygame.square.core.annotation.Dependency;
+import de.verygame.square.core.event.EventHandler;
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.glmenu.impl.GLMenuStage;
@@ -13,25 +14,17 @@ import de.verygame.square.core.scene2d.glmenu.impl.GLMenuStage;
 /**
  * @author Rico Schrage
  */
-public abstract class StageContent extends EventEmitter implements Content {
+public abstract class StageContent extends EventHandler implements Content {
 
     /** Resource handler which contains all ui resources */
-    protected final ResourceHandler res;
+    @Dependency
+    protected ResourceHandler resourceHandler;
 
     /** Stage, which loads the xml */
     protected GLMenuStage stage;
 
     /** Context of the screen */
     protected ScreenContext context;
-
-    /**
-     * Creates the user interface of the game.
-     *
-     *  @param res handler, which contains an applicable skin, the markup file and the language pack.
-     */
-    public StageContent(ResourceHandler res) {
-        this.res = res;
-    }
 
     /**
      * Should return the xml resource, which describes the xml of the glmenuStage.
@@ -54,7 +47,7 @@ public abstract class StageContent extends EventEmitter implements Content {
     public void onBind(ScreenContext context) {
         this.context = context;
 
-        this.stage = new GLMenuStage(context.getBatch(), context.getViewport(), res.getXMLAsStream(defineXML()), res, defineSkin());
+        this.stage = new GLMenuStage(context.getBatch(), context.getViewport(), resourceHandler.getXMLAsStream(defineXML()), resourceHandler, defineSkin());
         this.stage.bind(this);
 
         this.preLoad();

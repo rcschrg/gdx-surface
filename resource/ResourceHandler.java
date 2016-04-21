@@ -26,7 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.verygame.square.core.event.Event;
-import de.verygame.square.core.event.EventEmitter;
+import de.verygame.square.core.event.EventHandler;
 import de.verygame.square.core.resource.loader.StringLoader;
 import de.verygame.square.util.FileUtils;
 
@@ -36,7 +36,7 @@ import de.verygame.square.util.FileUtils;
  * Handles all types of resources (defined here {@link de.verygame.square.core.resource.ResourceType}). Provides many convienent methods
  * to obtain resource objects.
  */
-public class ResourceHandler extends EventEmitter implements Disposable {
+public class ResourceHandler extends EventHandler implements Disposable {
 
     /**
      * Used to load and store the assets

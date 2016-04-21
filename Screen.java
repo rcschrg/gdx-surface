@@ -4,6 +4,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
+import java.util.Map;
+
 /**
  * @author Rico Schrage
  *
@@ -16,7 +18,7 @@ public interface Screen extends Disposable {
      *
      * @param batch batch of the screen switch
      */
-    void onAdd(PolygonSpriteBatch batch, InputMultiplexer inputMultiplexer);
+    void onAdd(PolygonSpriteBatch batch, InputMultiplexer inputMultiplexer, Map<String, Object> dependencyMap);
 
     /**
      * Will be called when the screen gets set active.
