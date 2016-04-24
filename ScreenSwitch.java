@@ -121,6 +121,10 @@ public class ScreenSwitch {
      * @param id id of the new screen
      */
     public void setActive(ScreenId id) {
+        if (id == null) {
+            deactivateScreen(null, null);
+            return;
+        }
         if (!screenMap.containsKey(id)) {
             throw new IllegalArgumentException("The screen is not registered!");
         }
@@ -142,17 +146,29 @@ public class ScreenSwitch {
             activeScreen = screen;
             return;
         }
+        deactivateScreen(key, screen);
+    }
 
+    /**
+     * Deactivates the current screen.
+     *
+     * @param key key of the new screen, nullable
+     * @param screen new screen, nullable
+     */
+    private void deactivateScreen(final ScreenId key, final Screen screen) {
         final float delay = activeScreen.onDeactivate(key);
-        if (delay <= 0) {
+        if (delay <= 0 && screen != null) {
             screen.onActivate(key);
             activeScreen = screen;
         }
         else {
+            System.out.println("task appeared"+key);
             currentTask = new DelayedTask(delay, new Task() {
                 @Override
                 public void work() {
-                    screen.onActivate(key);
+                    if (screen != null) {
+                        screen.onActivate(key);
+                    }
                     activeScreen = screen;
                 }
             });

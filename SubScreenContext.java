@@ -65,6 +65,18 @@ public class SubScreenContext implements ScreenContext {
         return screenSwitch.getInputHandler();
     }
 
+    public void onActivate(ScreenId screenKey) {
+        if (screenSwitch.getActiveScreen() != null) {
+            screenSwitch.getActiveScreen().onActivate(screenKey);
+        }
+    }
+
+    public void onDeactivate(ScreenId screenKey) {
+        if (screenSwitch.getActiveScreen() != null) {
+            screenSwitch.getActiveScreen().onDeactivate(screenKey);
+        }
+    }
+
     /**
      * Applies the viewport of the context. Calls {@link Viewport#apply(boolean)}.
      */

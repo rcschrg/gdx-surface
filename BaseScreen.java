@@ -54,6 +54,8 @@ public abstract class BaseScreen implements Screen {
     public void onActivate(ScreenId predecessor) {
         context.applyViewport();
         context.updateViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        context.onActivate(predecessor);
         content.onActivate(predecessor, context.getInputHandler());
 
         onSetActive(predecessor);
@@ -61,6 +63,7 @@ public abstract class BaseScreen implements Screen {
 
     @Override
     public float onDeactivate(ScreenId successor) {
+        context.onDeactivate(successor);
         content.onDeactivate(successor, context.getInputHandler());
 
         return onSetInactive(successor);
