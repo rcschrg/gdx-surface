@@ -60,14 +60,11 @@ public abstract class StageContent extends EventHandler implements Content {
     @Override
     public void onActivate(ScreenId predecessor, InputMultiplexer inputMultiplexer) {
         inputMultiplexer.addProcessor(stage);
-        System.out.println(stage);
     }
 
     @Override
     public void onDeactivate(ScreenId successor, InputMultiplexer inputMultiplexer) {
         inputMultiplexer.removeProcessor(stage);
-        System.out.println(stage);
-        System.out.println(inputMultiplexer.getProcessors());
     }
 
     @Override

@@ -41,6 +41,14 @@ public interface ScreenContext {
     void showScreen(SubScreenId id);
 
     /**
+     * Initializes the context with the given screen.
+     * Calling this method will not cause a call of onActivate.
+     *
+     * @param id id of the screen
+     */
+    void initialize(SubScreenId id);
+
+    /**
      * Hides the currently active screen.
      */
     void hideScreen();
