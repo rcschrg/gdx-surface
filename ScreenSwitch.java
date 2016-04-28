@@ -122,7 +122,9 @@ public class ScreenSwitch {
      */
     public void setActive(ScreenId id) {
         if (id == null) {
-            deactivateScreen(null, null);
+            if (activeScreen != null) {
+                deactivateScreen(null, null);
+            }
             return;
         }
         if (!screenMap.containsKey(id)) {
@@ -162,7 +164,6 @@ public class ScreenSwitch {
             activeScreen = screen;
         }
         else {
-            System.out.println("task appeared"+key);
             currentTask = new DelayedTask(delay, new Task() {
                 @Override
                 public void work() {
