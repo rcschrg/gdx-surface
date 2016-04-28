@@ -31,7 +31,7 @@ public class ZoomScreen extends ModifierScreen {
      * @param content  content of the screen
      * @param duration duration of the animation
      */
-    public ZoomScreen(Viewport viewport, Content content, float duration, float zoomFactor) {
+    public ZoomScreen(Viewport viewport, Content content, float zoomFactor, float duration) {
         super(viewport, content, duration);
 
         this.zoomFactor = zoomFactor;
@@ -62,6 +62,7 @@ public class ZoomScreen extends ModifierScreen {
         @Override
         protected void action(float value) {
             Matrix4 mat = context.getBatch().getProjectionMatrix();
+
             float worldWidth = context.getViewport().getWorldWidth();
             float worldHeight = context.getViewport().getWorldHeight();
             float oldScaleX = mat.getScaleX();
