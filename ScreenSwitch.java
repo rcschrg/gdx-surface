@@ -115,6 +115,18 @@ public class ScreenSwitch {
     }
 
     /**
+     * Just sets the active screen without calling onActivate.
+     *
+     * @param id id of the screen
+     */
+    public void setScreenSimple(ScreenId id) {
+        if (!screenMap.containsKey(id)) {
+            throw new IllegalArgumentException("The screen is not registered!");
+        }
+        this.activeScreen = screenMap.get(id);
+    }
+
+    /**
      * Sets the screen mapped to the given id as currently active.
      * Calls {@link Screen#onDeactivate(ScreenId)} on the old screen and {@link Screen#onActivate(ScreenId)} on the new screen.
      *
@@ -154,13 +166,15 @@ public class ScreenSwitch {
     /**
      * Deactivates the current screen.
      *
-     * @param key key of the new screen, nullable
+     * @param key key of the old screen, nullable
      * @param screen new screen, nullable
      */
     private void deactivateScreen(final ScreenId key, final Screen screen) {
         final float delay = activeScreen.onDeactivate(key);
-        if (delay <= 0 && screen != null) {
-            screen.onActivate(key);
+        if (delay <= 0) {
+            if (screen != null) {
+                screen.onActivate(getActiveScreenId());
+            }
             activeScreen = screen;
         }
         else {
@@ -168,7 +182,7 @@ public class ScreenSwitch {
                 @Override
                 public void work() {
                     if (screen != null) {
-                        screen.onActivate(key);
+                        screen.onActivate(getActiveScreenId());
                     }
                     activeScreen = screen;
                 }

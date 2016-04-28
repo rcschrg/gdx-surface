@@ -71,10 +71,11 @@ public class SubScreenContext implements ScreenContext {
         }
     }
 
-    public void onDeactivate(ScreenId screenKey) {
+    public float onDeactivate(ScreenId screenKey) {
         if (screenSwitch.getActiveScreen() != null) {
-            screenSwitch.getActiveScreen().onDeactivate(screenKey);
+            return screenSwitch.getActiveScreen().onDeactivate(screenKey);
         }
+        return 0;
     }
 
     /**
@@ -148,6 +149,12 @@ public class SubScreenContext implements ScreenContext {
     public void showScreen(SubScreenId id) {
         showSubScreen = true;
         screenSwitch.setActive(id);
+    }
+
+    @Override
+    public void initialize(SubScreenId id) {
+        showSubScreen = true;
+        screenSwitch.setScreenSimple(id);
     }
 
     @Override
