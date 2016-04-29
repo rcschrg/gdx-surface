@@ -2,8 +2,8 @@ package de.verygame.square.core.screen.transition;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 
-import de.verygame.square.core.ScreenContext;
-import de.verygame.square.core.screen.Transition;
+import de.verygame.square.core.screen.base.ScreenContext;
+import de.verygame.square.core.screen.base.Transition;
 import de.verygame.square.util.modifier.base.Modifier;
 
 /**
@@ -11,8 +11,6 @@ import de.verygame.square.util.modifier.base.Modifier;
  */
 public abstract class BaseTransition implements Transition {
 
-    /** True if the transition finished */
-    protected boolean finished;
     /** Duration of the transition */
     protected float duration;
     /** Underlying interpolating modifier */
@@ -58,15 +56,13 @@ public abstract class BaseTransition implements Transition {
     }
 
     @Override
-    public boolean isFinished() {
-        return finished;
+    public boolean hasFinished() {
+        return animationModifier.hasFinished();
     }
 
     @Override
     public void reset(ScreenContext context) {
         this.context = context;
-
-        finished = false;
 
         if (animationModifier != null) {
             animationModifier.reset();

@@ -12,27 +12,11 @@ public abstract class ShiftTransition extends BaseTransition {
      * Available shift directions.
      */
     public enum Shift {
-        LEFT, RIGHT;
+        LEFT, RIGHT
     }
 
     /** Shift direction of the screen */
     protected final Shift shift;
-
-    /**
-     * Creates a left-shift transition with a duration of one second.
-     */
-    public ShiftTransition() {
-        this(1f);
-    }
-
-    /**
-     * Creates a left-shift transition with the given duration.
-     *
-     * @param duration duration of the transition
-     */
-    public ShiftTransition(float duration) {
-        this(Shift.LEFT, duration);
-    }
 
     /**
      * Creates a shift transition with the given duration.
@@ -63,6 +47,18 @@ public abstract class ShiftTransition extends BaseTransition {
      */
     public static class Out extends ShiftTransition {
 
+        public Out() {
+            this(1f);
+        }
+
+        public Out(float duration) {
+            this(Shift.LEFT, duration);
+        }
+
+        public Out(Shift shift, float duration) {
+            super(shift, duration);
+        }
+
         @Override
         protected void init() {
             if (animationModifier == null) {
@@ -77,6 +73,18 @@ public abstract class ShiftTransition extends BaseTransition {
      * @author Rico Schrage
      */
     public static class In extends ShiftTransition {
+
+        public In() {
+            this(1f);
+        }
+
+        public In(float duration) {
+            this(Shift.LEFT, duration);
+        }
+
+        public In(Shift shift, float duration) {
+            super(shift, duration);
+        }
 
         @Override
         protected void init() {

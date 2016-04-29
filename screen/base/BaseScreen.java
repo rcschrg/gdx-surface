@@ -1,4 +1,4 @@
-package de.verygame.square.core;
+package de.verygame.square.core.screen.base;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -18,11 +18,17 @@ import java.util.Map;
  */
 public abstract class BaseScreen implements Screen {
 
+    /** Index of the deactivate transition in the transition array */
+    private static final int T_OUT_INDEX = 0;
+    /** Index of the activate transition in the transition array */
+    private static final int T_IN_INDEX = 1;
+
     /** content, which is displayed by the screen */
     protected final Content content;
-
     /** All not content related information about the screen */
     protected final SubScreenContext context;
+    /** De|Activate transition*/
+    protected Transition[] transition;
 
     /**
      * Constructs a basic screen.
@@ -33,22 +39,16 @@ public abstract class BaseScreen implements Screen {
     public BaseScreen(Viewport viewport, Content content) {
         this.context = new SubScreenContext(viewport);
         this.content = content;
+        this.transition = new Transition[2];
     }
 
-    /**
-     * Will be called when the screen gets set inactive.
-     *
-     * @param predecessor predecessor of the screen
-     * @return delay time to perform an animation
-     */
-    protected abstract float onSetInactive(ScreenId predecessor);
+    public void setOutTransition(Transition out) {
+        this.transition[T_OUT_INDEX] = out;
+    }
 
-    /**
-     * Will be called when screen gets set active.
-     *
-     * @param successor succesor of the screen
-     */
-    protected abstract void onSetActive(ScreenId successor);
+    public void setInTransition(Transition in) {
+        this.transition[T_IN_INDEX] = in;
+    }
 
     @Override
     public void onActivate(ScreenId predecessor) {
@@ -58,7 +58,9 @@ public abstract class BaseScreen implements Screen {
         context.onActivate(predecessor);
         content.onActivate(predecessor, context.getInputHandler());
 
-        onSetActive(predecessor);
+        if (transition[T_IN_INDEX] != null) {
+            transition[T_IN_INDEX].reset(context);
+        }
     }
 
     @Override
@@ -66,7 +68,11 @@ public abstract class BaseScreen implements Screen {
         float delay = context.onDeactivate(successor);
         content.onDeactivate(successor, context.getInputHandler());
 
-        return Math.max(onSetInactive(successor), delay);
+        if (transition[T_OUT_INDEX] != null) {
+            transition[T_OUT_INDEX].reset(context);
+            return Math.max(transition[T_OUT_INDEX].getDuration(), delay);
+        }
+        return 0;
     }
 
     @Override
@@ -96,9 +102,21 @@ public abstract class BaseScreen implements Screen {
 
     @Override
     public void onRender() {
-        content.onRender();
+        for (final Transition t : transition) {
+            if (t != null) {
+                t.update();
+                t.preRender(context.getBatch());
+            }
+        }
 
+        content.onRender();
         context.renderScreen();
+
+        for (final Transition t : transition) {
+            if (t != null) {
+                t.postRender(context.getBatch());
+            }
+        }
     }
 
     @Override

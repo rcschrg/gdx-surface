@@ -1,4 +1,4 @@
-package de.verygame.square.core;
+package de.verygame.square.core.screen.base;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;

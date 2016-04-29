@@ -1,4 +1,4 @@
-package de.verygame.square.core;
+package de.verygame.square.core.screen.base;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;

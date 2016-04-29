@@ -1,10 +1,10 @@
-package de.verygame.square.core.content;
+package de.verygame.square.core.screen;
 
 import com.badlogic.gdx.InputMultiplexer;
 
-import de.verygame.square.core.Content;
-import de.verygame.square.core.ScreenContext;
-import de.verygame.square.core.ScreenId;
+import de.verygame.square.core.screen.base.Content;
+import de.verygame.square.core.screen.base.ScreenContext;
+import de.verygame.square.core.screen.base.ScreenId;
 import de.verygame.square.core.annotation.Dependency;
 import de.verygame.square.core.event.EventHandler;
 import de.verygame.square.core.resource.Resource;

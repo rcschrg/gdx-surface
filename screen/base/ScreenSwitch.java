@@ -1,4 +1,4 @@
-package de.verygame.square.core;
+package de.verygame.square.core.screen.base;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;

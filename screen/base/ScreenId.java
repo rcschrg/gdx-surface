@@ -1,4 +1,4 @@
-package de.verygame.square.core;
+package de.verygame.square.core.screen.base;
 
 /**
  * Created by rschr on 04.01.2016.

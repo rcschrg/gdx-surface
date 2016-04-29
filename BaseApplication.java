@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import de.verygame.square.core.event.Event;
 import de.verygame.square.core.event.EventListener;
 import de.verygame.square.core.resource.ResourceHandler;
+import de.verygame.square.core.screen.base.Screen;
+import de.verygame.square.core.screen.base.ScreenSwitch;
 
 /**
  * @author Rico Schrage
@@ -17,7 +19,7 @@ import de.verygame.square.core.resource.ResourceHandler;
  * Provides an ordered, convenient entry point for game applications. Creates and handles batch and resourceHandler.
  * It also offers screen management.
  *
- * @see ScreenSwitch
+ * @see de.verygame.square.core.screen.base.ScreenSwitch
  */
 public abstract class BaseApplication implements ApplicationListener, EventListener {
 
@@ -28,17 +30,17 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
     /** Main viewport of the application, can be overwritten per screen */
     protected Viewport viewport;
     /** Responsible for screen switching */
-    protected ScreenSwitch screenSwitch;
+    protected de.verygame.square.core.screen.base.ScreenSwitch screenSwitch;
     /** True if the resources has been loaded */
     private boolean init = false;
 
     /**
-     * Convenience method for {@link ScreenSwitch#addScreen(ScreenId, Screen)}.
+     * Convenience method for {@link de.verygame.square.core.screen.base.ScreenSwitch#addScreen(de.verygame.square.core.screen.base.ScreenId, de.verygame.square.core.screen.base.Screen)}.
      *
      * @param id id of the screen
      * @param screen screen
      */
-    protected void add(ScreenId id, Screen screen) {
+    protected void add(de.verygame.square.core.screen.base.ScreenId id, de.verygame.square.core.screen.base.Screen screen) {
         if (batch == null) {
             throw new IllegalStateException("You must not call this method before create() has been called!");
         }
@@ -50,24 +52,24 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
      *
      * @param id id of the screen you want to activate
      */
-    protected void setActive(ScreenId id) {
+    protected void setActive(de.verygame.square.core.screen.base.ScreenId id) {
         screenSwitch.setActive(id);
     }
 
     /**
      * @return the currently active screen
      */
-    protected ScreenId getActiveScreenId() {
+    protected de.verygame.square.core.screen.base.ScreenId getActiveScreenId() {
         return screenSwitch.getActiveScreenId();
     }
 
     /**
-     * In this method you should create and add all your screens (use {@link #add(ScreenId, Screen)}) for adding
+     * In this method you should create and add all your screens (use {@link #add(de.verygame.square.core.screen.base.ScreenId, Screen)}) for adding
      * screens.
      *
      * @return Id of the active screen
      */
-    protected abstract ScreenId createScreens();
+    protected abstract de.verygame.square.core.screen.base.ScreenId createScreens();
 
     /**
      * This method should return a viewport, which will be used by the whole game.

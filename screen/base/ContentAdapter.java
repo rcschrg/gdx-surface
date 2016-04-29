@@ -1,4 +1,4 @@
-package de.verygame.square.core;
+package de.verygame.square.core.screen.base;
 
 import com.badlogic.gdx.InputMultiplexer;
 
@@ -15,12 +15,12 @@ public class ContentAdapter implements Content {
     }
 
     @Override
-    public void onActivate(ScreenId predecessor, InputMultiplexer inputMultiplexer) {
+    public void onActivate(de.verygame.square.core.screen.base.ScreenId predecessor, InputMultiplexer inputMultiplexer) {
         //default: do nothing
     }
 
     @Override
-    public void onDeactivate(ScreenId successor, InputMultiplexer inputMultiplexer) {
+    public void onDeactivate(de.verygame.square.core.screen.base.ScreenId successor, InputMultiplexer inputMultiplexer) {
         //default: do nothing
     }
 

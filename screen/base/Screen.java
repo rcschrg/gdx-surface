@@ -1,4 +1,4 @@
-package de.verygame.square.core;
+package de.verygame.square.core.screen.base;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
@@ -12,6 +12,20 @@ import java.util.Map;
  * Describes a logical screen used by the {@link ScreenSwitch}.
  */
 public interface Screen extends Disposable {
+
+    /**
+     * Sets a transition which will determine the animation when the screen gets deactivated.
+     *
+     * @param transition the transition
+     */
+    void setOutTransition(Transition transition);
+
+    /**
+     * Sets a transition which will determine the animation when the screen gets activated.
+     *
+     * @param transition the transition
+     */
+    void setInTransition(Transition transition);
 
     /**
      * Will be called when the screen gets added to a screen switch.

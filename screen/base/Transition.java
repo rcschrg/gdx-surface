@@ -1,8 +1,6 @@
-package de.verygame.square.core.screen;
+package de.verygame.square.core.screen.base;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
-
-import de.verygame.square.core.ScreenContext;
 
 /**
  * @author Rico Schrage
@@ -16,6 +14,6 @@ public interface Transition {
     void postRender(PolygonSpriteBatch batch);
 
     float getDuration();
-    boolean isFinished();
+    boolean hasFinished();
 
 }
