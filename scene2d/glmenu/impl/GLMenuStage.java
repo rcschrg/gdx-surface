@@ -22,12 +22,10 @@ import java.util.Set;
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.Scene2DMapping;
-import de.verygame.square.util.glmenu.BuilderMapping;
 import de.verygame.square.util.glmenu.GLMenu;
 import de.verygame.square.util.glmenu.GLMenuCore;
-import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
-import de.verygame.square.util.glmenu.exception.GLMenuSyntaxException;
-import de.verygame.square.util.glmenu.exception.TagUnknownException;
+import de.verygame.square.util.glmenu.exception.GLMenuException;
+import de.verygame.square.util.glmenu.handler.GlobalMappings;
 
 /**
  * Implementation of {@link GLMenu} for the scene2d package.
@@ -45,14 +43,12 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
     /** Contains all elements, which have the attribute <code>name</code> */
     private Map<String, Actor> elementMap;
 
-    /** Contains all constants */
-    private Map<String, Object> constMap;
-
     /** Maps tags to builders */
     private Scene2DMapping mapping;
 
     /** see {@link #bind(Object)} */
     private Object bindTarget;
+    private Map<String, Object> constMap;
 
     /**
      * Constructs scene2d stage using a xml file, which describes the setup. This will use the standard implementation of ITagMapping and
@@ -70,18 +66,17 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
         super(viewport, batch);
 
         this.resource = resourceFile;
-        this.mapping = new Scene2DMapping(resourceHandler, skinResource);
+        this.mapping = new Scene2DMapping(resourceHandler);
         this.menuCore = new GLMenuCore<>(mapping);
     }
 
     /**
      * Sets the general mapping.
      *
-     * @param mapping {@link de.verygame.square.util.glmenu.Mappings}
+     * @param mapping {@link GlobalMappings}
      */
     public void setMapping(Scene2DMapping mapping) {
         this.mapping = mapping;
-        this.menuCore.setMappings(mapping);
     }
 
     /**
@@ -175,6 +170,14 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
     }
 
     @Override
+    public Object getConstByName(String name) {
+        if (constMap == null) {
+            throw new IllegalStateException("You have to load the gl-menu-file first!");
+        }
+        return constMap.get(name);
+    }
+
+    @Override
     public void loadMenu() {
         try {
             this.preLoad();
@@ -185,7 +188,7 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
             this.constMap = menuCore.getConstMap();
             this.postLoad();
         }
-        catch (XmlPullParserException | GLMenuSyntaxException e) {
+        catch (XmlPullParserException e) {
             Gdx.app.debug("Parser", "Error occurred while parsing:" + resource + ".", e);
             Gdx.app.debug("Parser", e.getMessage(), e);
         }
@@ -193,7 +196,7 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
             Gdx.app.debug("IO", resource + " could not be opened!", e);
             Gdx.app.debug("IO", e.getMessage(), e);
         }
-        catch (TagUnknownException | AttributeUnknownException  e) {
+        catch (GLMenuException e) {
             Gdx.app.debug("GLMenu", e.getMessage(), e);
         }
     }
@@ -201,20 +204,6 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
     @Override
     public void bind(Object bindTarget) {
         this.bindTarget = bindTarget;
-    }
-
-    @Override
-    public void addMappingExtension(BuilderMapping<Actor> extension) {
-        this.mapping.addMappingExtension(extension);
-    }
-
-    @Override
-    public Object getConstByName(String name) {
-        if (constMap == null) {
-            throw new IllegalStateException("You have to load the gl-menu-file first!");
-        }
-
-        return constMap.get(name);
     }
 
 }
