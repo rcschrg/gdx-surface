@@ -72,7 +72,7 @@ public abstract class BaseScreen implements Screen {
             transition[T_OUT_INDEX].reset(context);
             return Math.max(transition[T_OUT_INDEX].getDuration(), delay);
         }
-        return 0;
+        return delay;
     }
 
     @Override
