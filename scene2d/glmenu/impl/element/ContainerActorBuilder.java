@@ -3,7 +3,7 @@ package de.verygame.square.core.scene2d.glmenu.impl.element;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 
-import de.verygame.square.util.glmenu.handler.builder.base.AbstractContainerBuilder;
+import de.verygame.square.util.glmenu.handler.builder.AbstractContainerBuilder;
 
 /**
  * @author Rico Schrage

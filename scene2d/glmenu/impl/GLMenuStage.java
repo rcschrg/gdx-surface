@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,7 +25,9 @@ import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.Scene2DMapping;
 import de.verygame.square.util.glmenu.GLMenu;
 import de.verygame.square.util.glmenu.GLMenuCore;
+import de.verygame.square.util.glmenu.GLMenuInputEvent;
 import de.verygame.square.util.glmenu.exception.GLMenuException;
+import de.verygame.square.util.glmenu.handler.BuilderMapping;
 import de.verygame.square.util.glmenu.handler.GlobalMappings;
 
 /**
@@ -58,11 +61,11 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
      * @param resourceFile xml file, which describes the setup of the menu
      * @param resourceHandler contains language bundles and skins.
      */
-    public GLMenuStage(Batch batch, InputStream resourceFile, ResourceHandler resourceHandler, Resource skinResource) {
-        this(batch, new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), resourceFile, resourceHandler, skinResource);
+    public GLMenuStage(Batch batch, InputStream resourceFile, ResourceHandler resourceHandler) {
+        this(batch, new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), resourceFile, resourceHandler);
     }
 
-    public GLMenuStage(Batch batch, Viewport viewport, InputStream resourceFile, ResourceHandler resourceHandler, Resource skinResource) {
+    public GLMenuStage(Batch batch, Viewport viewport, InputStream resourceFile, ResourceHandler resourceHandler) {
         super(viewport, batch);
 
         this.resource = resourceFile;
@@ -90,6 +93,10 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
         }
 
         return elementMap.size();
+    }
+
+    public void addElementMapping(BuilderMapping<Actor> mapping) {
+        this.menuCore.addElementMapping(mapping);
     }
 
     /**
@@ -206,4 +213,15 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
         this.bindTarget = bindTarget;
     }
 
+    @Override
+    public void onInputEvent(GLMenuInputEvent inputEvent) {
+        menuCore.onInputEvent(inputEvent);
+    }
+
+    @Override
+    public void act() {
+        super.act();
+
+        menuCore.update(Gdx.graphics.getDeltaTime());
+    }
 }

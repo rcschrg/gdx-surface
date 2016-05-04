@@ -27,7 +27,7 @@ import de.verygame.square.core.scene2d.glmenu.impl.element.PanelBuilder;
 import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.square.core.scene2d.widget.Switch;
 import de.verygame.square.util.glmenu.handler.BuilderMapping;
-import de.verygame.square.util.glmenu.handler.builder.base.GLMenuBuilder;
+import de.verygame.square.util.glmenu.handler.builder.GLMenuBuilder;
 
 /**
  * @author Rico Schrage
