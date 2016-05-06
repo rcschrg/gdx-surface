@@ -33,8 +33,9 @@ public interface Content extends Disposable {
      *
      * @param successor successor of the screen
      * @param inputHandler Will chain input processors
+     * @return delay before screen will get deactivated
      */
-    void onDeactivate(ScreenId successor, InputMultiplexer inputHandler);
+    float onDeactivate(ScreenId successor, InputMultiplexer inputHandler);
 
     /**
      * Will be called on update. It will only be called when the underlying screen is active.

@@ -66,13 +66,13 @@ public abstract class BaseScreen implements Screen {
     @Override
     public float onDeactivate(ScreenId successor) {
         float delay = context.onDeactivate(successor);
-        content.onDeactivate(successor, context.getInputHandler());
+        float contentDelay = content.onDeactivate(successor, context.getInputHandler());
 
         if (transition[T_OUT_INDEX] != null) {
             transition[T_OUT_INDEX].reset(context);
-            return Math.max(transition[T_OUT_INDEX].getDuration(), delay);
+            return Math.max(Math.max(transition[T_OUT_INDEX].getDuration(), delay), contentDelay);
         }
-        return delay;
+        return Math.max(delay, contentDelay);
     }
 
     @Override

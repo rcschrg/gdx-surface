@@ -16,16 +16,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Comparator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.Scene2DMapping;
 import de.verygame.square.util.glmenu.GLMenu;
 import de.verygame.square.util.glmenu.GLMenuCore;
-import de.verygame.square.util.glmenu.GLMenuInputEvent;
+import de.verygame.square.util.glmenu.handler.ActionSequence;
+import de.verygame.square.util.glmenu.input.GLMenuInputEvent;
 import de.verygame.square.util.glmenu.exception.GLMenuException;
 import de.verygame.square.util.glmenu.handler.BuilderMapping;
 import de.verygame.square.util.glmenu.handler.GlobalMappings;
@@ -71,6 +70,20 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
         this.resource = resourceFile;
         this.mapping = new Scene2DMapping(resourceHandler);
         this.menuCore = new GLMenuCore<>(mapping);
+    }
+
+    public float calcActionSequenceDeactivationDelay() {
+        Map<String, ActionSequence> ASMap = menuCore.getActionSequenceMap();
+        float maxDelay = 0f;
+        for (Map.Entry<String, ActionSequence> entry : ASMap.entrySet()) {
+            if (entry.getValue().getStartEvent() == GLMenuInputEvent.DEACTIVATE) {
+                float duration = entry.getValue().getDuration();
+                if (duration > maxDelay) {
+                    maxDelay = duration;
+                }
+            }
+        }
+        return maxDelay;
     }
 
     /**

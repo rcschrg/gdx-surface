@@ -11,7 +11,7 @@ import de.verygame.square.core.event.EventHandler;
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.glmenu.impl.GLMenuStage;
-import de.verygame.square.util.glmenu.GLMenuInputEvent;
+import de.verygame.square.util.glmenu.input.GLMenuInputEvent;
 
 /**
  * @author Rico Schrage
@@ -68,10 +68,11 @@ public abstract class StageContent extends EventHandler implements Content {
     }
 
     @Override
-    public void onDeactivate(ScreenId successor, InputMultiplexer inputMultiplexer) {
+    public float onDeactivate(ScreenId successor, InputMultiplexer inputMultiplexer) {
         inputMultiplexer.removeProcessor(stage);
 
         stage.onInputEvent(GLMenuInputEvent.DEACTIVATE);
+        return stage.calcActionSequenceDeactivationDelay();
     }
 
     @Override

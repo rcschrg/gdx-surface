@@ -20,8 +20,8 @@ public class ContentAdapter implements Content {
     }
 
     @Override
-    public void onDeactivate(de.verygame.square.core.screen.base.ScreenId successor, InputMultiplexer inputMultiplexer) {
-        //default: do nothing
+    public float onDeactivate(de.verygame.square.core.screen.base.ScreenId successor, InputMultiplexer inputMultiplexer) {
+        return 0f;
     }
 
     @Override
