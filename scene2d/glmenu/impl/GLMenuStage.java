@@ -73,9 +73,9 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
     }
 
     public float calcActionSequenceDeactivationDelay() {
-        Map<String, ActionSequence> ASMap = menuCore.getActionSequenceMap();
+        Map<String, ActionSequence> aMap = menuCore.getActionSequenceMap();
         float maxDelay = 0f;
-        for (Map.Entry<String, ActionSequence> entry : ASMap.entrySet()) {
+        for (Map.Entry<String, ActionSequence> entry : aMap.entrySet()) {
             if (entry.getValue().getStartEvent() == GLMenuInputEvent.DEACTIVATE) {
                 float duration = entry.getValue().getDuration();
                 if (duration > maxDelay) {

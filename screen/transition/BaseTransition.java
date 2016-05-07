@@ -20,11 +20,6 @@ public abstract class BaseTransition implements Transition {
     protected ScreenContext context;
 
     /**
-     * Called after every reset.
-     */
-    protected abstract void init();
-
-    /**
      * Creates a base transition with the given duration.
      *
      * @param duration duration of the transition
@@ -32,6 +27,11 @@ public abstract class BaseTransition implements Transition {
     public BaseTransition(float duration) {
         this.duration = duration;
     }
+
+    /**
+     * Called after every reset.
+     */
+    protected abstract void init();
 
     @Override
     public void preRender(PolygonSpriteBatch batch) {

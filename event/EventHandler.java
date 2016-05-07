@@ -23,7 +23,7 @@ import de.verygame.square.core.event.Event.EventType;
 public class EventHandler {
 
     /** List of all registered {@link EventListener}'s */
-    private final Map<EventListener, List<EventType>> eventHandler;
+    private final Map<EventListener, List<EventType>> eventHandlerMap;
 
     /** Map of all cached methods */
     private final Map<EventListener, Map<Event, Method>> cache;
@@ -32,7 +32,7 @@ public class EventHandler {
      * Construct an event-emitter.
      */
     public EventHandler() {
-        this.eventHandler = new HashMap<>();
+        this.eventHandlerMap = new HashMap<>();
         this.cache = new HashMap<>();
     }
 
@@ -53,13 +53,13 @@ public class EventHandler {
      * @param type event types the listener will listen to
      */
     public void register(EventListener eventListener, EventType... type) {
-        if (eventHandler.containsKey(eventListener)) {
-            Collections.addAll(eventHandler.get(eventListener), type);
+        if (eventHandlerMap.containsKey(eventListener)) {
+            Collections.addAll(eventHandlerMap.get(eventListener), type);
         }
         else {
             final List<Event.EventType> list = new ArrayList<>(EventType.values().length);
             Collections.addAll(list, type);
-            this.eventHandler.put(eventListener, list);
+            this.eventHandlerMap.put(eventListener, list);
         }
     }
 
@@ -69,10 +69,10 @@ public class EventHandler {
      * @param eventListener {@link EventListener}, which should get unregistered
      */
     public void unregister(EventListener eventListener, EventType... type) {
-        if (eventHandler.containsKey(eventListener)) {
-            final List<EventType> list = eventHandler.get(eventListener);
+        if (eventHandlerMap.containsKey(eventListener)) {
+            final List<EventType> list = eventHandlerMap.get(eventListener);
             if (list.size() == 1) {
-                eventHandler.remove(eventListener);
+                eventHandlerMap.remove(eventListener);
             }
             else {
                 for (EventType aType : type) {
@@ -89,8 +89,8 @@ public class EventHandler {
      * @return true if the listener is already registered, false otherwise
      */
     public boolean isRegistered(EventListener eventListener, EventType eventType) {
-        return eventHandler.containsKey(eventListener)
-                && eventHandler.get(eventListener).contains(eventType);
+        return eventHandlerMap.containsKey(eventListener)
+                && eventHandlerMap.get(eventListener).contains(eventType);
     }
 
     /**
@@ -104,7 +104,7 @@ public class EventHandler {
      * @see Event
      */
     public void emitEvent(Event event, Object... attachedObjects) {
-        for (Map.Entry<EventListener, List<EventType>> entry : eventHandler.entrySet()) {
+        for (Map.Entry<EventListener, List<EventType>> entry : eventHandlerMap.entrySet()) {
             final EventListener eventListener = entry.getKey();
             final boolean sendEvent = entry.getValue().contains(event.getType());
             if (sendEvent && !emitReflectionEvent(eventListener, event, attachedObjects)) {

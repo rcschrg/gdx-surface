@@ -42,10 +42,12 @@ public abstract class BaseScreen implements Screen {
         this.transition = new Transition[2];
     }
 
+    @Override
     public void setOutTransition(Transition out) {
         this.transition[T_OUT_INDEX] = out;
     }
 
+    @Override
     public void setInTransition(Transition in) {
         this.transition[T_IN_INDEX] = in;
     }
