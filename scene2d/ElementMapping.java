@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
@@ -24,6 +23,7 @@ import de.verygame.square.core.scene2d.glmenu.impl.element.GenericElementBuilder
 import de.verygame.square.core.scene2d.glmenu.impl.element.GroupBuilder;
 import de.verygame.square.core.scene2d.glmenu.impl.element.LabelBuilder;
 import de.verygame.square.core.scene2d.glmenu.impl.element.PanelBuilder;
+import de.verygame.square.core.scene2d.glmenu.impl.element.SliderBuilder;
 import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.square.core.scene2d.widget.Switch;
 import de.verygame.square.util.glmenu.handler.BuilderMapping;
@@ -79,7 +79,7 @@ public class ElementMapping implements BuilderMapping<Actor> {
             case "select":
                 return new GenericElementBuilder<>(new SelectBox<String>(skin));
             case "slider":
-                return new GenericElementBuilder<>(new Slider(0, 100, 1, true, skin));
+                return new SliderBuilder(skin);
             case "textArea":
                 return new GenericElementBuilder<>(new TextArea("", skin));
             case "textField":
