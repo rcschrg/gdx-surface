@@ -61,10 +61,8 @@ public abstract class ShiftTransition extends BaseTransition {
 
         @Override
         protected void init() {
-            if (animationModifier == null) {
-                animationModifier = (shift == Shift.LEFT) ? new SingleValueModifier(duration, 0, -context.getViewport().getWorldWidth(), new ShiftCallback()) :
-                        new SingleValueModifier(duration, 0, context.getViewport().getWorldWidth(), new ShiftCallback());
-            }
+            animationModifier = (shift == Shift.LEFT) ? new SingleValueModifier(duration, 0, -context.getViewport().getWorldWidth(), new ShiftCallback()) :
+                   new SingleValueModifier(duration, 0, context.getViewport().getWorldWidth(), new ShiftCallback());
         }
 
     }
@@ -88,10 +86,8 @@ public abstract class ShiftTransition extends BaseTransition {
 
         @Override
         protected void init() {
-            if (animationModifier == null) {
-                animationModifier = (shift == Shift.LEFT) ? new SingleValueModifier(duration, -context.getViewport().getWorldWidth(), 0, new ShiftCallback()) :
+            animationModifier = (shift == Shift.LEFT) ? new SingleValueModifier(duration, -context.getViewport().getWorldWidth(), 0, new ShiftCallback()) :
                         new SingleValueModifier(duration, context.getViewport().getWorldWidth(), 0, new ShiftCallback());
-            }
         }
 
     }

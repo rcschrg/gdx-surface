@@ -76,14 +76,17 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
     }
 
     @Override
-    public Actor getElement() {
+    public void postBuild() {
         if (dirty && font != null && fontSize != -1) {
             Label label = (Label) element;
             FreeTypeFontParameter para = FontUtils.obtainParameterBuilder().size(fontSize).build();
             label.getStyle().font = res.get(this.font, FreeTypeFontGenerator.class).generateFont(para);
             label.setStyle(label.getStyle());
         }
+    }
 
+    @Override
+    public Actor getElement() {
         return element;
     }
 
