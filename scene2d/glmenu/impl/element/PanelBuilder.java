@@ -6,18 +6,19 @@ import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.resource.ResourceUnit;
 import de.verygame.square.core.resource.ResourceUnitType;
 import de.verygame.square.core.resource.ResourceUtils;
+import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
 
 /**
  * @author Rico Schrage
  */
-public class PanelBuilder extends GenericContainerBuilder<de.verygame.square.core.scene2d.widget.Panel> {
+public class PanelBuilder extends GenericContainerBuilder<Panel> {
 
     private static final String ATTRIBUTE_BACKGROUND = "background";
 
     private ResourceHandler res;
 
-    public PanelBuilder(de.verygame.square.core.scene2d.widget.Panel instance, ResourceHandler res) {
+    public PanelBuilder(Panel instance, ResourceHandler res) {
         super(instance);
 
         this.res = res;

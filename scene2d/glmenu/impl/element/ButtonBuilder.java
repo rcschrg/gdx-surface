@@ -46,6 +46,16 @@ public class ButtonBuilder extends GenericContainerBuilder<TextButton> {
     }
 
     @Override
+    public void preBuild() {
+        labelBuilder.preBuild();
+    }
+
+    @Override
+    public void postBuild() {
+        labelBuilder.postBuild();
+    }
+
+    @Override
     public Actor getElement() {
         labelBuilder.getElement();
 
