@@ -13,6 +13,7 @@ import de.verygame.square.util.glmenu.handler.builder.AbstractElementBuilder;
 public class GenericElementBuilder<T extends Actor> extends AbstractElementBuilder<Actor> {
 
     private static final String ATTRIBUTE_COLOR = "color";
+    private static final String ATTRIBUTE_ALPHA = "alpha";
 
     public GenericElementBuilder(T element) {
         super(element.getClass());
@@ -28,4 +29,10 @@ public class GenericElementBuilder<T extends Actor> extends AbstractElementBuild
         }
     }
 
+    @Override
+    protected void applyFloatSpecial(String attribute, float value) throws AttributeUnknownException {
+        if (ATTRIBUTE_ALPHA.equals(attribute)) {
+            element.getColor().a = value;
+        }
+    }
 }
