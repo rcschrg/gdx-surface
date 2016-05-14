@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.ObjectMap;
 
 import java.io.ByteArrayInputStream;
@@ -59,12 +60,18 @@ public class ResourceHandler extends EventHandler implements Disposable {
     private final Map<ResourceUnit, BitmapFont> fontMap;
 
     /**
+     * Cache for anonymous fonts.
+     */
+    private final Map<Resource, IntMap<BitmapFont>> anonfontCache;
+
+    /**
      * Creates a resource handler.
      */
     public ResourceHandler() {
         this.pathMap = new EnumMap<>(ResourceType.class);
         this.regionMap = new HashMap<>();
         this.fontMap = new HashMap<>();
+        this.anonfontCache = new HashMap<>();
 
         final FileHandleResolver resolver = new InternalFileHandleResolver();
         this.assetManager = new AssetManager(resolver);
@@ -244,12 +251,31 @@ public class ResourceHandler extends EventHandler implements Disposable {
      */
     public BitmapFont createFont(ResourceUnit freeTypeFont, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
         if (freeTypeFont.getUnitType() == ResourceUnitType.BITMAP_FONT) {
+            if (fontMap.containsKey(freeTypeFont)) {
+                fontMap.get(freeTypeFont).dispose();
+            }
             FreeTypeFontGenerator font = get(freeTypeFont.getParent(), FreeTypeFontGenerator.class);
             BitmapFont bFont = font.generateFont(parameter);
             fontMap.put(freeTypeFont, bFont);
             return bFont;
         }
         throw new IllegalArgumentException("The resource have to be a font.");
+    }
+
+    public BitmapFont createCachedFont(Resource freeTypeFont, FreeTypeFontGenerator.FreeTypeFontParameter parameter) {
+        if (freeTypeFont.getType() == ResourceType.FONT) {
+            if (!anonfontCache.containsKey(freeTypeFont)) {
+                anonfontCache.put(freeTypeFont, new IntMap<BitmapFont>());
+            }
+            IntMap<BitmapFont> resMap = anonfontCache.get(freeTypeFont);
+            if (resMap.containsKey(parameter.size)) {
+                return resMap.get(parameter.size);
+            }
+            BitmapFont font = get(freeTypeFont, FreeTypeFontGenerator.class).generateFont(parameter);
+            resMap.put(parameter.size, font);
+            return font;
+        }
+        throw new IllegalArgumentException("The resource have to be a font generator!");
     }
 
     /**

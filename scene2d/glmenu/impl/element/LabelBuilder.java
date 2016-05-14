@@ -1,6 +1,5 @@
 package de.verygame.square.core.scene2d.glmenu.impl.element;
 
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -80,7 +79,7 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
         if (dirty && font != null && fontSize != -1) {
             Label label = (Label) element;
             FreeTypeFontParameter para = FontUtils.obtainParameterBuilder().size(fontSize).build();
-            label.getStyle().font = res.get(this.font, FreeTypeFontGenerator.class).generateFont(para);
+            label.getStyle().font = res.createCachedFont(font, para);
             label.setStyle(label.getStyle());
         }
     }
