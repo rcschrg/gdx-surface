@@ -79,6 +79,7 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
         if (dirty && font != null && fontSize != -1) {
             Label label = (Label) element;
             FreeTypeFontParameter para = FontUtils.obtainParameterBuilder().size(fontSize).build();
+            res.destroyCachedFont(label.getStyle().font);
             label.getStyle().font = res.createCachedFont(font, para);
             label.setStyle(label.getStyle());
         }
