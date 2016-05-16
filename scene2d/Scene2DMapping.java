@@ -44,4 +44,9 @@ public class Scene2DMapping implements GlobalMappings<Actor> {
         return resourceHandler.getString(key);
     }
 
+    @Override
+    public float getDensity() {
+        return Gdx.graphics.getDensity();
+    }
+
 }

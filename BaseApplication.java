@@ -11,6 +11,7 @@ import de.verygame.square.core.event.Event;
 import de.verygame.square.core.event.EventListener;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.screen.base.Screen;
+import de.verygame.square.core.screen.base.ScreenId;
 import de.verygame.square.core.screen.base.ScreenSwitch;
 
 /**
@@ -30,7 +31,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
     /** Main viewport of the application, can be overwritten per screen */
     protected Viewport viewport;
     /** Responsible for screen switching */
-    protected de.verygame.square.core.screen.base.ScreenSwitch screenSwitch;
+    protected ScreenSwitch screenSwitch;
     /** True if the resources has been loaded */
     private boolean init = false;
 
@@ -40,7 +41,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
      * @param id id of the screen
      * @param screen screen
      */
-    protected void add(de.verygame.square.core.screen.base.ScreenId id, de.verygame.square.core.screen.base.Screen screen) {
+    protected void add(ScreenId id, Screen screen) {
         if (batch == null) {
             throw new IllegalStateException("You must not call this method before create() has been called!");
         }
@@ -52,14 +53,14 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
      *
      * @param id id of the screen you want to activate
      */
-    protected void setActive(de.verygame.square.core.screen.base.ScreenId id) {
+    protected void setActive(ScreenId id) {
         screenSwitch.setActive(id);
     }
 
     /**
      * @return the currently active screen
      */
-    protected de.verygame.square.core.screen.base.ScreenId getActiveScreenId() {
+    protected ScreenId getActiveScreenId() {
         return screenSwitch.getActiveScreenId();
     }
 
@@ -69,7 +70,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
      *
      * @return Id of the active screen
      */
-    protected abstract de.verygame.square.core.screen.base.ScreenId createScreens();
+    protected abstract ScreenId createScreens();
 
     /**
      * This method should return a viewport, which will be used by the whole game.
