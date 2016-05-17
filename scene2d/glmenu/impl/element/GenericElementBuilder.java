@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import de.verygame.square.util.ColorUtils;
 import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
-import de.verygame.square.util.glmenu.handler.builder.AbstractElementBuilder;
+import de.verygame.square.util.glmenu.mapping.builder.AbstractElementBuilder;
 
 /**
  * @author Rico Schrage

@@ -27,7 +27,7 @@ import de.verygame.square.util.glmenu.handler.ActionSequence;
 import de.verygame.square.util.glmenu.input.GLMenuInputEvent;
 import de.verygame.square.util.glmenu.exception.GLMenuException;
 import de.verygame.square.util.glmenu.handler.BuilderMapping;
-import de.verygame.square.util.glmenu.handler.GlobalMappings;
+import de.verygame.square.util.glmenu.mapping.GlobalMappings;
 
 /**
  * Implementation of {@link GLMenu} for the scene2d package.

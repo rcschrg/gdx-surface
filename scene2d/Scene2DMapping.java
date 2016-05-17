@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.util.glmenu.handler.GlobalMappings;
+import de.verygame.square.util.glmenu.mapping.GlobalMappings;
 
 /**
  * Implementation of {@link GlobalMappings} for scene 2d.
