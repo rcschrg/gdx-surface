@@ -1,5 +1,6 @@
 package de.verygame.square.core.scene2d.glmenu.impl.element;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -26,7 +27,7 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
     private boolean dirty;
 
     public LabelBuilder(Skin skin, ResourceHandler resourceHandler) {
-       this(resourceHandler, new Label("", skin));
+       this(resourceHandler, new Label("", new Label.LabelStyle(skin.get(Label.LabelStyle.class))));
     }
 
     public LabelBuilder(ResourceHandler resourceHandler, Label label) {
@@ -40,8 +41,11 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
         Label label = (Label) element;
         switch (attr) {
             case ATTRIBUTE_FONT:
-                font = ResourceUtils.lookUp(value, Resource.class);
-                dirty = true;
+                Resource newFont = ResourceUtils.lookUp(value, Resource.class);
+                if (font != newFont) {
+                    font = newFont;
+                    dirty = true;
+                }
                 return;
             case ATTRIBUTE_TEXT:
                 label.setText(value);
@@ -56,8 +60,10 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
     @Override
     protected void applyIntSpecial(String attr, int value) throws AttributeUnknownException {
         if (ATTRIBUTE_FONT_SIZE.equals(attr)) {
-            fontSize = value;
-            dirty = true;
+            if (fontSize != value) {
+                fontSize = value;
+                dirty = true;
+            }
             return;
         }
 
@@ -79,9 +85,11 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
         if (dirty && font != null && fontSize != -1) {
             Label label = (Label) element;
             FreeTypeFontParameter para = FontUtils.obtainParameterBuilder().size(fontSize).build();
-            res.destroyCachedFont(label.getStyle().font);
+            BitmapFont old = label.getStyle().font;
             label.getStyle().font = res.createCachedFont(font, para);
             label.setStyle(label.getStyle());
+            res.destroyCachedFont(old);
+            dirty = false;
         }
     }
 

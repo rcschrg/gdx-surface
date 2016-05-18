@@ -270,6 +270,19 @@ public class ResourceHandler extends EventHandler implements Disposable {
     }
 
     /**
+     * Increase the reference count of the given cached font or does nothing if the given font is not cached.
+     *
+     * @param font cached font, created by {@link #createCachedFont(Resource, FreeTypeFontGenerator.FreeTypeFontParameter)}
+     */
+    public void increaseCachedFontReferenceCount(BitmapFont font) {
+        if (!anonFontReferenceCounter.containsKey(font)) {
+            return;
+        }
+        int references = anonFontReferenceCounter.get(font);
+        anonFontReferenceCounter.put(font, references + 1);
+    }
+
+    /**
      * Destroy a cached font. It might happen that the font won't get destroyed if there are
      * more references to the font.
      * You can just use the method with fonts generated with {@link #createCachedFont(Resource, FreeTypeFontGenerator.FreeTypeFontParameter)}.
