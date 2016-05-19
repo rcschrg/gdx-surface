@@ -1,5 +1,6 @@
 package de.verygame.square.core.scene2d.glmenu.impl.element;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,11 +21,17 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
     private static final String ATTRIBUTE_TEXT = "text";
     private static final String ATTRIBUTE_FONT = "font";
     private static final String ATTRIBUTE_FONT_SIZE = "font-size";
+    private static final String ATTRIBUTE_FONT_ALIGN = "align";
+
+    private static final String VALUE_ALIGN_CENTER = "center";
+    private static final String VALUE_ALIGN_LEFT = "left";
+    private static final String VALUE_ALIGN_RIGHT = "right";
 
     private final ResourceHandler res;
-    private Resource font;
+    private Resource font = null;
     private int fontSize = -1;
-    private boolean dirty;
+    private boolean dirty = false;
+    private String align = null;
 
     public LabelBuilder(Skin skin, ResourceHandler resourceHandler) {
        this(resourceHandler, new Label("", new Label.LabelStyle(skin.get(Label.LabelStyle.class))));
@@ -50,11 +57,35 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
             case ATTRIBUTE_TEXT:
                 label.setText(value);
                 return;
+            case ATTRIBUTE_FONT_ALIGN:
+                align = value;
+                return;
             default:
                 break;
         }
 
         super.applyStringSpecial(attr, value);
+    }
+
+    private void applyAlignment(String alignment) {
+        Label label = (Label) element;
+        label.layout();
+        switch (alignment) {
+            case VALUE_ALIGN_CENTER:
+                element.setX(Gdx.graphics.getWidth()/2f - label.getGlyphLayout().width/2f);
+                break;
+
+            case VALUE_ALIGN_LEFT:
+                element.setX(0);
+                break;
+
+            case VALUE_ALIGN_RIGHT:
+                element.setX(Gdx.graphics.getWidth() - label.getGlyphLayout().width);
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override
@@ -90,6 +121,9 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
             label.setStyle(label.getStyle());
             res.destroyCachedFont(old);
             dirty = false;
+        }
+        if (align != null) {
+            applyAlignment(align);
         }
     }
 
