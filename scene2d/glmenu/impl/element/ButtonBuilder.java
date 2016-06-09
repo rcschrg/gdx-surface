@@ -48,11 +48,15 @@ public class ButtonBuilder extends GenericContainerBuilder<TextButton> {
     @Override
     public void preBuild() {
         labelBuilder.preBuild();
+
+        super.preBuild();
     }
 
     @Override
     public void postBuild() {
         labelBuilder.postBuild();
+
+        super.postBuild();
     }
 
     @Override
