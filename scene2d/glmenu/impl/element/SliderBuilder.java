@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 
-import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
+import de.verygame.xue.exception.AttributeUnknownException;
 
 /**
  * @author Rico Schrage

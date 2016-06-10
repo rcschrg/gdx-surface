@@ -12,7 +12,7 @@ import de.verygame.square.core.scene2d.glmenu.impl.GLMenuStage;
 import de.verygame.square.core.screen.base.Content;
 import de.verygame.square.core.screen.base.ScreenContext;
 import de.verygame.square.core.screen.base.ScreenId;
-import de.verygame.square.util.glmenu.input.GLMenuInputEvent;
+import de.verygame.xue.input.GLMenuInputEvent;
 
 /**
  * @author Rico Schrage

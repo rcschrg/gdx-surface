@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
+import de.verygame.xue.exception.AttributeUnknownException;
 
 /**
  * @author Rico Schrage

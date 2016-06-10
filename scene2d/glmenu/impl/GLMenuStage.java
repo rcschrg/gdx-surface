@@ -21,13 +21,12 @@ import java.util.Set;
 
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.Scene2DMapping;
-import de.verygame.square.util.glmenu.GLMenu;
-import de.verygame.square.util.glmenu.GLMenuCore;
-import de.verygame.square.util.glmenu.handler.ActionSequence;
-import de.verygame.square.util.glmenu.input.GLMenuInputEvent;
-import de.verygame.square.util.glmenu.exception.GLMenuException;
-import de.verygame.square.util.glmenu.handler.BuilderMapping;
-import de.verygame.square.util.glmenu.mapping.GlobalMappings;
+import de.verygame.xue.GLMenu;
+import de.verygame.xue.GLMenuCore;
+import de.verygame.xue.exception.GLMenuException;
+import de.verygame.xue.handler.ActionSequence;
+import de.verygame.xue.handler.BuilderMapping;
+import de.verygame.xue.input.GLMenuInputEvent;
 
 /**
  * Implementation of {@link GLMenu} for the scene2d package.
@@ -89,7 +88,7 @@ public class GLMenuStage extends Stage implements GLMenu<Actor> {
     /**
      * Sets the general mapping.
      *
-     * @param mapping {@link GlobalMappings}
+     * @param mapping {@link de.verygame.xue.mapping.GlobalMappings}
      */
     public void setMapping(Scene2DMapping mapping) {
         this.mapping = mapping;

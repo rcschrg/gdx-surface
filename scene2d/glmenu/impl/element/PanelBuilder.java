@@ -7,7 +7,7 @@ import de.verygame.square.core.resource.ResourceUnit;
 import de.verygame.square.core.resource.ResourceUnitType;
 import de.verygame.square.core.resource.ResourceUtils;
 import de.verygame.square.core.scene2d.widget.Panel;
-import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
+import de.verygame.xue.exception.AttributeUnknownException;
 
 /**
  * @author Rico Schrage

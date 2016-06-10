@@ -11,7 +11,7 @@ import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.resource.ResourceUtils;
 import de.verygame.square.util.FontUtils;
-import de.verygame.square.util.glmenu.exception.AttributeUnknownException;
+import de.verygame.xue.exception.AttributeUnknownException;
 
 /**
  * @author Rico Schrage
