@@ -39,6 +39,13 @@ public class ButtonBuilder extends GenericContainerBuilder<TextButton> {
     }
 
     @Override
+    protected void applyStringSpecial(String attr, String value) throws AttributeUnknownException {
+        labelBuilder.applyStringSpecial(attr, value);
+
+        super.applyStringSpecial(attr, value);
+    }
+    
+    @Override
     public void preBuild() {
         labelBuilder.preBuild();
 
