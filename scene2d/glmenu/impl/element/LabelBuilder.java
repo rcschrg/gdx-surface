@@ -31,6 +31,7 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
     private Resource font = null;
     private int fontSize = -1;
     private boolean dirty = false;
+    private boolean first = true;
     private String align = null;
 
     public LabelBuilder(Skin skin, ResourceHandler resourceHandler) {
@@ -113,13 +114,21 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
 
     @Override
     public void postBuild() {
+        Label label = (Label) element;
+
+        if (first) {
+            // first font will be assigned via skin, so the resource handler have to know that these references exists
+            res.increaseCachedFontReferenceCount(label.getStyle().font);
+            first = false;
+        }
         if (dirty && font != null && fontSize != -1) {
-            Label label = (Label) element;
             FreeTypeFontParameter para = FontUtils.obtainParameterBuilder().size(fontSize).build();
             BitmapFont old = label.getStyle().font;
             label.getStyle().font = res.createCachedFont(font, para);
+            System.out.println("using ("+label.getText()+") "+ label.getStyle().font + " now");
             label.setStyle(label.getStyle());
             res.destroyCachedFont(old);
+            System.out.println("destroy ("+label.getText()+") "+ old + " now");
             dirty = false;
         }
         if (align != null) {
