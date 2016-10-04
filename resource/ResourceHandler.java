@@ -303,7 +303,6 @@ public class ResourceHandler extends EventHandler implements Disposable {
                     entry.getValue().remove(key);
                 }
             }
-            System.out.println("disposed:" + font);
             font.dispose();
         }
         else {

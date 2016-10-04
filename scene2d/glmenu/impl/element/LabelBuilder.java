@@ -125,10 +125,8 @@ public class LabelBuilder extends GenericElementBuilder<Label> {
             FreeTypeFontParameter para = FontUtils.obtainParameterBuilder().size(fontSize).build();
             BitmapFont old = label.getStyle().font;
             label.getStyle().font = res.createCachedFont(font, para);
-            System.out.println("using ("+label.getText()+") "+ label.getStyle().font + " now");
             label.setStyle(label.getStyle());
             res.destroyCachedFont(old);
-            System.out.println("destroy ("+label.getText()+") "+ old + " now");
             dirty = false;
         }
         if (align != null) {
