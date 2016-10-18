@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import de.verygame.square.core.resource.ResourceHandler;
+import de.verygame.util.math.CoordinateType;
 import de.verygame.xue.mapping.GlobalMappings;
 
 /**

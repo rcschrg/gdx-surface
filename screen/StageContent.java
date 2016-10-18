@@ -8,11 +8,11 @@ import de.verygame.square.core.event.EventHandler;
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.ElementMapping;
-import de.verygame.square.core.scene2d.glmenu.impl.GLMenuStage;
+import de.verygame.square.core.scene2d.glmenu.impl.XueStage;
 import de.verygame.square.core.screen.base.Content;
 import de.verygame.square.core.screen.base.ScreenContext;
 import de.verygame.square.core.screen.base.ScreenId;
-import de.verygame.xue.input.GLMenuInputEvent;
+import de.verygame.xue.input.XueInputEvent;
 
 /**
  * @author Rico Schrage
@@ -24,7 +24,7 @@ public abstract class StageContent extends EventHandler implements Content {
     protected ResourceHandler resourceHandler;
 
     /** Stage, which loads the xml */
-    protected GLMenuStage stage;
+    protected XueStage stage;
 
     /** Context of the screen */
     protected ScreenContext context;
@@ -50,30 +50,30 @@ public abstract class StageContent extends EventHandler implements Content {
     public void onBind(ScreenContext context) {
         this.context = context;
 
-        this.stage = new GLMenuStage(context.getBatch(), context.getViewport(), resourceHandler.getXMLAsStream(defineXML()), resourceHandler);
+        this.stage = new XueStage(context.getBatch(), context.getViewport(), resourceHandler.getXMLAsStream(defineXML()), resourceHandler);
         this.stage.addElementMapping(new ElementMapping(resourceHandler, defineSkin()));
         this.stage.bind(this);
 
         this.preLoad();
 
-        this.stage.loadMenu();
+        this.stage.load();
 
         this.postLoad();
-    }
-
+        }
+     
     @Override
     public void onActivate(ScreenId predecessor, InputMultiplexer inputMultiplexer) {
         inputMultiplexer.addProcessor(stage);
 
         onResize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        stage.onInputEvent(GLMenuInputEvent.ACTIVATE);
+        stage.onInputEvent(XueInputEvent.ACTIVATE);
     }
 
     @Override
     public float onDeactivate(ScreenId successor, InputMultiplexer inputMultiplexer) {
         inputMultiplexer.removeProcessor(stage);
 
-        stage.onInputEvent(GLMenuInputEvent.DEACTIVATE);
+        stage.onInputEvent(XueInputEvent.DEACTIVATE);
         return stage.calcActionSequenceDeactivationDelay();
     }
 
@@ -95,7 +95,7 @@ public abstract class StageContent extends EventHandler implements Content {
     @Override
     public void onResize(int width, int height) {
         stage.getRoot().setBounds(0, 0, width, height);
-        stage.onInputEvent(GLMenuInputEvent.RESIZE);
+        stage.onInputEvent(XueInputEvent.RESIZE);
     }
 
     @Override

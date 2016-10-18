@@ -2,6 +2,7 @@ package de.verygame.square.core.scene2d;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -16,18 +17,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.core.scene2d.glmenu.impl.element.ButtonBuilder;
-import de.verygame.square.core.scene2d.glmenu.impl.element.ContainerActorBuilder;
-import de.verygame.square.core.scene2d.glmenu.impl.element.GenericContainerBuilder;
-import de.verygame.square.core.scene2d.glmenu.impl.element.GenericElementBuilder;
-import de.verygame.square.core.scene2d.glmenu.impl.element.GroupBuilder;
-import de.verygame.square.core.scene2d.glmenu.impl.element.LabelBuilder;
-import de.verygame.square.core.scene2d.glmenu.impl.element.PanelBuilder;
-import de.verygame.square.core.scene2d.glmenu.impl.element.SliderBuilder;
+import de.verygame.square.core.scene2d.glmenu.impl.element.ButtonTag;
+import de.verygame.square.core.scene2d.glmenu.impl.element.ContainerTag;
+import de.verygame.square.core.scene2d.glmenu.impl.element.ElementTag;
+import de.verygame.square.core.scene2d.glmenu.impl.element.LabelTag;
+import de.verygame.square.core.scene2d.glmenu.impl.element.PanelTag;
+import de.verygame.square.core.scene2d.glmenu.impl.element.SliderTag;
 import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.square.core.scene2d.widget.Switch;
-import de.verygame.xue.handler.BuilderMapping;
-import de.verygame.xue.mapping.builder.GLMenuBuilder;
+import de.verygame.xue.mapping.BuilderMapping;
+import de.verygame.xue.mapping.tag.XueTag;
 
 /**
  * @author Rico Schrage
@@ -45,45 +44,43 @@ public class ElementMapping implements BuilderMapping<Actor> {
     }
 
     @Override
-    public GLMenuBuilder<Actor> createBuilder(String name) {
+    public XueTag<? extends Actor> createBuilder(String name) {
         Skin skin = resourceHandler.get(skinResource, Skin.class);
         switch (name) {
-            case "group":
-                return new GroupBuilder();
             case "button":
-                return new ButtonBuilder(skin, resourceHandler);
+                return new ButtonTag(skin, resourceHandler);
             case "checkbox":
-                return new GenericContainerBuilder<>(new CheckBox("", skin));
+                return new ElementTag(new CheckBox("", skin));
             case "dialog":
-                return new GenericContainerBuilder<>(new Dialog("", skin));
+                return new ElementTag(new Dialog("", skin));
             case "imageButton":
-                return new GenericContainerBuilder<>(new ImageButton(skin));
+                return new ElementTag(new ImageButton(skin));
             case "scrollPane":
-                return new GenericContainerBuilder<>(new ScrollPane(null, skin));
+                return new ElementTag(new ScrollPane(null, skin));
             case "splitPane":
-                return new GenericContainerBuilder<>(new SplitPane(null, null, true, skin));
+                return new ElementTag(new SplitPane(null, null, true, skin));
             case "table":
-                return new GenericContainerBuilder<>(new Table(skin));
+                return new ElementTag(new Table(skin));
             case "container":
-                return new ContainerActorBuilder();
+                return new ContainerTag<>(new Container<>());
             case "panel":
-                return new PanelBuilder(new Panel(), resourceHandler);
+                return new PanelTag(new Panel(), resourceHandler);
             case "switch":
-                return new GenericContainerBuilder<>(new Switch(skin));
+                return new ElementTag(new Switch(skin));
             case "label":
-                return new LabelBuilder(skin, resourceHandler);
+                return new LabelTag(skin, resourceHandler);
             case "image":
-                return new GenericElementBuilder<>(new Image());
+                return new ElementTag(new Image());
             case "progressBar":
-                return new GenericElementBuilder<>(new ProgressBar(0, 100, 1, true ,skin));
+                return new ElementTag(new ProgressBar(0, 100, 1, true ,skin));
             case "select":
-                return new GenericElementBuilder<>(new SelectBox<String>(skin));
+                return new ElementTag(new SelectBox<String>(skin));
             case "slider":
-                return new SliderBuilder(skin);
+                return new SliderTag(skin);
             case "textArea":
-                return new GenericElementBuilder<>(new TextArea("", skin));
+                return new ElementTag(new TextArea("", skin));
             case "textField":
-                return new GenericElementBuilder<>(new TextField("", skin));
+                return new ElementTag(new TextField("", skin));
 
             default:
         }
