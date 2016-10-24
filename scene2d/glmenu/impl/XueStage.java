@@ -15,9 +15,10 @@ import java.util.Set;
 
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.Scene2DMapping;
+import de.verygame.xue.GuiXue;
 import de.verygame.xue.handler.ElementsTagGroupHandler;
 import de.verygame.xue.input.XueInputEvent;
-import de.verygame.xue.mapping.BuilderMapping;
+import de.verygame.xue.mapping.TagMapping;
 import de.verygame.xue.util.action.ActionSequence;
 
 /**
@@ -75,7 +76,7 @@ public class XueStage extends Stage {
         });
     }
 
-    public void addElementMapping(BuilderMapping<Actor> mapping) {
+    public void addElementMapping(TagMapping<Actor> mapping) {
         xue.addMappingUnsafe(ElementsTagGroupHandler.class, mapping);
     }
 

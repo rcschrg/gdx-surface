@@ -25,13 +25,13 @@ import de.verygame.square.core.scene2d.glmenu.impl.element.PanelTag;
 import de.verygame.square.core.scene2d.glmenu.impl.element.SliderTag;
 import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.square.core.scene2d.widget.Switch;
-import de.verygame.xue.mapping.BuilderMapping;
+import de.verygame.xue.mapping.TagMapping;
 import de.verygame.xue.mapping.tag.XueTag;
 
 /**
  * @author Rico Schrage
  */
-public class ElementMapping implements BuilderMapping<Actor> {
+public class ElementMapping implements TagMapping<Actor> {
     private final ResourceHandler resourceHandler;
     private final Resource skinResource;
 
@@ -44,43 +44,43 @@ public class ElementMapping implements BuilderMapping<Actor> {
     }
 
     @Override
-    public XueTag<? extends Actor> createBuilder(String name) {
+    public XueTag<? extends Actor> createTag(String name) {
         Skin skin = resourceHandler.get(skinResource, Skin.class);
         switch (name) {
             case "button":
                 return new ButtonTag(skin, resourceHandler);
             case "checkbox":
-                return new ElementTag(new CheckBox("", skin));
+                return new ElementTag<>(new CheckBox("", skin));
             case "dialog":
-                return new ElementTag(new Dialog("", skin));
+                return new ElementTag<>(new Dialog("", skin));
             case "imageButton":
-                return new ElementTag(new ImageButton(skin));
+                return new ElementTag<>(new ImageButton(skin));
             case "scrollPane":
-                return new ElementTag(new ScrollPane(null, skin));
+                return new ElementTag<>(new ScrollPane(null, skin));
             case "splitPane":
-                return new ElementTag(new SplitPane(null, null, true, skin));
+                return new ElementTag<>(new SplitPane(null, null, true, skin));
             case "table":
-                return new ElementTag(new Table(skin));
+                return new ElementTag<>(new Table(skin));
             case "container":
                 return new ContainerTag<>(new Container<>());
             case "panel":
                 return new PanelTag(new Panel(), resourceHandler);
             case "switch":
-                return new ElementTag(new Switch(skin));
+                return new ElementTag<>(new Switch(skin));
             case "label":
                 return new LabelTag(skin, resourceHandler);
             case "image":
-                return new ElementTag(new Image());
+                return new ElementTag<>(new Image());
             case "progressBar":
-                return new ElementTag(new ProgressBar(0, 100, 1, true ,skin));
+                return new ElementTag<>(new ProgressBar(0, 100, 1, true ,skin));
             case "select":
-                return new ElementTag(new SelectBox<String>(skin));
+                return new ElementTag<>(new SelectBox<String>(skin));
             case "slider":
                 return new SliderTag(skin);
             case "textArea":
-                return new ElementTag(new TextArea("", skin));
+                return new ElementTag<>(new TextArea("", skin));
             case "textField":
-                return new ElementTag(new TextField("", skin));
+                return new ElementTag<>(new TextField("", skin));
 
             default:
         }

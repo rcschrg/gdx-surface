@@ -17,7 +17,6 @@ public class PanelTag extends ContainerTag<Panel> {
         super(instance);
 
         this.res = res;
-        System.out.println(this.res);
     }
 
     @Override

@@ -10,13 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  * @author Rico Schrage
  */
 public class Panel extends WidgetGroup {
-
     private Drawable background;
-
     private float xPadding = 0f;
     private float yPadding = 0f;
-
-    Matrix4 oldM = new Matrix4();
+    private Matrix4 oldM = new Matrix4();
 
     public Panel() {
         this(null);
