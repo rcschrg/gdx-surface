@@ -34,7 +34,7 @@ public class FontGroupAttribute extends AbstractAttributeGroup<Label> {
     @Override
     public List<AttributeGroupElementMeta> getGroupMeta() {
         return GroupMetaUtils.buildMetaList(new String[]{"font", "fontSize"},
-                                            new Class<?>[]{String.class, Integer.class});
+                                            new Class<?>[]{String.class, Float.class});
     }
 
     @AttributeHandler
@@ -47,9 +47,9 @@ public class FontGroupAttribute extends AbstractAttributeGroup<Label> {
     }
 
     @AttributeHandler
-    public void applyFontSize(Label element, Integer value) {
+    public void applyFontSize(Label element, Float value) {
         if (fontSize != value) {
-            fontSize = value;
+            fontSize = (int)(float)value;
             dirty = true;
         }
     }
