@@ -39,6 +39,4 @@ public class LabelTag extends ElementTag<Label> {
     protected List<AttributeGroup<? super Label>> defineAttributeGroups() {
         return buildAttributeGroupList(new FontGroupAttribute(res));
     }
-
-
 }

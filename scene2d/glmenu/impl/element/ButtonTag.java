@@ -14,9 +14,10 @@ public class ButtonTag extends ElementTag<TextButton> {
         this(new TextButton("", skin), res);
     }
     
-    public ButtonTag( TextButton element, ResourceHandler res) {
+    public ButtonTag(TextButton element, ResourceHandler res) {
         super(element);
 
         linkXueTag(new LabelTag(res, element.getLabel()));
     }
+
 }

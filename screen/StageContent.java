@@ -59,7 +59,7 @@ public abstract class StageContent extends EventHandler implements Content {
         this.stage.load();
 
         this.postLoad();
-        }
+    }
      
     @Override
     public void onActivate(ScreenId predecessor, InputMultiplexer inputMultiplexer) {
