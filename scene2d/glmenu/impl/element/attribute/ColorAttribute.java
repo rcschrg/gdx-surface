@@ -20,7 +20,16 @@ public class ColorAttribute extends AbstractAttribute<Actor, String> {
 
     @Override
     public void apply(Actor element, String value) {
-        Color color = ColorUtils.fromHex(value);
-        element.setColor(color);
+	if (value.startsWith("rgba(")) {
+	    String[] n = value.substring(5, value.length()-1).split(",");
+	    if (n.length != 4) {
+	        throw new IllegalArgumentException("You have to provide values for r, g, b and a!"); 
+            }
+	    element.getColor().set(Integer.parseInt(n[0].trim())/255f, Integer.parseInt(n[1].trim())/255f, Integer.parseInt(n[2].trim())/255f, Float.parseFloat(n[3].trim()));
+	}
+	else if (value.startsWith("#")) {
+             Color color = ColorUtils.fromHex(value);
+             element.setColor(color);
+	}    
     }
 }
