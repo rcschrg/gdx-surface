@@ -20,6 +20,7 @@ import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.scene2d.glmenu.impl.element.ButtonTag;
 import de.verygame.square.core.scene2d.glmenu.impl.element.ContainerTag;
 import de.verygame.square.core.scene2d.glmenu.impl.element.ElementTag;
+import de.verygame.square.core.scene2d.glmenu.impl.element.ImageTag;
 import de.verygame.square.core.scene2d.glmenu.impl.element.LabelTag;
 import de.verygame.square.core.scene2d.glmenu.impl.element.PanelTag;
 import de.verygame.square.core.scene2d.glmenu.impl.element.SliderTag;
@@ -70,9 +71,9 @@ public class ElementMapping implements TagMapping<Actor> {
             case "label":
                 return new LabelTag(skin, resourceHandler);
             case "image":
-                return new ElementTag<>(new Image());
+                return new ImageTag(new Image(), resourceHandler);
             case "progressBar":
-                return new ElementTag<>(new ProgressBar(0, 100, 1, true ,skin));
+                return new ElementTag<>(new ProgressBar(0, 100, 1, false, skin));
             case "select":
                 return new ElementTag<>(new SelectBox<String>(skin));
             case "slider":

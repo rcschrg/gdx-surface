@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import de.verygame.square.core.event.Event;
 import de.verygame.square.core.event.EventListener;
+import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
 import de.verygame.square.core.screen.base.Screen;
 import de.verygame.square.core.screen.base.ScreenId;
@@ -32,7 +33,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
     protected Viewport viewport;
     /** Responsible for screen switching */
     protected ScreenSwitch screenSwitch;
-    /** True if the resources has been loaded */
+    /** True if all res loaded */
     private boolean init = false;
 
     /**
@@ -87,11 +88,6 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
      */
     protected abstract void loadResources(ResourceHandler resourceHandler);
 
-    /**
-     * Will be called while the resource handler is loading the specified resources.
-     */
-    protected abstract void renderLoadingScreen();
-
     @Override
     public void create() {
         this.batch = new PolygonSpriteBatch();
@@ -108,7 +104,21 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         this.screenSwitch.setInputHandler(inputMultiplexer);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        this.preLoadResources(resourceHandler);
+        this.screenSwitch.setActive(createLoadingScreen());
+
         this.loadResources(resourceHandler);
+    }
+
+    protected abstract ScreenId createLoadingScreen();
+
+    /**
+     * It's important to note, that the amount of resources loaded here have to be very small and you have to load it using
+     * blocking methods like {@link ResourceHandler#waitFor(Resource)}.
+     * @param resourceHandler Handler of the resources
+     */
+    protected void preLoadResources(ResourceHandler resourceHandler) {
+        //can be used for loading screen resources
     }
 
     @Override
@@ -122,15 +132,11 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
 
         batch.begin();
 
-        if (!resourceHandler.update()) {
-            this.renderLoadingScreen();
-        }
-        else if (init) {
-            screenSwitch.renderScreen();
-        }
-        else {
-            this.init = true;
+        screenSwitch.renderScreen();
+
+        if (!init && resourceHandler.update()) {
             screenSwitch.setActive(createScreens());
+            init = true;
         }
 
         batch.end();

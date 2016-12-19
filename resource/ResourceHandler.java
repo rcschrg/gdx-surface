@@ -377,7 +377,7 @@ public class ResourceHandler extends EventHandler implements Disposable {
         }
         String atlasPath = FileUtils.toPath(atlas.getType().getRoot(), atlas.getFilePath());
         assetManager.load(FileUtils.toPath(res.getType().toString(), res.getFilePath()),
-                Skin.class, new SkinLoader.SkinParameter(atlasPath ,oMap));
+                Skin.class, new SkinLoader.SkinParameter(atlasPath, oMap));
         pathMap.get(atlas.getType()).add(atlasPath);
     }
 
@@ -412,6 +412,13 @@ public class ResourceHandler extends EventHandler implements Disposable {
      */
     public boolean update() {
         return assetManager.update();
+    }
+
+    /**
+     * @return progress of loading resources in percent (0 to 1)
+     */
+    public float getProgress() {
+        return assetManager.getProgress();
     }
 
     /**
