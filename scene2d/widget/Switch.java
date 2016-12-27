@@ -394,7 +394,7 @@ public class Switch extends Panel {
             //default method for Skin.class
         }
 
-        public SwitchStyle(Drawable bg, Drawable button, Drawable whitePixel, Color stateColor) {
+        public SwitchStyle(Drawable bg, Drawable button, Color stateColor) {
             this.bg = bg;
             this.button = button;
             this.stateColor = stateColor;
