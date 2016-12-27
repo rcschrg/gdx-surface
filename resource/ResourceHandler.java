@@ -372,7 +372,7 @@ public class ResourceHandler extends EventHandler implements Disposable {
      * @param oMap map
      */
     public void loadSkin(Resource res, Resource atlas, ObjectMap<String, Object> oMap) {
-        if (res.getType() != de.verygame.square.core.resource.ResourceType.SKIN || atlas.getType() != de.verygame.square.core.resource.ResourceType.TEX_ATLAS) {
+        if (res.getType() != ResourceType.SKIN || atlas.getType() != ResourceType.TEX_ATLAS) {
             throw new IllegalArgumentException("Wrong type!");
         }
         String atlasPath = FileUtils.toPath(atlas.getType().getRoot(), atlas.getFilePath());

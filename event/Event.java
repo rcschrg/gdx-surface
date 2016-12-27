@@ -29,7 +29,8 @@ public enum Event {
      * attached Object: None
      */
     GAME_RESTART(EventType.GAME),
-    GAME_PAUSE(EventType.GAME);
+    GAME_PAUSE(EventType.GAME),
+    CALL_UI(EventType.UI);
 
     private final EventType type;
 

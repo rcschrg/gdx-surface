@@ -94,7 +94,7 @@ public class Switch extends Panel {
     }
 
     public Switch(SwitchStyle style) {
-        this(style.getBg(), style.getButton(), style.getWhitePixel(), style.getStateColor());
+        this(style.getBg(), style.getButton(), style.background, style.getStateColor());
     }
 
     /**
@@ -385,10 +385,9 @@ public class Switch extends Panel {
         ON, OFF
     }
 
-    public static class SwitchStyle {
+    public static class SwitchStyle extends PanelStyle {
         private Drawable bg;
         private Drawable button;
-        private Drawable whitePixel;
         private Color stateColor;
 
         public SwitchStyle() {
@@ -398,16 +397,7 @@ public class Switch extends Panel {
         public SwitchStyle(Drawable bg, Drawable button, Drawable whitePixel, Color stateColor) {
             this.bg = bg;
             this.button = button;
-            this.whitePixel = whitePixel;
             this.stateColor = stateColor;
-        }
-
-        public Drawable getWhitePixel() {
-            return whitePixel;
-        }
-
-        public void setWhitePixel(Drawable whitePixel) {
-            this.whitePixel = whitePixel;
         }
 
         public Drawable getBg() {
