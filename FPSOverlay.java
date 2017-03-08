@@ -17,10 +17,11 @@ public class FPSOverlay {
     public FPSOverlay() {
         bitmapFont = new BitmapFont();
         bitmapFont.setColor(color);
+        bitmapFont.getData().setScale(Gdx.graphics.getHeight()/600f, Gdx.graphics.getHeight()/600f);
     }
 
     public void render(Batch batch) {
-        bitmapFont.draw(batch, String.valueOf(Gdx.graphics.getFramesPerSecond()),  (int) (5f*Gdx.graphics.getDensity()), (int) (5f*Gdx.graphics.getDensity()) + 15);
+        bitmapFont.draw(batch, String.valueOf(Gdx.graphics.getFramesPerSecond()),  (int) (5f*Gdx.graphics.getDensity()), (int) (3f*Gdx.graphics.getDensity()) + 15*bitmapFont.getScaleX());
     }
 
 }
