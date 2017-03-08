@@ -33,6 +33,8 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
     protected Viewport viewport;
     /** Responsible for screen switching */
     protected ScreenSwitch screenSwitch;
+    /** Renders fps to screen, if isDebug() == true */
+    protected FPSOverlay fpsOverlay;
     /** True if all res loaded */
     private boolean init = false;
 
@@ -94,6 +96,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         this.resourceHandler = new ResourceHandler();
         this.viewport = createViewport();
         this.screenSwitch = new ScreenSwitch();
+        this.fpsOverlay = new FPSOverlay();
 
         this.screenSwitch.setBatch(batch);
         this.screenSwitch.addDependency("batch", batch);
@@ -121,6 +124,10 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         //can be used for loading screen resources
     }
 
+    protected boolean isDebug() {
+        return false;
+    }
+
     @Override
     public void render() {
 
@@ -133,6 +140,10 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         batch.begin();
 
         screenSwitch.renderScreen();
+
+        if (isDebug()) {
+            fpsOverlay.render(batch);
+        }
 
         if (!init && resourceHandler.update()) {
             screenSwitch.setActive(createScreens());
