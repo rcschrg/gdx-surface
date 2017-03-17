@@ -1,4 +1,4 @@
-package de.verygame.square.core.scene2d.glmenu.impl.element;
+package de.verygame.square.core.scene2d.xue.element;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;

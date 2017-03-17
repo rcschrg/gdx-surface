@@ -1,11 +1,11 @@
-package de.verygame.square.core.scene2d.glmenu.impl.element;
+package de.verygame.square.core.scene2d.xue.element;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 
 import java.util.List;
 
-import de.verygame.square.core.scene2d.glmenu.impl.element.attribute.SliderAttributes;
+import de.verygame.square.core.scene2d.xue.element.attribute.SliderAttributes;
+import de.verygame.square.core.scene2d.widget.Slider;
 import de.verygame.xue.mapping.tag.attribute.Attribute;
 
 /**

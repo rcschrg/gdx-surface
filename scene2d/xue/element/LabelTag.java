@@ -1,4 +1,4 @@
-package de.verygame.square.core.scene2d.glmenu.impl.element;
+package de.verygame.square.core.scene2d.xue.element;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import java.util.List;
 
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.core.scene2d.glmenu.impl.element.attribute.FontGroupAttribute;
-import de.verygame.square.core.scene2d.glmenu.impl.element.attribute.LabelAlignmentAttribute;
-import de.verygame.square.core.scene2d.glmenu.impl.element.attribute.LabelTextAttribute;
+import de.verygame.square.core.scene2d.xue.element.attribute.FontGroupAttribute;
+import de.verygame.square.core.scene2d.xue.element.attribute.LabelAlignmentAttribute;
+import de.verygame.square.core.scene2d.xue.element.attribute.LabelTextAttribute;
 import de.verygame.xue.mapping.tag.attribute.Attribute;
 import de.verygame.xue.mapping.tag.attribute.AttributeGroup;
 

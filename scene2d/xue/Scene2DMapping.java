@@ -1,4 +1,4 @@
-package de.verygame.square.core.scene2d;
+package de.verygame.square.core.scene2d.xue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;

@@ -1,11 +1,10 @@
-package de.verygame.square.core.scene2d.glmenu.impl.element;
+package de.verygame.square.core.scene2d.xue.element;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.List;
 
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.core.scene2d.glmenu.impl.element.attribute.ImageSrcAttribute;
 import de.verygame.xue.mapping.tag.attribute.Attribute;
 import de.verygame.xue.mapping.tag.attribute.AttributeGroup;
 
@@ -24,7 +23,7 @@ public class ImageTag extends ElementTag<Image> {
 
     @Override
     protected List<Attribute<? super Image, ?>> defineAttributes() {
-        List<Attribute<? super Image, ?>> att = buildAttributeList(new ImageSrcAttribute(resourceHandler));
+        List<Attribute<? super Image, ?>> att = buildAttributeList(new de.verygame.square.core.scene2d.xue.element.attribute.ImageSrcAttribute(resourceHandler));
         att.addAll(super.defineAttributes()); // attributes of the parent should be used as well
         return att;
     }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -379,6 +380,20 @@ public class ResourceHandler extends EventHandler implements Disposable {
         assetManager.load(FileUtils.toPath(res.getType().toString(), res.getFilePath()),
                 Skin.class, new SkinLoader.SkinParameter(atlasPath, oMap));
         pathMap.get(atlas.getType()).add(atlasPath);
+    }
+
+
+    /**
+     * Scales all ninpatches of the given skin by <code>scale</code>.
+     * @param skinRes skin
+     * @param scale scale-factor
+     */
+    public void scaleNinePatchesIn(Resource skinRes, float scale) {
+        Skin ta = get(skinRes, Skin.class);
+        ObjectMap<String, NinePatch> patches = ta.getAll(NinePatch.class);
+        for (ObjectMap.Entry<String, NinePatch> entry : patches) {
+            entry.value.scale(scale, scale);
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-package de.verygame.square.core.scene2d.glmenu.impl;
+package de.verygame.square.core.scene2d.xue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.core.scene2d.Scene2DMapping;
 import de.verygame.xue.GuiXue;
 import de.verygame.xue.handler.ElementsTagGroupHandler;
 import de.verygame.xue.input.XueInputEvent;

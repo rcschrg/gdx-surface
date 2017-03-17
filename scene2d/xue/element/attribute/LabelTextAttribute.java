@@ -1,4 +1,4 @@
-package de.verygame.square.core.scene2d.glmenu.impl.element.attribute;
+package de.verygame.square.core.scene2d.xue.element.attribute;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 

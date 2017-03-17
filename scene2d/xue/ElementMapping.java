@@ -1,4 +1,4 @@
-package de.verygame.square.core.scene2d;
+package de.verygame.square.core.scene2d.xue;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -17,13 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 import de.verygame.square.core.resource.Resource;
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.core.scene2d.glmenu.impl.element.ButtonTag;
-import de.verygame.square.core.scene2d.glmenu.impl.element.ContainerTag;
-import de.verygame.square.core.scene2d.glmenu.impl.element.ElementTag;
-import de.verygame.square.core.scene2d.glmenu.impl.element.ImageTag;
-import de.verygame.square.core.scene2d.glmenu.impl.element.LabelTag;
-import de.verygame.square.core.scene2d.glmenu.impl.element.PanelTag;
-import de.verygame.square.core.scene2d.glmenu.impl.element.SliderTag;
+import de.verygame.square.core.scene2d.xue.element.ButtonTag;
+import de.verygame.square.core.scene2d.xue.element.ContainerTag;
+import de.verygame.square.core.scene2d.xue.element.ElementTag;
+import de.verygame.square.core.scene2d.xue.element.ImageTag;
+import de.verygame.square.core.scene2d.xue.element.LabelTag;
+import de.verygame.square.core.scene2d.xue.element.PanelTag;
+import de.verygame.square.core.scene2d.xue.element.SliderTag;
 import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.square.core.scene2d.widget.Switch;
 import de.verygame.xue.mapping.TagMapping;

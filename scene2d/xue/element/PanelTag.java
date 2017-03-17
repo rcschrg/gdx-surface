@@ -1,9 +1,9 @@
-package de.verygame.square.core.scene2d.glmenu.impl.element;
+package de.verygame.square.core.scene2d.xue.element;
 
 import java.util.List;
 
 import de.verygame.square.core.resource.ResourceHandler;
-import de.verygame.square.core.scene2d.glmenu.impl.element.attribute.PanelBackgroundAttribute;
+import de.verygame.square.core.scene2d.xue.element.attribute.PanelBackgroundAttribute;
 import de.verygame.square.core.scene2d.widget.Panel;
 import de.verygame.xue.mapping.tag.attribute.Attribute;
 
