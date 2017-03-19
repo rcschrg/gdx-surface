@@ -3,7 +3,6 @@ package de.verygame.square.core.scene2d.widget;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
@@ -15,10 +14,6 @@ public class Panel extends WidgetGroup {
     private float xPadding = 0f;
     private float yPadding = 0f;
     private Matrix4 oldM = new Matrix4();
-
-    public Panel(Skin skin) {
-        this(skin.get(PanelStyle.class).background);
-    }
 
     public Panel(Drawable background) {
         setBackground(background);
@@ -55,10 +50,6 @@ public class Panel extends WidgetGroup {
         batch.getProjectionMatrix().translate(absoluteXPadding, absoluteYPadding, 0);
         super.draw(batch, parentAlpha);
         batch.setProjectionMatrix(oldM);
-    }
-
-    public static class PanelStyle {
-        public Drawable background;
     }
 
 }

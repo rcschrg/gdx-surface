@@ -75,6 +75,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
      */
     protected abstract ScreenId createScreens();
 
+
     /**
      * This method should return a viewport, which will be used by the whole game.
      *
@@ -111,9 +112,15 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         this.screenSwitch.setActive(createLoadingScreen());
 
         this.loadResources(resourceHandler);
+        this.init();
     }
 
+
     protected abstract ScreenId createLoadingScreen();
+
+    protected void init() {}
+
+    protected void postLoadResources(ResourceHandler res) {}
 
     /**
      * It's important to note, that the amount of resources loaded here have to be very small and you have to load it using
@@ -146,6 +153,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         }
 
         if (!init && resourceHandler.update()) {
+            postLoadResources(resourceHandler);
             screenSwitch.setActive(createScreens());
             init = true;
         }

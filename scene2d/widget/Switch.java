@@ -89,12 +89,12 @@ public class Switch extends Panel {
      */
     private boolean lock = false;
 
-    public Switch(Skin skin) {
-        this(skin.get(SwitchStyle.class));
+    public Switch(Skin skin, Drawable background) {
+        this(skin.get(SwitchStyle.class), background);
     }
 
-    public Switch(SwitchStyle style) {
-        this(style.getBg(), style.getButton(), style.background, style.getStateColor());
+    public Switch(SwitchStyle style, Drawable background) {
+        this(style.getBg(), style.getButton(), background, style.getStateColor());
     }
 
     /**
@@ -385,7 +385,7 @@ public class Switch extends Panel {
         ON, OFF
     }
 
-    public static class SwitchStyle extends PanelStyle {
+    public static class SwitchStyle {
         private Drawable bg;
         private Drawable button;
         private Color stateColor;

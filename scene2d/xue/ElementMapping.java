@@ -65,9 +65,9 @@ public class ElementMapping implements TagMapping<Actor> {
             case "container":
                 return new ContainerTag<>(new Container<>());
             case "panel":
-                return new PanelTag(new Panel(skin), resourceHandler);
+                return new PanelTag(new Panel(null), resourceHandler);
             case "switch":
-                return new ElementTag<>(new Switch(skin));
+                return new ElementTag<>(new Switch(skin, null));
             case "label":
                 return new LabelTag(skin, resourceHandler);
             case "image":
