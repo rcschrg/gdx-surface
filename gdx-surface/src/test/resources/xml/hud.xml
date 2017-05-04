@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu>
+    <constants>
+    </constants>
+    <elements>
+        <hudScore name="hudScore" y="92r" width="33r" height="7r" xPadding="0.1" yPadding="0.3" background="FLAT_BACKGROUND" color="#000000" alpha="0.5" />
+        <hudPowerUpDisplay name="powerUpDisplay" />
+    </elements>
+</menu>

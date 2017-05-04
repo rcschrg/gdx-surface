@@ -1,0 +1,37 @@
+allprojects {
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+    apply plugin: "java"
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        gdxVersion = '1.9.4'
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.mockito:mockito-all:1.10.19'
+    }
+}
+
+project(':gdx-surface') {
+    apply plugin: "maven"
+    apply plugin: 'signing'
+
+    test {
+        testLogging.showStandardStreams = true
+    }
+
+    dependencies {
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        compile 'org.jbox2d:jbox2d-library:2.2.1.1'
+        compile 'org.reflections:reflections:0.9.10'
+        compile 'de.verygame.xue:XUE:0.2.15'
+        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        testCompile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    }
+}
