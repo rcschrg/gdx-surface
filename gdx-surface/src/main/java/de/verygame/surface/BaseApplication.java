@@ -11,6 +11,7 @@ import de.verygame.surface.event.Event;
 import de.verygame.surface.event.EventListener;
 import de.verygame.surface.resource.Resource;
 import de.verygame.surface.resource.ResourceHandler;
+import de.verygame.surface.resource.ResourceUtils;
 import de.verygame.surface.screen.base.Screen;
 import de.verygame.surface.screen.base.ScreenId;
 import de.verygame.surface.screen.base.ScreenSwitch;
@@ -35,6 +36,8 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
     protected ScreenSwitch screenSwitch;
     /** Renders fps to screen, if isDebug() == true */
     protected FPSOverlay fpsOverlay;
+    /** Settings object */
+    protected Settings settings;
     /** True if all res loaded */
     private boolean init = false;
 
@@ -75,13 +78,12 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
      */
     protected abstract ScreenId createScreens();
 
-
     /**
-     * This method should return a viewport, which will be used by the whole game.
+     * Here you can create some general settings for the application.
      *
-     * @return Viewport of the game
+     * @return {@link Settings}
      */
-    protected abstract Viewport createViewport();
+    protected abstract Settings createSettings();
 
     /**
      * In this method you can load all your resources with help of the resource handler. <br>
@@ -93,9 +95,10 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
 
     @Override
     public void create() {
+        this.settings = createSettings();
         this.batch = new PolygonSpriteBatch();
         this.resourceHandler = new ResourceHandler();
-        this.viewport = createViewport();
+        this.viewport = settings.getViewport();
         this.screenSwitch = new ScreenSwitch();
         this.fpsOverlay = new FPSOverlay();
 
@@ -107,6 +110,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         this.screenSwitch.setInputHandler(inputMultiplexer);
         Gdx.input.setInputProcessor(inputMultiplexer);
+        ResourceUtils.addResourceImplementation();
 
         this.preLoadResources(resourceHandler);
         this.screenSwitch.setActive(createLoadingScreen());
@@ -131,10 +135,6 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         //can be used for loading screen resources
     }
 
-    protected boolean isDebug() {
-        return false;
-    }
-
     @Override
     public void render() {
 
@@ -148,7 +148,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
 
         screenSwitch.renderScreen();
 
-        if (isDebug()) {
+        if (settings.isDebug()) {
             fpsOverlay.render(batch);
         }
 

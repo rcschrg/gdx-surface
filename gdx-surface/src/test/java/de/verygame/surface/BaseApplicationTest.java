@@ -36,8 +36,8 @@ public class BaseApplicationTest extends LibGdxTest {
         }
 
         @Override
-        protected Viewport createViewport() {
-            return new FitViewport(1,1);
+        protected Settings createSettings() {
+            return new Settings();
         }
 
         @Override
@@ -73,6 +73,7 @@ public class BaseApplicationTest extends LibGdxTest {
         app.screenSwitch = mock(ScreenSwitch.class);
         app.batch = mock(PolygonSpriteBatch.class);
         app.resourceHandler = mock(ResourceHandler.class);
+        app.settings = mock(Settings.class);
         app.render();
 
         //then

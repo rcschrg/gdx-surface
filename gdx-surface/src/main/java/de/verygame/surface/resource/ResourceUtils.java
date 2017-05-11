@@ -26,6 +26,14 @@ public class ResourceUtils {
         //utility class
     }
 
+    public static void addResourceImplementation(List<Class<? extends Resource>> newResourceClasses) {
+        resourceClasses.addAll(newResourceClasses);
+    }
+
+    public static void addResourceUnitImplementation(List<Class<? extends ResourceUnit>> newResourceClasses) {
+        resourceUnitClasses.addAll(newResourceClasses);
+    }
+
     @SafeVarargs
     public static void addResourceImplementation(Class<? extends Resource>... resourceImplementations) {
         Collections.addAll(resourceClasses, resourceImplementations);
