@@ -49,7 +49,7 @@ public class FontGroupAttribute extends AbstractAttributeGroup<Label> {
 
     @AttributeHandler
     public void applyFontSize(Label element, Float value) {
-        if (fontSize != value) {
+        if (fontSize != value && value > 3) {
             fontSize = (int)(float)value;
             dirty = true;
         }
