@@ -51,7 +51,7 @@ public class ElementMapping implements TagMapping<Actor> {
             case "button":
                 return new ButtonTag(skin, resourceHandler);
             case "checkbox":
-                return new ElementTag<>(new CheckBox("", skin));
+                return new ButtonTag(new CheckBox("", skin), resourceHandler);
             case "dialog":
                 return new ElementTag<>(new Dialog("", skin));
             case "imageButton":

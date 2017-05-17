@@ -2,7 +2,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 group = 'de.verygame.surface'
-version = '0.1a'
+version = '0.2a'
 archivesBaseName = 'gdx-surface'
 
 ext {
