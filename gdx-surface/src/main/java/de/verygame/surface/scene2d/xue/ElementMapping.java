@@ -82,7 +82,6 @@ public class ElementMapping implements TagMapping<Actor> {
                 return new ElementTag<>(new TextArea("", skin));
             case "textField":
                 return new ElementTag<>(new TextField("", skin));
-
             default:
         }
         return null;

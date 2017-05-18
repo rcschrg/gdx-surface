@@ -21,7 +21,7 @@ public abstract class AbstractModifier implements Modifier {
     /** target which the modifier will affect */
     protected final ModifierCallback target;
 
-    /** true if currentDuration <= 0 */
+    /** true if currentDuration leq 0 */
     protected boolean finished = false;
 
     /** list of {@link FinishListener} */

@@ -42,11 +42,11 @@ public interface Screen extends Disposable {
     void onActivate(ScreenId predecessor);
 
     /**
-     * Will be called when the screen gets set inactive. With returning a number > 0 you can delay the
+     * Will be called when the screen gets set inactive. With returning a number greater than 0 you can delay the
      * switch to perform an animation.
      *
      * @param successor successor of the screen
-     * @return number > 0 as delay
+     * @return number greater  than 0 as delay
      */
     float onDeactivate(ScreenId successor);
 
