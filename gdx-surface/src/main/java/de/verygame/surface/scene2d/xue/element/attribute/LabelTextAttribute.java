@@ -2,6 +2,7 @@ package de.verygame.surface.scene2d.xue.element.attribute;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+import de.verygame.xue.input.XueInputEvent;
 import de.verygame.xue.mapping.tag.attribute.AbstractAttribute;
 
 /**
@@ -19,5 +20,12 @@ public class LabelTextAttribute extends AbstractAttribute<Label, String> {
     @Override
     public void apply(Label element, String value) {
         element.setText(value);
+    }
+
+    @Override
+    public void onInputEvent(XueInputEvent inputEvent) {
+        if (XueInputEvent.RESIZE == inputEvent) {
+
+        }
     }
 }

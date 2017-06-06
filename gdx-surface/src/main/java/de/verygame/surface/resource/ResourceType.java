@@ -1,6 +1,7 @@
 package de.verygame.surface.resource;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,6 +15,7 @@ import de.verygame.surface.util.FileUtils;
  * Each enum describes groups of resources.
  */
 public enum ResourceType {
+    PARTICLE_EFFECT(FileUtils.toPath("particle"), ParticleEffect.class),
     TEX(FileUtils.toPath("tex"), Texture.class),
     TEX_ATLAS(FileUtils.toPath("atlas"), TextureAtlas.class),
     XML(FileUtils.toPath("xml"), String.class),

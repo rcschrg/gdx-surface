@@ -3,12 +3,10 @@ package de.verygame.surface.resource;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
+import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,21 +14,15 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.ObjectMap;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import de.verygame.surface.event.Event;
 import de.verygame.surface.event.EventHandler;
 import de.verygame.surface.resource.loader.StringLoader;
 import de.verygame.surface.util.FileUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * @author Rico Schrage
@@ -104,6 +96,21 @@ public class ResourceHandler extends EventHandler implements Disposable {
     private void initAssetManager(FileHandleResolver resolver) {
         assetManager.setLoader(String.class, new StringLoader(resolver));
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+    }
+
+    /**
+     * @param particleEffect have to be of type PARTICLE_EFFECT
+     * @param atlas have to be of type ATLAS
+     */
+    public void loadParticleEffect(Resource particleEffect, Resource atlas) {
+        if (particleEffect.getType() != ResourceType.PARTICLE_EFFECT) {
+            throw new IllegalArgumentException("You are only allowed to load particle-effects with this method!");
+        }
+        String path = FileUtils.toPath(particleEffect.getType().toString(), particleEffect.getFilePath());
+        String pathToAtlas = FileUtils.toPath(atlas.getType().toString(), atlas.getFilePath());
+        ParticleEffectLoader.ParticleEffectParameter para = new ParticleEffectLoader.ParticleEffectParameter();
+        para.atlasFile = pathToAtlas;
+        assetManager.load(path, ParticleEffect.class, para);
     }
 
     /**

@@ -7,18 +7,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.io.InputStream;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Set;
-
 import de.verygame.surface.resource.ResourceHandler;
 import de.verygame.xue.GuiXue;
 import de.verygame.xue.handler.ElementsTagGroupHandler;
 import de.verygame.xue.input.XueInputEvent;
 import de.verygame.xue.mapping.TagMapping;
 import de.verygame.xue.util.action.ActionSequence;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Rico Schrage
@@ -43,15 +43,16 @@ public class XueStage extends Stage {
     public XueStage(Batch batch, Viewport viewport, InputStream resourceFile, ResourceHandler resourceHandler) {
         super(viewport, batch);
 
-        xue = new GuiXue<>(resourceFile, new Scene2DMapping(resourceHandler));
+        xue = new GuiXue<>(new Scene2DMapping(resourceHandler));
+        xue.addFile(resourceFile, "default");
 
         xue.addLoadTask(new GuiXue.LoadTask() {
 
             @Override
             public void postLoad() {
-                Set<Map.Entry<String, Actor>> entries = xue.getElementMap().entrySet();
+                Set<Map.Entry<String, Actor>> entries = xue.getDefaultElementMap().entrySet();
                 for (final Map.Entry<String, Actor> entry : entries) {
-                    Actor currentElement = xue.getElementMap().get(entry.getKey());
+                    Actor currentElement = xue.getDefaultElementMap().get(entry.getKey());
 
                     if (currentElement.getParent() != null) {
                         continue;
@@ -114,11 +115,16 @@ public class XueStage extends Stage {
         return xue.getElementByName(name);
     }
     public Map<String, Actor> getElementMap() {
-        return xue.getElementMap();
+        return xue.getDefaultElementMap();
     }
 
     public void load() {
-        xue.load();
+        try {
+            xue.load();
+        } catch (FileNotFoundException e) {
+            //TODO LOGGER
+            //e.printStackTrace();
+        }
     }
 
     @Override

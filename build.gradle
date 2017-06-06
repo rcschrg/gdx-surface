@@ -29,7 +29,7 @@ project(':gdx-surface') {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile 'org.jbox2d:jbox2d-library:2.2.1.1'
         compile 'org.reflections:reflections:0.9.10'
-        compile 'de.verygame.xue:XUE:0.2.15'
+        compile 'de.verygame.xue:XUE:0.3.4'
         testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         testCompile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
