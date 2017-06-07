@@ -2,20 +2,19 @@ package de.verygame.surface.resource;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
-
+import de.verygame.surface.event.Event;
+import de.verygame.surface.event.EventListener;
+import de.verygame.surface.util.test.LibGdxTest;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.Locale;
-
-import de.verygame.surface.event.Event;
-import de.verygame.surface.event.EventListener;
-import de.verygame.surface.util.test.LibGdxTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -68,7 +67,7 @@ public class ResourceHandlerTest extends LibGdxTest {
     @Test
     public void testLoadResourceExcept() {
         //when
-        resourceHandler.loadResourceExcept(TestResource.values(), TestResource.TEST_FONT);
+        resourceHandler.loadResourceExcept(TestResource.values(), TestResource.TEST_FONT, TestResource.P_E);
         resourceHandler.waitForAssets();
 
         //then
@@ -215,6 +214,19 @@ public class ResourceHandlerTest extends LibGdxTest {
 
         //then
         assertTrue(font != null);
+    }
+
+    @Test
+    public void testLoadParticleEffect() {
+        //given
+        resourceHandler.loadParticleEffect(TestResource.P_E, TestResource.TEST_ATLAS);
+        resourceHandler.waitForAssets();
+
+        //when
+        ParticleEffect particleEffect = resourceHandler.get(TestResource.P_E, ParticleEffect.class);
+
+        //then
+        assertTrue(particleEffect != null);
     }
 
     @Test

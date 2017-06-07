@@ -4,6 +4,7 @@ package de.verygame.surface.resource;
  * @author Rico Schrage
  */
 public enum TestResource implements Resource {
+    P_E("5", "5.p", ResourceType.PARTICLE_EFFECT),
     TEST_RESOURCE("test", "circle.png", ResourceType.TEX),
     TEST_FONT("font", "Quicksand-Light.ttf", ResourceType.FONT),
     TEST_LANG("lang", "strings", ResourceType.LANG),
