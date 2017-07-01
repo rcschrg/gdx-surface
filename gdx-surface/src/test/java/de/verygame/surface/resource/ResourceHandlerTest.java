@@ -7,8 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
-import de.verygame.surface.event.Event;
+import de.verygame.surface.event.CoreEvent;
 import de.verygame.surface.event.EventListener;
+import de.verygame.surface.event.EventType;
 import de.verygame.surface.util.test.LibGdxTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,7 +90,7 @@ public class ResourceHandlerTest extends LibGdxTest {
         //given
         resourceHandler.loadResource(TestResource.TEST_LANG);
         EventListener l = mock(EventListener.class);
-        resourceHandler.register(Event.EventType.RESOURCE, l);
+        resourceHandler.register(EventType.RESOURCE, l);
         resourceHandler.waitForAssets();
 
         //when
@@ -97,7 +98,7 @@ public class ResourceHandlerTest extends LibGdxTest {
         resourceHandler.waitForAssets();
 
         //then
-        verify(l).handleEvent(Event.OPTION_CHANGED);
+        verify(l).handleEvent(CoreEvent.OPTION_CHANGED);
         assertTrue(resourceHandler.get(TestResource.TEST_LANG, I18NBundle.class).getLocale() == Locale.ENGLISH);
     }
 

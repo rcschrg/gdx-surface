@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import de.verygame.surface.event.Event;
+import de.verygame.surface.event.CoreEvent;
 import de.verygame.surface.event.EventListener;
 import de.verygame.surface.resource.Resource;
 import de.verygame.surface.resource.ResourceHandler;
@@ -184,7 +184,7 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
     }
 
     @Override
-    public void handleEvent(Event event, Object... attachedObjects) {
+    public void handleEvent(CoreEvent event, Object... attachedObjects) {
         //use annotations instead
     }
 }

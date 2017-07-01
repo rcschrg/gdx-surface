@@ -22,42 +22,42 @@ public class EventHandlerTest {
         final EventListener listener = mock(EventListener.class);
         final EventHandler emitter = new EventHandler();
 
-        emitter.register(listener, Event.EventType.UI);
-        assertTrue(emitter.isRegistered(listener, Event.EventType.UI));
+        emitter.register(listener, EventType.UI);
+        assertTrue(emitter.isRegistered(listener, EventType.UI));
 
-        emitter.unregister(listener, Event.EventType.UI);
-        assertTrue(!emitter.isRegistered(listener, Event.EventType.UI));
+        emitter.unregister(listener, EventType.UI);
+        assertTrue(!emitter.isRegistered(listener, EventType.UI));
     }
 
     @Test
     public void testEmitEventReflection() {
         final EventListener listener = mock(EventListener.class);
         final EventHandler emitter = new EventHandler();
-        emitter.register(listener, Event.EventType.UI);
+        emitter.register(listener, EventType.UI);
 
-        emitter.emitEvent(Event.SWITCH_SCREEN, ScreenKeys.GAME);
+        emitter.emitEvent(CoreEvent.SWITCH_SCREEN, ScreenKeys.GAME);
 
-        verify(listener).handleEvent(Event.SWITCH_SCREEN, ScreenKeys.GAME);
-        assertTrue(emitter.isRegistered(listener, Event.EventType.UI));
+        verify(listener).handleEvent(CoreEvent.SWITCH_SCREEN, ScreenKeys.GAME);
+        assertTrue(emitter.isRegistered(listener, EventType.UI));
     }
 
     @Test
     public void testEmitEvent() {
         final RefTestListener listener = new RefTestListener();
         final EventHandler emitter = new EventHandler();
-        emitter.register(listener, Event.EventType.UI);
+        emitter.register(listener, EventType.UI);
 
-        emitter.emitEvent(Event.SWITCH_SCREEN, ScreenKeys.GAME);
-        emitter.emitEvent(Event.SWITCH_SCREEN, ScreenKeys.GAME);
+        emitter.emitEvent(CoreEvent.SWITCH_SCREEN, ScreenKeys.GAME);
+        emitter.emitEvent(CoreEvent.SWITCH_SCREEN, ScreenKeys.GAME);
 
-        assertTrue("Event has not been received!", listener.rec == 2);
-        assertTrue(emitter.isRegistered(listener, Event.EventType.UI));
+        assertTrue("CoreEvent has not been received!", listener.rec == 2);
+        assertTrue(emitter.isRegistered(listener, EventType.UI));
     }
 
     final static class RefTestListener extends EventAdapter {
         public int rec = 0;
 
-        @EventRoute(Event.SWITCH_SCREEN)
+        @EventRoute(CoreEvent.Constants.SWITCH_SCREEN_ID)
         public void switchScreen(ScreenId id) {
             rec++;
         }

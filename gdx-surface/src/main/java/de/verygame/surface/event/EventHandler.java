@@ -11,14 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.verygame.surface.event.Event.EventType;
-
 /**
  * @author Rico Schrage
  *
  * Emits events to all event-listeners.
  * <br>
- * Event can be received via annotation or {@link EventListener#handleEvent(Event, Object...)}.
+ * Event can be received via annotation or {@link EventListener#handleEvent(CoreEvent, Object...)}.
  */
 public class EventHandler {
 
@@ -26,7 +24,7 @@ public class EventHandler {
     private final Map<EventListener, List<EventType>> eventHandlerMap;
 
     /** Map of all cached methods */
-    private final Map<EventListener, Map<Event, Method>> cache;
+    private final Map<EventListener, Map<CoreEvent, Method>> cache;
 
     /**
      * Construct an event-emitter.
@@ -57,7 +55,7 @@ public class EventHandler {
             Collections.addAll(eventHandlerMap.get(eventListener), type);
         }
         else {
-            final List<Event.EventType> list = new ArrayList<>(EventType.values().length);
+            final List<EventType> list = new ArrayList<>(EventType.values().length);
             Collections.addAll(list, type);
             this.eventHandlerMap.put(eventListener, list);
         }
@@ -94,16 +92,16 @@ public class EventHandler {
     }
 
     /**
-     * Emits an event to all listeners, which are registered for the specific event type. The events can either be received via {@link EventListener#handleEvent(Event, Object...)} or
+     * Emits an event to all listeners, which are registered for the specific event type. The events can either be received via {@link EventListener#handleEvent(CoreEvent, Object...)} or
      * with the help of annotations {@link EventRoute}.
      * <br>
      * Hint: Every event will only be delivered once!
      *
      * @param event type of the event
      * @param attachedObjects objects, which are related to the update.
-     * @see Event
+     * @see CoreEvent
      */
-    public void emitEvent(Event event, Object... attachedObjects) {
+    public void emitEvent(CoreEvent event, Object... attachedObjects) {
         for (Map.Entry<EventListener, List<EventType>> entry : eventHandlerMap.entrySet()) {
             final EventListener eventListener = entry.getKey();
             final boolean sendEvent = entry.getValue().contains(event.getType());
@@ -117,13 +115,13 @@ public class EventHandler {
      * Helper method, which emits the give event to the appropriate annotated method.
      *
      * @param target recipient of the event
-     * @param event {@link Event}
+     * @param event {@link CoreEvent}
      * @param attached attached objects
      * @return true if an appropriate method has been found, false otherwise
      */
-    private boolean emitReflectionEvent(final EventListener target, final Event event, final Object... attached) {
+    private boolean emitReflectionEvent(final EventListener target, final CoreEvent event, final Object... attached) {
         if (cache.containsKey(target)) {
-            Map<Event, Method> methodMap = cache.get(target);
+            Map<CoreEvent, Method> methodMap = cache.get(target);
             if (methodMap.containsKey(event)) {
                 Method method = methodMap.get(event);
                 try {
@@ -137,10 +135,10 @@ public class EventHandler {
             }
         }
         else {
-            cache.put(target, new EnumMap<Event, Method>(Event.class));
+            cache.put(target, new EnumMap<CoreEvent, Method>(CoreEvent.class));
         }
         for (final Method method : target.getClass().getMethods()) {
-            if (method.isAnnotationPresent(EventRoute.class) && method.getAnnotation(EventRoute.class).value() == event) {
+            if (method.isAnnotationPresent(EventRoute.class) && method.getAnnotation(EventRoute.class).value() == event.getId()) {
                 try {
                     method.setAccessible(true);
                     method.invoke(target, attached);

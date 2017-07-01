@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.ObjectMap;
-import de.verygame.surface.event.Event;
+import de.verygame.surface.event.CoreEvent;
 import de.verygame.surface.event.EventHandler;
 import de.verygame.surface.resource.loader.StringLoader;
 import de.verygame.surface.util.FileUtils;
@@ -170,7 +170,7 @@ public class ResourceHandler extends EventHandler implements Disposable {
             String langPath = pathMap.get(ResourceType.LANG).get(0);
             assetManager.unload(langPath);
             assetManager.load(langPath, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(lang));
-            emitEvent(Event.OPTION_CHANGED);
+            emitEvent(CoreEvent.OPTION_CHANGED);
         }
         else {
             throw new IllegalStateException("You have to load exactly one language bundle first!");

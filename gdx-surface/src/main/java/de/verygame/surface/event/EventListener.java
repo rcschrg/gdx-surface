@@ -5,6 +5,6 @@ package de.verygame.surface.event;
  */
 public interface EventListener {
 
-    public void handleEvent(Event event, Object... attachedObjects);
+    public void handleEvent(CoreEvent event, Object... attachedObjects);
 
 }

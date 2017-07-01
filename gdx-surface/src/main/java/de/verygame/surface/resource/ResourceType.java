@@ -1,12 +1,13 @@
 package de.verygame.surface.resource;
 
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
-
 import de.verygame.surface.util.FileUtils;
 
 /**
@@ -21,6 +22,8 @@ public enum ResourceType {
     XML(FileUtils.toPath("xml"), String.class),
     LANG(FileUtils.toPath("lang"), I18NBundle.class),
     FONT(FileUtils.toPath("font"), FreeTypeFontGenerator.class),
+    MUSIC(FileUtils.toPath("music"), Music.class),
+    SOUND(FileUtils.toPath("sound"), Sound.class),
     SKIN(FileUtils.toPath("skin"), Skin.class);
 
     /** Java representation of the resource */
