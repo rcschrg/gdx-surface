@@ -8,7 +8,7 @@ package de.verygame.surface.event;
 public abstract class EventAdapter implements EventListener {
 
     @Override
-    public void handleEvent(CoreEvent event, Object... attachedObjects) {
+    public void handleEvent(Event event, Object... attachedObjects) {
         //do nothing
     }
 

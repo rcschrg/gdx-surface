@@ -3,8 +3,8 @@ package de.verygame.surface.event;
 /**
  * @author Rico Schrage
  */
-public interface EventListener {
+public interface EventListener extends EventRouteListener {
 
-    public void handleEvent(CoreEvent event, Object... attachedObjects);
+    public void handleEvent(Event event, Object... attachedObjects);
 
 }

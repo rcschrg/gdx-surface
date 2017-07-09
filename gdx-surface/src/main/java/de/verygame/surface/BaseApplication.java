@@ -6,9 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import de.verygame.surface.event.CoreEvent;
-import de.verygame.surface.event.EventListener;
+import de.verygame.surface.event.EventRouteListener;
 import de.verygame.surface.resource.Resource;
 import de.verygame.surface.resource.ResourceHandler;
 import de.verygame.surface.resource.ResourceUtils;
@@ -24,7 +22,7 @@ import de.verygame.surface.screen.base.ScreenSwitch;
  *
  * @see de.verygame.surface.screen.base.ScreenSwitch
  */
-public abstract class BaseApplication implements ApplicationListener, EventListener {
+public abstract class BaseApplication implements ApplicationListener, EventRouteListener {
 
     /** Main resource handler of the application */
     protected ResourceHandler resourceHandler;
@@ -183,8 +181,4 @@ public abstract class BaseApplication implements ApplicationListener, EventListe
         resourceHandler.dispose();
     }
 
-    @Override
-    public void handleEvent(CoreEvent event, Object... attachedObjects) {
-        //use annotations instead
-    }
 }

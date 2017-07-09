@@ -8,7 +8,7 @@ allprojects {
     }
 
     ext {
-        gdxVersion = '1.9.4'
+        gdxVersion = '1.9.6'
     }
 
     dependencies {
@@ -26,6 +26,7 @@ project(':gdx-surface') {
     }
 
     dependencies {
+        compile 'org.slf4j:slf4j-api:1.7.25'
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile 'org.jbox2d:jbox2d-library:2.2.1.1'
         compile 'org.reflections:reflections:0.9.10'
@@ -33,5 +34,7 @@ project(':gdx-surface') {
         testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         testCompile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        testCompile 'ch.qos.logback:logback-core:1.2.3'
+        testCompile 'ch.qos.logback:logback-classic:1.2.3'
     }
 }

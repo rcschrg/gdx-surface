@@ -1,30 +1,27 @@
 package de.verygame.surface.event;
 
-import com.badlogic.gdx.Gdx;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Rico Schrage
  *
  * Emits events to all event-listeners.
  * <br>
- * Event can be received via annotation or {@link EventListener#handleEvent(CoreEvent, Object...)}.
+ * Event can be received via annotation or {@link EventListener#handleEvent(Event, Object...)}.
  */
 public class EventHandler {
+    private static final Logger log = LoggerFactory.getLogger(EventHandler.class);
 
-    /** List of all registered {@link EventListener}'s */
-    private final Map<EventListener, List<EventType>> eventHandlerMap;
+    /** List of all registered {@link EventRouteListener}'s */
+    private final Map<EventRouteListener, List<EventType>> eventHandlerMap;
 
     /** Map of all cached methods */
-    private final Map<EventListener, Map<CoreEvent, Method>> cache;
+    private final Map<EventRouteListener, Map<Event, Method>> cache;
 
     /**
      * Construct an event-emitter.
@@ -40,7 +37,7 @@ public class EventHandler {
      * @param eventType event type the listener will listen to
      * @param eventListener listener
      */
-    public void register(EventType eventType, EventListener eventListener) {
+    public void register(EventType eventType, EventRouteListener eventListener) {
         this.register(eventListener, eventType);
     }
 
@@ -50,7 +47,7 @@ public class EventHandler {
      * @param eventListener {@link EventListener}, which should get registered
      * @param type event types the listener will listen to
      */
-    public void register(EventListener eventListener, EventType... type) {
+    public void register(EventRouteListener eventListener, EventType... type) {
         if (eventHandlerMap.containsKey(eventListener)) {
             Collections.addAll(eventHandlerMap.get(eventListener), type);
         }
@@ -92,7 +89,7 @@ public class EventHandler {
     }
 
     /**
-     * Emits an event to all listeners, which are registered for the specific event type. The events can either be received via {@link EventListener#handleEvent(CoreEvent, Object...)} or
+     * Emits an event to all listeners, which are registered for the specific event type. The events can either be received via {@link EventListener#handleEvent(Event, Object...)} or
      * with the help of annotations {@link EventRoute}.
      * <br>
      * Hint: Every event will only be delivered once!
@@ -101,12 +98,14 @@ public class EventHandler {
      * @param attachedObjects objects, which are related to the update.
      * @see CoreEvent
      */
-    public void emitEvent(CoreEvent event, Object... attachedObjects) {
-        for (Map.Entry<EventListener, List<EventType>> entry : eventHandlerMap.entrySet()) {
-            final EventListener eventListener = entry.getKey();
+    public void emitEvent(Event event, Object... attachedObjects) {
+        for (Map.Entry<EventRouteListener, List<EventType>> entry : eventHandlerMap.entrySet()) {
+            final EventRouteListener eventListener = entry.getKey();
             final boolean sendEvent = entry.getValue().contains(event.getType());
             if (sendEvent && !emitReflectionEvent(eventListener, event, attachedObjects)) {
-                eventListener.handleEvent(event, attachedObjects);
+                if (eventListener instanceof EventListener) {
+                    ((EventListener)eventListener).handleEvent(event, attachedObjects);
+                }
             }
         }
     }
@@ -119,9 +118,9 @@ public class EventHandler {
      * @param attached attached objects
      * @return true if an appropriate method has been found, false otherwise
      */
-    private boolean emitReflectionEvent(final EventListener target, final CoreEvent event, final Object... attached) {
+    private boolean emitReflectionEvent(final EventRouteListener target, final Event event, final Object... attached) {
         if (cache.containsKey(target)) {
-            Map<CoreEvent, Method> methodMap = cache.get(target);
+            Map<Event, Method> methodMap = cache.get(target);
             if (methodMap.containsKey(event)) {
                 Method method = methodMap.get(event);
                 try {
@@ -135,7 +134,7 @@ public class EventHandler {
             }
         }
         else {
-            cache.put(target, new EnumMap<CoreEvent, Method>(CoreEvent.class));
+            cache.put(target, new HashMap<Event, Method>());
         }
         for (final Method method : target.getClass().getMethods()) {
             if (method.isAnnotationPresent(EventRoute.class) && method.getAnnotation(EventRoute.class).value() == event.getId()) {
@@ -159,7 +158,7 @@ public class EventHandler {
      * @param e Exception to be reported
      */
     private void printReflectionError(Exception e) {
-        Gdx.app.error(getClass().getSimpleName(), "An " + e.getClass().getSimpleName() + " has occurred. Reason: " + e.getMessage(), e);
+        log.error("An " + e.getClass().getSimpleName() + " has occurred. Reason: " + e.getMessage(), e);
     }
 
 }
