@@ -1,0 +1,31 @@
+package org.rschrage.surface.scene2d.xue.element.attribute;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+
+import de.verygame.xue.input.XueInputEvent;
+import de.verygame.xue.mapping.tag.attribute.AbstractAttribute;
+
+/**
+ * @author Rico Schrage
+ */
+
+public class LabelTextAttribute extends AbstractAttribute<Label, String> {
+    private static final String ATTRIBUTE_TEXT = "text";
+
+    @Override
+    public String getName() {
+        return ATTRIBUTE_TEXT;
+    }
+
+    @Override
+    public void apply(Label element, String value) {
+        element.setText(value);
+    }
+
+    @Override
+    public void onInputEvent(XueInputEvent inputEvent) {
+        if (XueInputEvent.RESIZE == inputEvent) {
+
+        }
+    }
+}
