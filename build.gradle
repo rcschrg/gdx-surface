@@ -1,14 +1,28 @@
+apply plugin: "org.sonarqube"
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"
+    }
+}
+
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
     apply plugin: "java"
+    apply plugin: "jacoco"
 
     repositories {
         mavenCentral()
     }
 
     ext {
-        gdxVersion = '1.9.4'
+        gdxVersion = '1.9.6'
     }
 
     dependencies {
@@ -26,12 +40,15 @@ project(':gdx-surface') {
     }
 
     dependencies {
+        compile 'org.slf4j:slf4j-api:1.7.25'
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile 'org.jbox2d:jbox2d-library:2.2.1.1'
         compile 'org.reflections:reflections:0.9.10'
-        compile 'de.verygame.xue:XUE:0.2.15'
+        compile 'de.verygame.xue:XUE:0.3.4'
         testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         testCompile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        testCompile 'ch.qos.logback:logback-core:1.2.3'
+        testCompile 'ch.qos.logback:logback-classic:1.2.3'
     }
 }
